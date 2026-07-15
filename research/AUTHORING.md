@@ -88,6 +88,19 @@ liongard_detection, liongard_metric, liongard_events, liongard_timeline, liongar
 liongard_identity, liongard_domain, liongard_cyber_risk_dashboard, liongard_report,
 liongard_agents, liongard_query.
 
+⭐ **Liongard is a universal read plane.** There is no per-inspector tool, but the generic
+tools reach ALL ~300 Liongard inspectors: `liongard_launchpoint` filters by systemType
+(e.g. "Meraki", "Palo Alto", "Veeam") to find any inspector's launchpoint, config, and
+last-run state; `liongard_metric` evaluates any metric/JMESPath expression against any
+inspector's dataprint; `liongard_detection`/`liongard_timeline` surface change history for
+any system; `liongard_query` answers natural-language questions across all of it. This
+means skills can read config/state from firewalls, switches, hypervisors, backup platforms,
+cloud tenants, and LOB systems that Super Magic has NO native integration for — as long as
+the partner runs the Liongard inspector. Skills using this pattern must (a) verify the
+inspector exists and last ran successfully (launchpoint/timeline) before trusting data,
+(b) state dataprint age in output, and (c) degrade to docs/ticket-history when the
+inspector is absent.
+
 **Docs (when enabled):** search_itglue, search_hudu.
 **ConnectWise RMM (when enabled):** connectwise_rmm_search_devices,
 connectwise_rmm_list_companies, connectwise_rmm_get_device (+ patch/software reads).
@@ -116,4 +129,13 @@ onboarding-and-access · devices-and-infrastructure · security · reporting-and
 account-management · scheduling-and-dispatch · automation-and-flows · finance-and-billing ·
 sales-and-quoting · client-lifecycle · training-and-enablement · personal-productivity ·
 troubleshooting-playbooks · compliance-and-audit · connectors (cross-tool workflows that
-exist because of Notion/Linear/Zapier)
+exist because of Notion/Linear/Zapier) · psa-specific (ConnectWise/Autotask/Halo idioms) ·
+vendor-runbooks (named security/backup/infra products) · liongard-inspectors (reading any
+system through Liongard's inspector data) · m365-administration ·
+change-and-problem-management · voice-and-messenger · industry-packs (vertical-specific
+client support) · msp-business-operations (the MSP's own internal ops)
+
+**Vendor names are allowed** (Veeam, Huntress, SentinelOne, Datto…) — they are products,
+not partner data. The sanitization bar covers partners, clients, people, credentials, and
+environment-specific identifiers only. Keep vendor guidance factual and version-cautious
+("verify against the vendor's current docs").

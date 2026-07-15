@@ -1,0 +1,39 @@
+---
+name: WiFi Infrastructure Audit
+description: Audit a client's wireless estate — AP inventory per site, coverage-complaint mapping from ticket history, firmware posture, and a guest-network isolation check. Use for "audit the WiFi", recurring "WiFi is slow in <area>" complaints, or pre-refresh assessment of the wireless network.
+category: Devices & Infrastructure
+tools: [search_itglue, search_hudu, liongard_launchpoint, liongard_device, liongard_metric, liongard_timeline, search_tickets, search_ninjaone_devices, add_ticket_note, create_ticket]
+---
+
+# WiFi Infrastructure Audit
+
+Four-lens review of a client's wireless network: what APs exist and where, where users actually complain, how stale the firmware is, and whether the guest network is genuinely isolated from the corporate LAN.
+
+## When to use
+
+- "Audit <client>'s WiFi" / "why do they keep complaining about wireless?"
+- Recurring coverage or roaming complaints from one building area.
+- Before proposing an AP refresh or expansion.
+- A security review asks whether guest WiFi is segregated.
+
+## Steps
+
+1. AP inventory: `search_itglue` / `search_hudu` for the wireless documentation (controller/cloud platform, AP list, SSIDs, placement notes), and Liongard for the live AP list where the wireless platform has an inspector (Meraki, UniFi, and most major wireless platforms do) — `liongard_launchpoint` filtered by system type to confirm the inspector exists and last ran successfully, then `liongard_device` / `liongard_metric`, stating the dataprint age. Build a per-site table: AP name, model, location note, last seen, firmware. Flag documented-but-unseen and seen-but-undocumented APs.
+2. Coverage-complaint mapping: `search_tickets` for the client's WiFi-related tickets over the last ~6 months (search per signal — "wifi", "wireless", "disconnect", "slow internet" — and note that capped searches mean "at least N"). Extract the location mentioned in each complaint and map complaints against the AP inventory: clusters in one area with no nearby AP suggest a coverage hole; clusters near an AP suggest a sick AP, channel congestion, or capacity, not coverage.
+3. Firmware posture: from the Liongard data or documentation, tabulate firmware versions per AP model. Flag mixed versions within one site (roaming problems love mixed firmware) and versions far behind the vendor's current release — verify what "current" is against the vendor's release notes rather than memory, and check `liongard_timeline` for when firmware last changed.
+4. Guest isolation check (evidence-based, not intrusive): from documentation and controller config data, verify the guest SSID maps to a separate VLAN/subnet, client isolation is enabled, and firewall rules block guest→corporate traffic. If config evidence is unavailable, the honest finding is "isolation unverified — recommend an on-site test (guest client attempting to reach a corporate IP)", not a pass.
+5. Output: per-site AP table, complaint heat summary (area → complaint count → nearest AP → hypothesis), firmware findings, guest-isolation verdict (pass / fail / unverified), and a ranked recommendation list (add AP at X, replace/update Y, verify isolation on site). Offer `create_ticket` per remediation and a plain-text summary via `add_ticket_note`.
+
+## Guardrails
+
+- Complaint mapping is a hypothesis generator, not a site survey. Recommend a proper wireless survey before any AP purchase decision — never size a refresh from ticket text alone.
+- Firmware updates and controller changes are handoffs — this skill cannot push firmware, and AP updates cause outages, so they belong in a change window.
+- An "unverified" guest-isolation result must never be softened into a pass. Say what evidence is missing.
+- Never include WiFi PSKs, RADIUS secrets, or controller credentials in output, even when documentation contains them.
+- If neither documentation nor Liongard covers the wireless platform, report the audit as inventory-blind and start with a documentation ticket.
+- Notes are plain text — no markdown, no emojis.
+
+## See also
+
+- `wifi-network-troubleshooting` (troubleshooting-playbooks) — one user, one problem, right now; this skill is the estate-wide review.
+- `network-device-inventory` — the full-stack inventory this audit's AP table feeds into.
