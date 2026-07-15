@@ -1,0 +1,37 @@
+---
+name: Windows 11 Readiness Assessment
+description: Assess which of a client's devices can upgrade to Windows 11 — CPU generation, TPM, RAM, and OS edition flags from RMM device details — and produce an upgrade-blocker list. Use for "which machines can't run Win11" or planning an OS migration.
+category: Devices & Infrastructure
+tools: [search_ninjaone_devices, get_ninjaone_device, add_ticket_note]
+---
+
+# Windows 11 Readiness Assessment
+
+Reads hardware and OS facts from RMM device details for a client's fleet and sorts devices into ready / blocked / needs-verification, with the specific blocker named per device.
+
+## When to use
+
+- "Which of <client>'s machines are Windows 11 compatible?"
+- Windows 10 end-of-support planning and upgrade-project scoping.
+- A refresh conversation needs the list of devices that must be replaced rather than upgraded.
+
+## Steps
+
+1. Resolve the client organization, then `search_ninjaone_devices` for its Windows workstations. Verify class on the returned devices — do not trust the node_class filter; a "workstation" filter can return servers and vice versa. Exclude devices already on Windows 11.
+2. If the device list hits a result cap, page through segments and report "at least N assessed" if full coverage is not achievable.
+3. For each device, read `get_ninjaone_device` details and evaluate against the Windows 11 floor:
+   - CPU: 8th-gen Intel Core / AMD Zen 2 (Ryzen 2000-series desktop, 3000 mobile) or newer, from the processor model string. Parse the generation from the model number; when the model string is ambiguous, mark "needs verification", not "blocked".
+   - TPM 2.0: from device details where exposed; when the RMM does not report TPM, mark "needs verification".
+   - RAM: 4 GB minimum (flag under 8 GB as "upgradeable but poor experience").
+   - Storage: 64 GB minimum free-able system disk.
+   - OS edition: note Home vs Pro vs LTSC — LTSC and specialty editions follow different upgrade paths.
+4. Sort into three buckets: Ready (all checks pass), Blocked (name the blocker — CPU generation is the common unfixable one; RAM/disk are fixable), Needs verification (missing data — usually TPM, offline devices, or unparseable CPU strings).
+5. Output: counts per bucket, the blocked list with per-device blocker and whether it is fixable (add RAM) or terminal (CPU → replace), and the needs-verification list with exactly what to check on-site. Recommend feeding terminal-blocked devices into the Hardware Refresh Forecast skill. Offer a plain-text note via `add_ticket_note`.
+
+## Guardrails
+
+- Never declare a device Blocked on missing data — absence of TPM info is "needs verification", not failure. Overstating blockers inflates a client's replacement bill.
+- CPU-generation parsing from model strings is heuristic; state the parsed generation next to the verdict so a human can spot-check.
+- Devices offline for 30+ days get assessed on stale data — flag the staleness.
+- This skill does not start upgrades: no scripts, no deployments. It produces the assessment; the upgrade itself is a project task.
+- If NinjaOne is not enabled, say the assessment needs an RMM inventory source and stop.

@@ -1,0 +1,39 @@
+---
+name: Spam Sender Triage
+description: Close tickets from known-spam senders and patterns — after verifying a human did not forward the message in for investigation.
+category: Triage & Routing
+tools: [search_tickets, search_contacts, update_ticket, add_ticket_note, list_ticket_statuses]
+---
+
+# Spam Sender Triage
+
+Cold outreach, marketing blasts, and recurring junk senders open tickets that clog intake. This skill closes them against a known-spam pattern list — but first checks the one case that matters: a human forwarded it in on purpose, asking "is this legit?"
+
+## When to use
+
+- Tickets from senders or domains on the desk's known-spam list.
+- Obvious cold-sales or marketing blasts landing on intake boards.
+- A flow sweeps new email tickets against the spam pattern list.
+
+## Steps
+
+1. Read the ticket with `search_tickets`: sender address, subject, full body, and any forwarding wrapper.
+2. Human-forward check FIRST: if the subject carries FW:/RE: or the body quotes the spam beneath a human's message, identify the forwarder. Verify with `search_contacts` whether the forwarder is a known client contact. A client forwarding spam is usually asking for a verdict (is this phishing? should I worry?) — that is a real ticket. Stop and route it as a security/phishing question instead of closing.
+3. Match the true sender against the known-spam patterns configured for this desk: exact sender addresses, sending domains, and subject/body patterns. Require a pattern-list match, not a vibe.
+4. Confirm no client contact is a participant in the thread and no tech has logged work on it.
+5. Close with `update_ticket` (closed/spam status per `list_ticket_statuses`) and post a plain-text note naming the matched pattern.
+6. If the sender is new junk not on the list, do not close; flag it and suggest the pattern to add — list maintenance is a human decision.
+
+## Guardrails
+
+- The human-forward check always runs first and always wins: never close a message a client sent in for investigation, even if the quoted content matches a spam pattern exactly.
+- Close only on a configured pattern match; "looks like spam" without a list hit → flag, do not close.
+- Never reply to spam senders and never unsubscribe on the client's behalf.
+- If the "spam" impersonates the client's own domain or a vendor they use, treat it as potential phishing targeting the client — route to security triage, do not close.
+- Notes are plain text; name the exact pattern matched for auditability.
+
+## Unattended (Flows) variant
+
+- Your entire reply is the internal note, verbatim: `SPAM CLOSED: sender <address> matched pattern <pattern>.` / `NOT SPAM-CLOSED: forwarded by <contact> - routed for review.` / `NOT SPAM-CLOSED: no pattern match.`
+- Deterministic stops: any human forwarder → no close; any client contact in thread → no close; any tech activity → no close; no pattern match → no close.
+- Close is the only permitted write besides the note. When in doubt, do nothing.

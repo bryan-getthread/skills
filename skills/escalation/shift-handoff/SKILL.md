@@ -1,29 +1,37 @@
 ---
-name: Shift & Call Handoff
-description: Produce a skimmable handoff of open work and blockers for the next shift, or when transferring a live call.
+name: Shift Handoff
+description: Produce a skimmable end-of-shift or end-of-day one-pager of open work, grouped by status, for the next shift or a single named receiving technician.
 category: Escalation
-tools: [search_tickets, add_ticket_note, log_time_entry]
+tools: [search_tickets, add_ticket_note, log_time_entry, search_members]
 ---
 
-# Shift & Call Handoff
+# Shift Handoff
 
-**When to use:** End of shift or end of day, or a technician is transferring an in-progress call to someone else.
+Builds a one-minute-read handoff one-pager: every open thread grouped by status, each with what was done, what's next, what it's waiting on, and its risk. Scopes to a single receiving technician when one is named.
 
-**What you get:** A one-minute read: open work grouped by status, each with its state, next action, and owner, plus blockers and SLA risks.
+## When to use
+
+- End of shift or end of day: "hand off my open work to the night shift."
+- "Write up a handoff for <member> — they're covering my queue tomorrow."
+- A lead wants the team's open work summarized before a shift change.
 
 ## Steps
 
-1. List open and in-progress tickets the team touched, grouped by status.
-2. Give each a one-line state plus the next action and owner.
-3. Call out blockers, time-sensitive items, and tickets approaching SLA.
-4. For a call handoff, capture the caller, the issue, what was done on the call, and the immediate next step.
-5. For end of day, log outstanding time and draft handoff notes for anything unresolved.
+1. Establish scope. If a single receiving technician is named, hand off only what that person needs to act on (the outgoing tech's open/in-progress tickets, plus anything explicitly flagged for them) — not the whole team's queue. Otherwise cover the team's open work for the incoming shift.
+2. Pull open and in-progress tickets via search_tickets. If any search hits a result cap, say so in the output rather than presenting the list as complete; split searches per board or per status when scanning broadly.
+3. Group the one-pager by status (e.g. In Progress / Waiting on Client / Waiting on Vendor / Scheduled / New-untouched), so the reader sees at a glance what is actionable versus parked.
+4. For each thread, use the fixed four-line entry: **Work** (what was done this shift), **Next** (the single next action and its owner), **Waiting** (who or what it's blocked on, and since when), **Risk** (SLA proximity, sentiment, VIP, or "none").
+5. Top the page with a callout section: anything time-critical in the next few hours, tickets approaching SLA, and promised callbacks.
+6. For end of day, offer to log outstanding time via log_time_entry and to post per-ticket handoff notes (plain text) for anything unresolved — post only on confirmation.
 
 ## Guardrails
 
-- Optimize for speed of read. The next person should know what to pick up in under a minute.
-- Do not omit blockers or SLA-risk items to keep the summary short.
+- Optimize for read speed: the receiver should know what to pick up in under a minute. Aggregate; don't paste ticket threads.
+- Never omit blockers or SLA-risk items to keep the summary short.
+- Disclose result caps — do not present a capped search as the full queue.
+- Ticket notes are plain text; the one-pager itself is chat output unless asked otherwise.
+- For transferring a live, in-progress call, use the Live Call Transfer Brief skill instead — this skill is for shift/EOD handoffs.
 
 ## Consolidates
 
-Shift handoff summary, end-of-day wrap-up, and call-handoff skills.
+Shift handoff summary, end-of-day wrap-up, and next-shift briefing skills.

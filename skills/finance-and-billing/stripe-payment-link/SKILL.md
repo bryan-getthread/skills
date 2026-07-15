@@ -1,0 +1,36 @@
+---
+name: Stripe Payment Link
+description: When approved out-of-contract work needs to be paid and you want a Stripe payment link generated and placed in the ticket reply draft.
+category: Finance & Billing
+tools: [search_tickets, search_clients, send_approval, add_ticket_note, zapier]
+---
+
+# Stripe Payment Link
+
+Generate a Stripe payment link for out-of-contract work the client has already approved, and embed it in a drafted ticket reply — so payment collection rides inside the existing ticket conversation.
+
+Zapier action used: `zapier: Stripe "Create Payment Link"`.
+
+## When to use
+
+- "Client approved the $450 out-of-scope fix — get them a payment link."
+- "Add a Stripe link to my reply for the one-off project charge."
+- "Collect payment for this T&M ticket via Stripe."
+
+## Steps
+
+1. Verify the approval first. Read the ticket with `search_tickets` and locate the client's explicit approval of the work AND the amount (an approval response via Thread's approval flow, or an unambiguous written yes to a stated price). No recorded approval → stop; offer to send one with `send_approval` and resume after the client approves. Never create a payment link for an amount the client hasn't agreed to.
+2. Confirm the charge composition with the requester: amount, what it covers (tie it to the ticket's time entries or the quoted fixed price), tax handling per the desk's practice, currency.
+3. Show the summary in chat — client, amount, description, the approval evidence you're relying on (quoted) — and get the requester's explicit go-ahead.
+4. Create the link with `zapier: Stripe "Create Payment Link"`: description referencing the ticket number and work performed, exact approved amount, single-use where supported.
+5. Draft the ticket reply containing the link: one short plain paragraph — work completed as approved on <date>, amount as agreed, link to pay, who to contact with questions. No urgency-pressure language. Leave the reply as a draft for the requester to review and send.
+6. Post a plain-text internal note via `add_ticket_note`: payment link created, amount, approval reference, link destination — so the audit trail lives on the ticket.
+
+## Guardrails
+
+- Money-moving actions are draft + approval-gated twice here: the client must have approved the work and amount (with the evidence cited in your output), and the requester must approve link creation and send the reply themselves. This skill never sends the client-facing message.
+- Never state the charge is contractually owed without citing the agreement or approval evidence — the approval message is your evidence; quote it.
+- Amount discipline: the link amount must exactly match the approved amount. Any change (tax, adjustment) goes back to the client for re-approval before a link exists.
+- Time-entry evidence backs T&M amounts: if the approved sum doesn't reconcile with logged time at the stated rate, flag the mismatch before creating the link.
+- Requires the member's Zapier connector with Stripe connected; if unavailable, say so — do not substitute an unverified payment mechanism.
+- Never create links for retainer/recurring agreement billing — that belongs to the accounting system's invoicing flow, not ad-hoc links.

@@ -1,29 +1,65 @@
 ---
 name: Password & MFA Recovery
-description: Reset a password or recover MFA safely, with identity verification and a secure credential handoff.
+description: Reset a password or recover MFA with the identity-verification ladder, a locked-vs-disabled check, and secure credential delivery. Use when a user is locked out, forgot a password, or lost/replaced their authenticator device.
 category: Onboarding & Access
-tools: [search_contacts, search_knowledge_base, add_ticket_note]
+tools: [search_tickets, search_contacts, search_knowledge_base, search_itglue, add_ticket_note, log_time_entry]
 ---
 
 # Password & MFA Recovery
 
-**When to use:** A user is locked out, needs a password reset, or has a new/lost authenticator device.
+Completes a credential recovery with identity verified per the ladder, the actual
+account state diagnosed first, and the new credential delivered securely — the
+ticket documents everything except the secret itself.
 
-**What you get:** A completed reset with identity verified, MFA re-enrolled, and the temporary credential delivered securely, noted on the ticket without the secret.
+## When to use
+
+- "I'm locked out" / "reset my password" / "can't sign in."
+- "New phone — MFA codes don't work anymore."
+- "User lost their authenticator / hardware token."
+- A lockout alert or password-reset request lands on the queue.
 
 ## Steps
 
-1. Verify the requester's identity per policy. Do not reset on an unverified request.
-2. Reset the password and require a change at next sign-in, or walk MFA re-enrollment for a new device.
-3. Confirm or enforce MFA. If compromise is suspected, revoke active sessions.
-4. Deliver the temporary credential through a secure channel, never in the ticket body or chat.
-5. Note the reset on the ticket without including the credential.
+1. Diagnose before touching anything: is the account locked (bad-password
+   lockout), disabled, or expired? A disabled account may be an offboarded or
+   suspended user — do NOT re-enable it as part of a "reset"; stop and confirm
+   with the client's authorized contact why it is disabled.
+2. Verify identity using the client's ladder before any credential action:
+   - Remote, standard: full name plus employee ID, or confirmation from the
+     user's manager.
+   - Remote, higher assurance (VIPs, finance, admins, or anything smelling of
+     compromise): call the user back on a phone number already on file — never
+     a number provided in the ticket or email itself.
+   - In person: photo ID.
+   If the client documents a stricter policy (search_knowledge_base /
+   search_itglue), that policy wins. No verification, no reset.
+3. Password path: reset the password with "user must change password at next
+   sign-in" forced. If hybrid AD, run an AD Connect delta sync and verify before
+   telling the user to try.
+4. MFA path: clear or re-register the lost method, then either walk the user
+   through re-enrollment or issue a Temporary Access Pass (TAP) / equivalent
+   time-boxed temporary access credential so they can enroll the new device
+   themselves. Prefer the TAP path over disabling MFA — never leave MFA off.
+5. Deliver the temporary credential only through the client's secure transfer
+   channel (secure link, password manager share, or read over a verified call).
+   Never plain email, never pasted into the ticket or chat.
+6. If anything suggests compromise (user did not request the reset, unfamiliar
+   sign-in activity, MFA fatigue reports), revoke active sessions and escalate
+   to the security-alert process instead of finishing here.
+7. Note the ticket in plain text: verification method used (not the answers),
+   account state found, action taken, delivery channel — with no credential
+   content. Log time (log_time_entry).
 
 ## Guardrails
 
-- Never paste a password or one-time code into the ticket or chat.
-- Escalate to compromise handling if there are signs of account takeover.
+- Never reset on an unverified request; never verify against contact details
+  supplied inside the request itself.
+- Never paste a password, TAP, or one-time code into the ticket, chat, or email.
+- Never re-enable a disabled account under cover of a password reset.
+- Force change at next sign-in on every temporary password.
+- When in doubt about identity or account state, do nothing and escalate.
 
 ## Consolidates
 
-Secure password reset, MFA enrollment, and MFA-reset/account-lockout skills.
+Secure password reset, MFA enrollment, MFA reset, account lockout, and
+identity-verification ladder skills.
