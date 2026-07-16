@@ -1,0 +1,84 @@
+---
+name: Sensitivity Labels
+description: Roll out Microsoft Purview sensitivity labels deliberately — a small taxonomy first, auto-labeling in simulation before it goes live, and the encryption consequences understood before anyone clicks apply. Use when a client asks for document classification, "Confidential/Internal labels," data classification for compliance, or auto-labeling of sensitive files.
+category: M365 Administration
+tools: [search_tickets, search_clients, search_knowledge_base, search_itglue, search_hudu, add_ticket_note, send_approval, log_time_entry, web_search]
+---
+
+# Sensitivity Labels
+
+Introduces sensitivity labels as a governed rollout, not a big-bang taxonomy:
+a handful of clear labels, publishing to a pilot before the org, and — above
+all — treating label encryption as the irreversible, access-breaking decision
+it is.
+
+## When to use
+
+- "Set up Confidential / Internal / Public document labels."
+- "We need data classification for a compliance requirement."
+- "Auto-label anything containing card numbers / PHI as Confidential."
+- "Encrypt documents marked Confidential."
+- For the DLP side (blocking sensitive data in transit) see
+  purview-dlp-policy; labels classify and can encrypt, DLP prevents movement.
+
+## Steps
+
+1. Design a SMALL taxonomy first. Three to five labels people can actually
+   choose correctly beats a fifteen-label tree nobody understands (a common
+   pattern: Public / Internal / Confidential / Highly Confidential). Define
+   each label's meaning in plain client language before building anything —
+   an ambiguous label is applied wrongly and trusted falsely.
+2. Decide per label what it DOES: visual marking only (header/footer/
+   watermark), and/or encryption, and/or container settings (Teams/site/group
+   privacy), and/or endpoint/DLP tie-ins. Keep the first rollout to marking
+   for most labels; reserve encryption for the top tier and treat it as a
+   separate, heavier decision (step 4).
+3. Publish to a pilot, not the tenant. Attach labels to a label policy scoped
+   to a small pilot group first, set whether a default label and mandatory
+   labeling apply, and let people use it before org-wide publish. Mandatory
+   labeling changes everyone's save/send flow — introduce it only after the
+   pilot proves the taxonomy.
+4. Encryption is the dangerous part — spell out the consequences before
+   enabling it on any label:
+   - Encrypted files carry their protection everywhere; access is enforced by
+     the label's permissions, not the file's location. Wrong permissions =
+     users locked out of their own documents.
+   - External sharing of encrypted files requires the recipient to
+     authenticate and be granted rights — it can silently break partner/client
+     workflows.
+   - Some services, co-authoring scenarios, and third-party tools handle
+     encrypted files poorly — verify the client's real workflows survive it.
+   - Removing/changing encryption later is messy and does not cleanly
+     "un-encrypt" already-labeled files. Treat encryption as close to
+     one-way; pilot it hard.
+5. Auto-labeling in SIMULATION first. Any auto-labeling rule (client-side or
+   service-side) runs in simulation mode over a defined window; read what it
+   WOULD label before enabling. Auto-applying an encrypting label with no
+   simulation is how a client mass-encrypts files and loses access — never do
+   it. This mirrors the test-mode discipline in purview-dlp-policy.
+6. Approval: publishing labels org-wide, mandatory labeling, encryption, and
+   auto-labeling are all user-visible and (for encryption) access-changing.
+   Get explicit client sign-off (send_approval) with the taxonomy, which
+   labels encrypt, and the simulation results for any auto-rule.
+7. Prepare execution for the tech (verify against current Purview portal):
+   Microsoft Purview > Information protection > Labels and Label policies;
+   auto-labeling under Information protection > Auto-labeling (run simulation,
+   then turn on). Verify with evidence: pilot users see and can apply labels;
+   an encrypted test doc enforces the intended permissions; auto-label
+   simulation matches expectations. Post a plain-text note: taxonomy, marking
+   vs. encryption per label, pilot scope, auto-label simulation summary,
+   approver, date, and rollback (unpublish policy; note encryption on already-
+   labeled files is not cleanly reversible). Log time.
+
+## Guardrails
+
+- Small taxonomy, plain definitions, pilot before org-wide — a
+  misunderstood label is worse than none.
+- Encryption is near one-way and access-breaking: understand external-share,
+  co-authoring, and third-party impacts, and pilot it before any broad
+  rollout. Never auto-apply an encrypting label without simulation.
+- Auto-labeling runs in simulation first, evidence reviewed, then enabled.
+- Mandatory labeling and org-wide publish require client approval — they
+  change everyone's save/send flow.
+- Removing encryption later does not un-encrypt existing files cleanly; say so
+  in the note. Capture prior label/policy state as rollback.
