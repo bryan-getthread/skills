@@ -34,3 +34,11 @@ Turns a low-disk alert into an actionable brief for the tech: severity, likely c
 - Recurring pressure is a capacity problem; do not present the third cleanup as a fix.
 - If NinjaOne is not enabled, degrade to generic guidance plus ticket history, and say the live disk view is unavailable.
 - Plain-text notes only.
+
+## Unattended (Flows) variant
+
+- Follows the Unattended Output Discipline contract: the entire reply is the plain-text remediation brief posted verbatim — severity (volume, free space, act-now vs soon), likely consumers explicitly labeled as hypotheses, the safe-cleanup sequence, and the device deep link from `get_ninjaone_device_link`. No narration.
+- Deterministic inputs from the flow: the device id from the triggering disk alert. Device unresolvable or volume data unreadable → output nothing.
+- Another tech's recent remote-session or manual activity on the device → the brief leads with `TECH ALREADY ENGAGED - coordinate before acting`.
+- Repeat pressure (prior disk alerts within the flow's lookback) → the brief recommends a root-cause/capacity ticket instead of presenting another cleanup as the fix.
+- Permitted writes: `add_ticket_note` only. No script execution, no deletion, no device actions of any kind — remediation is hands-on tech work in every mode, and doubly so unattended.

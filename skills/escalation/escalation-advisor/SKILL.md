@@ -33,3 +33,11 @@ Proactive sweep of the active queue that answers "what should have been escalate
 - Never flag on volume or age alone when the ticket shows an active, documented wait (client or vendor holding the ball is not an L1 stall).
 - Disclose result caps; a capped sweep is labeled "partial sweep," never presented as the whole queue.
 - Trigger thresholds above are defaults — if the tenant has documented escalation criteria (SOP/KB), those win; say which set you used.
+
+## Unattended (Flows) variant
+
+- Follows the Unattended Output Discipline contract: the entire reply is the plain-text sweep report — matches grouped by recommendation type (L2/L3 / management / project), each line naming the ticket, client, age, the specific trigger matched, and the one-line evidence; the borderline section last. No narration.
+- Deterministic inputs from the flow: boards, whose tickets, and the trigger thresholds (the tenant's documented criteria if supplied, defaults otherwise — the report states which set ran).
+- No matches and no borderlines → reply exactly `NO ESCALATION CANDIDATES.` Capped searches mark the report `PARTIAL SWEEP`.
+- Every recommendation still names its trigger and cites documented evidence — "feels stuck" does not survive the unattended bar either.
+- Permitted writes: none. Escalating, re-prioritizing, and posting notes stay attended (hand off to Escalation Prep / Management Escalation Brief).

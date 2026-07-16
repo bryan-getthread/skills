@@ -39,3 +39,11 @@ tools: [search_tickets, list_ticket_statuses, add_ticket_note, update_ticket, sc
 - If the waiting reason is UNKNOWN, say so and recommend the tech document it — do not invent what the desk is waiting for.
 - Disclose result caps; a waiting audit that silently missed a status is misleading.
 - If write tools are disabled for this tenant, deliver the audit and drafts in chat only.
+
+## Unattended (Flows) variant
+
+- Follows the Unattended Output Discipline contract: the entire reply is the artifact — the plain-text audit table (classification, ticket, client, days waiting, ask-sent yes/no, waiting-for, recommended action), with the false-wait count as the first line. No narration.
+- Deterministic inputs from the flow: the board(s), the waiting statuses to audit, and the cadence window. Statuses not supplied are not guessed.
+- Permitted writes: none. Unparking (`update_ticket`), follow-up scheduling (`schedule_ticket`), and posting asks (`add_ticket_note`) all change SLA clocks or reach clients — they stay attended.
+- Ambiguity stays ambiguous: if it cannot be determined whether an ask was sent, classify the ticket UNVERIFIED, never "false wait" — an accusation of parking needs certainty.
+- Capped searches are labeled "at least N" inside the artifact. Zero tickets in waiting statuses → reply exactly `NO TICKETS IN WAITING STATUSES.`

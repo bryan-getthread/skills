@@ -35,3 +35,11 @@ Profile one board's current state — open volume, aging distribution, unassigne
 - Tickets properly parked on a scheduled date are healthy — do not count them as aging or stale.
 - Exclude auto-closed statuses from open/aging math; if this is a junk/NOC board, say the score is not comparable to human boards.
 - Recommendations only — do not close, reassign, or bulk-update anything from this snapshot.
+
+## Unattended (Flows) variant
+
+- Follows the Unattended Output Discipline contract: the entire reply is the plain-text snapshot — score headline with sub-scores, the per-signal table, the top 3 cleanup moves, and the methodology note (status classification, searches, caps). No narration.
+- Deterministic inputs from the flow: the board, the score weights, and — for a trend line — the prior score if the flow supplies one; a scheduled run never invents last week's number.
+- Board unresolvable or status set unreadable → output nothing.
+- Capped searches are labeled "at least N" per signal and the headline gains `SWEEP PARTIAL`.
+- Permitted writes: none. Closing, reassigning, and bulk updates stay attended — the snapshot measures, it never cleans.

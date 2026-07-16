@@ -31,3 +31,11 @@ Three clients reporting the same mail delay in an hour is not three tickets — 
 - Distinct clients means distinct companies — multiple sites of one client is a client-level incident, not a cross-client one; say which you found.
 - Result-cap honesty is critical here: if searches capped, present counts as "at least N" and recommend a narrower re-run.
 - Do not invent affected clients, vendors, or ticket numbers; every listed child must be a real ticket you found.
+
+## Unattended (Flows) variant
+
+- Follows the Unattended Output Discipline contract: this variant detects and alerts only. The entire reply is either the plain-text alert — `POSSIBLE CROSS-CLIENT INCIDENT: <symptom family> at <k> distinct clients since <first-seen time>. Tickets: #<n>, #<n>, ...` plus the suspected shared dependency or "unknown shared cause" — or exactly `NO PATTERN.`
+- Deterministic inputs from the flow: the detection window, the threshold (default 3+ distinct clients, 2+ with an explicit shared vendor), and the boards to sweep.
+- Threshold not met → `NO PATTERN.` — a near-miss is never reported as an incident. If any search hit a result cap, append ` (SWEEP PARTIAL)` to either reply; an undercounted sweep must say so.
+- Distinct clients means distinct companies; a multi-site single-client cluster → `NO PATTERN.` (that is a client-level incident for attended handling).
+- Permitted writes: none. Creating the parent incident and noting child tickets require human confirmation and stay attended. Every ticket number in the alert must be one the sweep actually returned.

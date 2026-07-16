@@ -40,3 +40,12 @@ Turns "what's about to breach?" into a four-tier board: already breached, breach
 - Breached tickets are reported without spin: age past target, not "slightly over."
 - Read-mostly: notes, assignments, and escalations happen only on explicit approval.
 - Disclose result caps — a missed board in an SLA sweep is exactly the ticket that breaches.
+
+## Unattended (Flows) variant
+
+- Follows the Unattended Output Discipline contract: the entire reply is the artifact — a plain-text tier digest, no narration, no questions.
+- Deterministic inputs from the flow: board list, per-priority SLA targets, tier horizons, and the business calendar. None of these are ever inferred; if SLA targets are not supplied, reply with exactly `SLA TARGETS NOT CONFIGURED - NO REPORT.` and nothing else.
+- Artifact format: Breached / Critical / High / Watch sections, one line per ticket (ticket, client, priority, remaining or overdue time). Tickets with ambiguous targets go in an UNKNOWN section, never guessed into a tier. Capped searches are labeled "at least N".
+- Factor adjustments (step 5) do not run in this variant — thread-evidence tier bumps are judgment and stay attended. Base tiers by remaining time only.
+- Permitted writes: none. No notes, no assignments, no escalations, no update_ticket — recommended moves appear in the digest for humans to act on.
+- Zero open tickets in scope → reply exactly `NO TICKETS AT RISK.`

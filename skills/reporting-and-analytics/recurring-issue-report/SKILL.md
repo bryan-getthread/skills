@@ -34,3 +34,11 @@ Find the chronic issues — the same problem recurring on the same client, devic
 - Exclude junk/NOC noise recurrences (a flapping monitor is an alert-tuning finding, not a chronic issue — route it to the alert-noise assessment instead).
 - Aggregate the report by issue; cite one representative ticket per issue, not the full recurrence list.
 - Recommendations only — do not open problem tickets or merge recurrences without explicit confirmation.
+
+## Unattended (Flows) variant
+
+- Follows the Unattended Output Discipline contract: the entire reply is the plain-text report — per confirmed chronic issue: client, asset/user affected, recurrence count and dates, cumulative time (labeled logged vs estimated), and RCA status — band-aid loops first, with the methodology line (period, matching criteria, caps) at the end. No narration.
+- Deterministic inputs from the flow: the period and board scope. Thread verification stays mandatory: candidate clusters that cannot be verified as the same underlying problem are dropped, never padded in.
+- No confirmed chronic issues → reply exactly `NO RECURRING ISSUES CONFIRMED.`
+- Junk/NOC noise recurrences are excluded in every mode; capped searches make counts "at least N".
+- Permitted writes: none. Opening problem tickets, merging, and client conversations stay attended.

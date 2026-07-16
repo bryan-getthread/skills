@@ -31,3 +31,11 @@ Everything a good dispatcher does in the first five minutes, in one pass: what i
 - Duplicate findings here are advisory; merging belongs to the duplicate-hunter skill with its exact-match gate.
 - Cite only tickets and KB articles that the searches actually returned; disclose result caps on the duplicate and similar-ticket searches.
 - The internal note is plain text — no markdown, no emojis — for PSA compatibility.
+
+## Unattended (Flows) variant
+
+- Follows the Unattended Output Discipline contract: the entire reply is the plain-text internal note posted verbatim via `add_ticket_note` — classification proposal, duplicate findings, similar-resolution pointers, and the acknowledgment clearly marked DRAFT - FOR TECH REVIEW. No greeting, no narration, no markdown.
+- Deterministic inputs from the flow: the triggering ticket id. One note per ticket, ever — if a first-touch note from this skill already exists, output nothing.
+- Permitted writes: `add_ticket_note` only. `update_ticket` (classification/priority) stays attended — field changes need the tech's confirmation. Nothing is ever sent to the client.
+- Sections that fail their confidence bar are marked, never guessed: classification uncertain → "CLASSIFICATION: UNCLEAR - needs tech review"; no genuine duplicates or priors found → "none found", never padded. Cite only tickets and KB articles the searches returned.
+- Ticket unreadable or body empty → output nothing.

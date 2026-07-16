@@ -34,3 +34,11 @@ A fast, honest answer to "who can take this?" — grounded in schedule entries, 
 - Effectively tied candidates → present both, let the human pick.
 - Never mark someone available near or past end of shift for new work without flagging it; after-hours handoff rules beat raw availability.
 - Result caps on ticket searches → load figures are "at least"; say so.
+
+## Unattended (Flows) variant
+
+- Follows the Unattended Output Discipline contract: the entire reply is the answer artifact — first line `NEXT AVAILABLE: <tech> (<one-line evidence>)`, then the ranked plain-text table with the numbers per candidate. No narration, no questions.
+- Deterministic inputs from the flow: the team/board pool and any exclusions. Pool empty or unresolvable → reply exactly `NO CANDIDATES.`
+- Effectively tied top candidates → list both on the first line; unattended never breaks a tie a dispatcher should break.
+- Caveats live inside the artifact: unknown shift data, missing calendar sources, and capped load counts ("at least N") are stated, never silently dropped.
+- Permitted writes: none. Assignment and booking stay attended — this variant only answers.

@@ -39,3 +39,11 @@ A queue's data quality decays quietly: contacts missing, statuses lying, notes e
 - Result-cap honesty is structural here: per-signal-per-board splits are mandatory, and any capped count is labeled "at least N".
 - The score measures data hygiene, not tech performance — do not present it as a people metric.
 - If write tools are disabled for this tenant, deliver score and fix list in chat only.
+
+## Unattended (Flows) variant
+
+- Follows the Unattended Output Discipline contract: the entire reply is the artifact — score headline, per-signal defect table, and top fix list in plain text. No narration, no questions.
+- Deterministic inputs from the flow: board(s), the statuses that count as open, and the grace windows. Missing inputs are not improvised; board not supplied or not found → output nothing.
+- Permitted writes: none. Every fix (`update_ticket`, contact assignment, correction notes) requires the attended sign-off path — a scheduled score run never repairs data.
+- The score formula is stated inside the artifact so week-over-week runs stay comparable; capped searches are labeled "at least N" per signal.
+- Zero open tickets in scope → reply exactly `NO OPEN TICKETS IN SCOPE.`

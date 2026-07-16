@@ -32,3 +32,11 @@ Consistent classification at intake makes every downstream report trustworthy. T
 - Choose only from the tenant's actual category values; if the tree does not contain a fitting item, recommend the closest parent and flag the gap rather than inventing a value.
 - One classification per ticket: if the ticket genuinely contains both an Incident and a Request, that is a splitter case — say so instead of blending.
 - Do not let the requester's urgency influence type — priority is a separate decision from classification.
+
+## Unattended (Flows) variant
+
+- Follows the Unattended Output Discipline contract. Reply with exactly one line (logged, not posted): `CLASSIFIED #<n>: <Incident|Request|Problem> > <type> > <subtype> > <item>.` or `NO ACTION.` — nothing else, no reasoning trace.
+- Deterministic inputs from the flow: the triggering ticket id and the tenant's category tree.
+- Permitted write: `update_ticket` to set the classification — only when the top-of-tree call is unambiguous AND exactly one existing type/subtype/item path fits. Any competing plausible path → `NO ACTION.`; unattended never makes a call a human would debate.
+- Deterministic stops, each → `NO ACTION.`: ticket contains both an Incident and a Request (splitter case); no fitting item exists in the tenant tree (never invent values, never write the "closest parent" unattended — that flag is attended work); classification already set by a human; body too thin to classify from content.
+- Priority is never touched in this variant — classification only.

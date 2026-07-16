@@ -32,3 +32,11 @@ Whole-client sweep of the RMM: every device's status, active alerts, disk pressu
 - Long-offline devices may be retired hardware still enrolled in the RMM — flag them as "verify still in service", not as incidents.
 - If NinjaOne is not enabled for the tenant, say so; do not substitute guesses. If ConnectWise RMM is the enabled RMM instead, state that this sweep should run against it and cover what its device reads expose.
 - No client names in any example output you template; use <client>.
+
+## Unattended (Flows) variant
+
+- Follows the Unattended Output Discipline contract: the entire reply is the plain-text fleet digest posted verbatim — summary counts (total devices, online/offline split, alert count), then the ranked issue list with device, problem, and next action. No narration.
+- Deterministic inputs from the flow: the RMM organization id (not a name to resolve — attended runs may rank name matches; unattended runs never guess an organization) and the top-N size. Organization id missing or not found → output nothing.
+- Capped device or alert listings make every affected count "at least N" inside the digest, and the summary line gains `SWEEP PARTIAL`.
+- Permitted writes: `add_ticket_note` to the flow's designated destination only. No alert resets, no reboots, no maintenance changes — the sweep stays strictly read-only.
+- NinjaOne not enabled → output nothing; a digest built on guesses is worse than a skipped run.

@@ -32,3 +32,11 @@ Work a lookalike-domain report from "someone registered our-cl1ent.com" to a fac
 - Don't overstate: registration alone is not an attack. Reserve stronger language for observed use, per the defensive-writing-standard.
 - Takedown/abuse filings are prepared, not performed — management decides.
 - Degradation: Liongard absent → registrar and DNS facts may be limited to passive search; state the visibility gap in the note instead of guessing record contents.
+
+## Unattended (Flows) variant
+
+- Follows the Unattended Output Discipline contract: the entire reply is the plain-text internal workup note posted verbatim — suspect domain (exactly as reported), registration facts with as-of dates, capability read (MX presence, creation date), severity call, and recommended next steps. No narration, no markdown.
+- Deterministic inputs from the flow: the triggering ticket id containing the reported domain. No domain extractable verbatim from the report → output nothing; never reconstruct or guess a domain.
+- Active use found in recent tickets → the note leads with `LIVE USE DETECTED - ESCALATE NOW` plus the evidence; the phishing/BEC response itself stays attended.
+- Permitted writes: `add_ticket_note` only. The client warning email, status changes, and takedown packaging stay attended — client-facing wording is a human send.
+- Passive only, in any mode: never visit, resolve, screenshot, or probe the suspect domain. Liongard absent → state the visibility gap inside the note instead of guessing records.

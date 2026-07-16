@@ -33,3 +33,11 @@ Catch relationship damage while it is still one bad thread, not a churn conversa
 - Outreach drafts are suggestions for the account manager, not messages to send. Never send outreach yourself.
 - Internal analysis and client-facing draft are clearly separated in the output; the draft contains no ticket IDs and no internal commentary.
 - Do not speculate about causes the threads do not support.
+
+## Unattended (Flows) variant
+
+- Follows the Unattended Output Discipline contract: the entire reply is the plain-text watch report — per declining client: the one-line trend with the interaction count it rests on, the at-risk conversations in plain language (no ticket IDs), and the outreach draft clearly labeled DRAFT. Worst decline first. No narration.
+- Deterministic inputs from the flow: scope and the two comparison windows. The multiple-interaction bar is hard: clients with too few scored interactions never appear, whatever a single score says.
+- Nothing declining → reply exactly `NO DECLINING CLIENTS.` — a scheduled watch must not manufacture concern to justify itself.
+- No technician names ever appear in the report; partial samples from capped searches are labeled inside it.
+- Permitted writes: none. Outreach is never sent unattended — drafts exist for the account manager to send or adapt.

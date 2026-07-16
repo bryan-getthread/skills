@@ -36,3 +36,11 @@ exists, and return a ranked candidate list ready to feed into sop-builder or kb-
 - Recurrence claims need matching symptoms/resolutions, not just similar wording in titles.
 - Read-only: this skill searches and reports; it never creates docs or modifies tickets.
 - If `search_itglue` / `search_hudu` are not enabled, note that existing-coverage checks used the Thread KB only.
+
+## Unattended (Flows) variant
+
+- Follows the Unattended Output Discipline contract: the entire reply is the ranked candidate table in plain text — topic, evidence ticket numbers and counts, signal type, existing-doc status, suggested next step. No narration, no offer to draft.
+- Deterministic inputs from the flow: the window and the boards to sweep. Capped searches are labeled "at least N" inside the table; doc platforms not enabled are named as unchecked.
+- No documentation-worthy candidates → reply exactly `NO SOP CANDIDATES.` — a scheduled run never pads the list to look productive.
+- Every cited ticket number must come from the searches; recurrence claims still require matching symptoms and resolutions, not title similarity.
+- Permitted writes: none. Drafting (sop-builder / kb-article-draft) and any ticket writes stay attended.

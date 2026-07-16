@@ -33,3 +33,11 @@ Recover a missed appointment without friction: record what happened, get a frien
 - Plain-text notes for PSA compatibility.
 - Never convert a recommendation into a completed action: suggest the time entry and the AM escalation; do them only on confirmation.
 - Degradation: no TimeZest → manual slot proposal + `schedule_ticket` is the whole rebook path (or Calendly via Zapier if that's the desk's tool).
+
+## Unattended (Flows) variant
+
+- Follows the Unattended Output Discipline contract: the entire reply is the plain-text no-show log note posted verbatim — appointment date/time/type, who no-showed, what the tech attempted, minutes waited, and the running count derived from the note trail. No narration.
+- Deterministic inputs from the flow: the ticket id, the schedule entry, and a confirmed no-show event (the tech marked it, or the scheduling tool reported it). The judgment of whether a no-show really happened cannot run unattended: any ambiguity about the entry, the timezone, or the tech's account → output nothing. A false no-show log is an accusation.
+- The running count comes strictly from prior notes on the trail; if it cannot be derived, the note says `prior count unverified` instead of a number.
+- Threshold reached (third miss or the desk's stated number) → the note flags `POLICY THRESHOLD REACHED - notify account manager`; the consequence itself is a human action.
+- Permitted writes: `add_ticket_note` only. The rebooking email, TimeZest scheduling request (it reaches the client), time entries, status changes, and policy consequences all stay attended.

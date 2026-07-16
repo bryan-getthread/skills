@@ -34,3 +34,11 @@ Rank the noisiest devices and users per client by ticket volume and time consume
 - Attribution from thread text is approximate; publish the unattributed share and never force-match a ticket to a device on a name fragment.
 - Exclude junk/NOC alert tickets from user noise (users don't generate those) and count them for assets only when a human actually worked them.
 - Replace/train recommendations are advisory — cost and client-relationship context live with the account manager.
+
+## Unattended (Flows) variant
+
+- Follows the Unattended Output Discipline contract: the entire reply is the plain-text report — per client, the two ranked tables (top assets, top users) with a one-line recommendation each, estimated recoverable hours, and the methodology note including the unattributed share. No narration.
+- Internal destinations only: user-level rankings must never land anywhere client-visible unattended. Even so, write the report as if the client could read it — factual, respectful, no "problem user" framing.
+- Deterministic inputs from the flow: scope (one client or all) and period. Unattributable tickets are excluded from rankings and reported as a share, never force-matched on name fragments.
+- Insufficient attributable volume to rank → reply exactly `INSUFFICIENT ATTRIBUTABLE DATA.`
+- Permitted writes: none. Replace/refresh and training calls stay advisory; the account-manager conversation stays attended.

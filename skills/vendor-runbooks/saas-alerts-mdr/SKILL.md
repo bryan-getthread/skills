@@ -1,0 +1,39 @@
+---
+name: SaaS Alerts MDR
+description: A SaaS Alerts event landed — a login anomaly, mail-rule creation, file-activity spike, or privilege change in a client's M365/Google tenant. Triage it as identity-plane EDR: verify, contain, scope — and check what the Respond automation already did.
+category: Vendor Runbooks
+tools: [search_tickets, search_clients, search_contacts, search_itglue, add_ticket_note, update_ticket]
+---
+
+# SaaS Alerts MDR
+
+Vendor specialization of security-alert-response for SaaS Alerts, the MSP-focused SaaS-security monitor for Microsoft 365, Google Workspace, and adjacent SaaS. Its events are the SaaS-native equivalent of EDR telemetry: instead of processes and hashes, the primitives are sign-ins, OAuth grants, mail rules, file operations, and role changes. The identity-family generic runbooks own the investigation logic; this skill maps SaaS Alerts' packaging onto them. Verify alert-type names and the Respond module's behavior against the vendor's current documentation.
+
+## When to use
+
+- A SaaS Alerts notification arrives: suspicious login/location, mail-forwarding or inbox rule created, mass file download/deletion, admin or role change, risky OAuth app
+- A SaaS Alerts Respond automation fired (e.g. auto-locked an account) and the desk must validate and follow through
+- A tech asks how to read a SaaS Alerts event or whether it's a false alarm
+
+## Steps
+
+1. Parse the event anatomy: affected identity (UPN), which SaaS tenant and client, event class, source (IP/geo/ISP/device), timestamps, and whether a Respond rule already acted (account disabled, sessions revoked). Route per security-alert-response using tenant/domain fields — the console is multi-tenant; low routing confidence → flag for a human.
+2. Check automation-already-done first: if a Respond rule locked the account, treat containment as claimed-but-verify — confirm by effect (sign-in actually blocked, sessions actually revoked in the tenant), then investigate scope calmly per compromised-account-containment. If no automation fired and the evidence says live takeover, containment comes first.
+3. Branch by event class onto the matching generic runbook:
+   - Login anomaly / impossible travel → impossible-travel-runbook verification ladder: VPN/egress plausibility from documentation (search_itglue), prior context (search_tickets, same user + type, 90 days), then verify with the user via a number on file — never contact details from the ticket.
+   - Mail rule created / forwarding enabled → inbox-rule-alert-runbook; rules that forward, delete, or divert security-relevant mail are attacker cleanup until disproven.
+   - Risky OAuth grant → the consent is the vector: who consented, when, what scopes (mail read/write and offline access are the dangerous ones); removal is a tenant-admin action the technician executes.
+   - Mass file download/deletion → distinguish offboarding-week data theft, sync-client migration noise, and ransomware-in-SaaS; check the user's employment status and any parallel device events before the verdict.
+   - Privilege/role change → verify against change records and the requester; unexplained admin grants escalate as takeover indicators.
+4. Confirmed compromise → full compromised-account-containment sweep (password, MFA methods, sessions, app passwords, delegated access, mail rules), because a Respond lockout covers sign-in, not the attacker's persistence.
+5. Tune deliberately: SaaS Alerts on a travel-heavy client generates location noise — feed recurring benign patterns into security-noise-tuning as scoped rule adjustments (per-user travel windows, known egress ranges), never blanket disablement of the alert class.
+6. Document event class, evidence weighed, user-verification outcome, what automation did vs what the tech did, and classify per soc-classification-tree. Client-facing wording per defensive-writing-standard.
+
+## Guardrails
+
+- An auto-lockout is containment of sign-in only — mail rules, OAuth grants, MFA methods, and app passwords survive it; sweep before closing.
+- Never verify with the user through the possibly-compromised mailbox or chat; number on file only.
+- Never unlock an auto-locked account on user say-so — the verification ladder decides, not the inconvenience.
+- Respond automation rules are security decisions: changes to them need narrowest scope, named approver, review date.
+- The agent has no SaaS Alerts console or tenant-admin access: unlocks, rule deletions, consent revocations, and Respond changes are technician steps the agent directs and records.
+- Degradation: without documentation access, VPN/egress ranges are unknown — say so and lean harder on direct user verification.

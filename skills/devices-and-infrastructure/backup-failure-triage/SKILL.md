@@ -39,3 +39,11 @@ Turns a raw backup-failure alert into a classified failure mode with a recurrenc
 - A recurring failure must never be closed as a one-off — recommend a problem ticket instead.
 - If the backup product is not visible through RMM alerts (many run their own consoles), say the view is partial and name what the tech should check in the backup console.
 - Plain-text notes only.
+
+## Unattended (Flows) variant
+
+- Follows the Unattended Output Discipline contract: the entire reply is the plain-text triage note posted verbatim — failure classification, evidence, recurrence verdict, last known good backup date, and the handle-here vs escalate-to-vendor recommendation. No narration.
+- Deterministic inputs from the flow: the alert or ticket id carrying the alert text. If the device cannot be resolved unambiguously, classify from alert text alone and state `DEVICE UNRESOLVED - alert-text classification only` inside the note; if the alert text yields no classification at all → output nothing.
+- Recurrence counts from capped searches are stated as "at least N" inside the note.
+- Permitted writes: `add_ticket_note` only. Never reset or clear alerts (the alert is the evidence trail), never close tickets, never touch the device.
+- Never state data is safe or that a restore will work — last successful job on record is the strongest claim, in any mode.

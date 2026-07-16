@@ -31,3 +31,11 @@ Some contacts and clients get white-glove treatment by agreement. This skill spo
 - The bump is bounded by the configured policy — VIP does not automatically mean the top priority reserved for outages.
 - Notes are plain text; do not put "VIP" language in any client-facing reply (it is internal handling, and other clients' tickets must never reference tiers).
 - One bump per ticket, ever: if a VIP-handling note from this skill already exists, stop.
+
+## Unattended (Flows) variant
+
+- Follows the Unattended Output Discipline contract. Reply with exactly one line (logged, not posted): `VIP #<n>: priority <old> -> <new>, note posted (source: <contact flag|client tier>).` or `NO ACTION.` — nothing else, no narration.
+- Deterministic inputs from the flow: the triggering ticket id, the VIP floor priority, and the notify-rule text. VIP status comes only from an explicit contact flag (`search_contacts`) or client tier (`search_clients`) — titles, tone, and email domains never qualify in this variant.
+- Permitted writes: the priority bump (`update_ticket`) and the single plain-text VIP-handled internal note (`add_ticket_note`). Board moves and owner routing are demoted to attended — routing judgment does not run unattended.
+- Deterministic stops, each → `NO ACTION.`: no explicit VIP flag or tier; contact/company match ambiguous; priority already at or above the VIP floor; a VIP-handling note from this skill already on the ticket; VIP floor not configured on the flow.
+- Never write anything client-visible; never lower a priority.

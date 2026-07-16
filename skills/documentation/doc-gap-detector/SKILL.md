@@ -35,3 +35,11 @@ and verify each one left a documentation trail. Report the gaps; do not fix them
 - **Result-cap honesty:** if searches cap out, state the sweep is partial and name the classes affected.
 - Read-mostly: the only write is the optional internal gap note, and only after explicit confirmation. Never edit documentation or tickets beyond that.
 - If neither `search_itglue` nor `search_hudu` is enabled, check ticket notes and the Thread KB only, and state that external doc platforms were not checked.
+
+## Unattended (Flows) variant
+
+- Follows the Unattended Output Discipline contract: the entire reply is the plain-text gap report — per <client>: change made, ticket number, date, engineer, change class, and what documentation is missing — security-impacting gaps (MFA, admin access, firewall) first. No narration.
+- Deterministic inputs from the flow: the window and the change classes to sweep. Capped or unsearchable classes appear under an UNVERIFIABLE heading inside the report, never silently dropped.
+- Only thread-confirmed executed changes appear; recommendations and quotes never make the report, in any mode. Gaps stay worded as "gap to verify", not accusations.
+- No gaps found → reply exactly `NO DOC GAPS FOUND.` (append ` (SWEEP PARTIAL)` if any search capped).
+- Permitted writes: none. The per-ticket gap notes require the requester to confirm the ticket list — that stays attended.

@@ -35,3 +35,11 @@ The 10-step offline diagnostic: rule out the big causes first (site outage, main
 - Long-offline devices are flagged as "verify still in service" — do not treat possible retirements as incidents.
 - If NinjaOne is not enabled, degrade to ticket history + documentation and say the RMM view is unavailable.
 - Plain-text notes only when posting to the ticket.
+
+## Unattended (Flows) variant
+
+- Follows the Unattended Output Discipline contract: the entire reply is the plain-text diagnostic note posted verbatim — site-wide check result, maintenance status, last-contact timeline, likely cause labeled confirmed vs likely, and the on-site checks or escalation call. No narration.
+- Deterministic inputs from the flow: the device id from the triggering alert (never resolved by name-guessing unattended). Device unresolvable → output nothing.
+- Deterministic branches inside the note: multiple devices at the site dropped together → the note leads with `PROBABLE SITE OUTAGE - not a device issue` and skips the per-device diagnostic; device inside an active maintenance window → the note is exactly `IN MAINTENANCE WINDOW - NO INCIDENT.`
+- Permitted writes: `add_ticket_note` only. Never resolve or close the alert or ticket — a device coming back online is not confirmed stability, and closing is a human call.
+- NinjaOne not enabled → output nothing.

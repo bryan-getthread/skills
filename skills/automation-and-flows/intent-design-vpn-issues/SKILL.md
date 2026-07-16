@@ -1,0 +1,58 @@
+---
+name: VPN Issues Intent Design
+description: Build the VPN-connectivity intent — a short self-help ladder plus environment capture (client, location, error text) so escalated tickets arrive diagnosable. Use when asked to "build a VPN intent", "deflect VPN tickets", or when remote-access issues rank high in Intent Mining.
+category: Automation & Flows
+tools: [list_intents, get_intent, create_intent, update_intent, set_variation_arguments, set_variation_replies, update_variation, search_tickets, search_knowledge_base]
+---
+
+# VPN Issues Intent Design
+
+Guide the admin through building a VPN intent that rules out the cheap causes (local internet, stale client, simple reconnect) and captures the environment — VPN client, user location, exact error — so the ticket a tech receives is immediately diagnosable.
+
+## When to use
+
+- "Build an intent for VPN problems."
+- "Remote workers flood us with VPN tickets that say only 'VPN broken'."
+- Intent Mining ranked VPN/remote access as a top candidate.
+
+## Design
+
+**Trigger phrases (adapt to real ticket language):** "VPN not working", "can't connect to VPN", "vpn wont connect", "VPN keeps disconnecting", "VPN error", "can't reach the server from home", "remote access not working", "VPN stuck on connecting", "vpn down", "can't get on the VPN".
+Near-miss watch: "can't reach <website>" without VPN context is general connectivity; "need VPN access" (never had it) is an access request, not a fault.
+
+**Arguments to collect (environment capture):**
+- Which VPN client/app they use (placeholder: <application> — pin per client in variations).
+- Where they are: home / travel / office / public wifi (office + VPN is its own smell).
+- Exact error message or behavior (stuck connecting, authenticates then drops, connects but can't reach resources).
+- Does regular internet work right now? (rules out the ISP).
+- When it last worked, and what changed (new laptop, password change, new router).
+
+**Reply flow (self-help ladder):**
+1. **Confirm local internet works** — open any external website; if not, it's their connection/ISP: give the "restart router, contact ISP" guidance and stop.
+2. **Full reconnect** — quit the VPN client completely, relaunch, reconnect; if MFA is involved, complete the prompt fresh.
+3. **Reboot the computer** — clears stuck adapters/tunnels; retry once after reboot.
+After each rung: "connected now?" — stop and close as deflected on success.
+4. If the ladder fails, or the error is authentication-related after a recent password change, or several users report it → create a ticket carrying the full environment capture and rungs attempted. Multiple users affected = probable concentrator/tunnel issue, skip self-help.
+
+**Handoff rule:** never walk a user through changing VPN client settings, certificates, or credentials in self-help. Authentication failures route to the human path (may need the password-reset intent's verified flow — never resolve credentials in chat).
+
+**Variation hooks (per client):** VPN product name and reconnect steps, whether MFA is in the path, known-good status page or head-end to mention, office-network exceptions.
+
+**Success metric:** deflection rate on VPN conversations plus diagnostics completeness (percentage of escalated VPN tickets containing client + location + error text). Reconnect/reboot resolves a meaningful share; the rest should at least arrive diagnosable.
+
+## Steps
+
+1. `list_intents` — check for an existing VPN/remote-access intent; prefer updating.
+2. `search_tickets` for recent VPN tickets; confirm from resolution notes which rungs actually resolve on this desk, and harvest real error strings for the capture prompts.
+3. `search_knowledge_base` for VPN setup/troubleshooting articles; link where they exist.
+4. Draft the full spec: triggers, environment-capture arguments, ladder with stop conditions, escalation block, variations. Test plan: 5 should-match, 3–5 should-not (new-access request and generic-internet near-misses).
+5. Show the draft; on explicit confirmation call `create_intent` then the variation tools.
+6. Report what was created, restate the test plan, recommend activation after tests pass. Do not activate.
+
+## Guardrails
+
+- Intent tools are admin-only; if absent, output the complete written spec for an admin to apply.
+- No credential, certificate, or client-settings changes in self-help — authentication problems hand off to the verified human path.
+- Multiple users affected always escalates immediately; do not loop a probable outage through self-help.
+- Do not invent the client's VPN product, status page, or MFA setup; placeholder and flag before activation.
+- Confirm before any write; never activate on the member's behalf. Environment capture in plain text on the ticket.

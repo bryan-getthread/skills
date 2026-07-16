@@ -34,3 +34,11 @@ A release request is a Request ticket with an Incident hiding inside it sometime
 - Urgency from the requester is a caution flag, not a reason to skip verification — pressure is how bad releases happen.
 - When in doubt, don't release — escalate. A delayed newsletter is cheap; a released payload isn't.
 - Recommend-and-document is the boundary: the agent does not perform releases.
+
+## Unattended (Flows) variant
+
+- Follows the Unattended Output Discipline contract: the entire reply is a plain-text assessment note posted verbatim — requester-match from records, quarantine reason, evidence weighed, recommendation. No narration.
+- Unattended recommendations are asymmetric: "do not release" and "needs human review" are the ONLY recommendations this variant may post. Recommending release requires verifying the requester through a verified channel — a judgment step that stays attended. Malware verdict → the note states refusal per policy, always.
+- Deterministic inputs from the flow: the release-request ticket id. Quarantine reason not readable from the thread → output nothing.
+- Requester does not match the mailbox owner in contact records → the note flags a possible social-engineering marker and routes to human review; when in doubt, that is the default outcome.
+- Permitted writes: `add_ticket_note` only. No status or priority changes, no client-facing replies, and never any interaction with the held message's links or attachments.

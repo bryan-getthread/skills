@@ -31,3 +31,11 @@ The deep-parse companion to phishing-triage: take pasted raw headers and produce
 - Authentication pass does not mean safe; authentication fail does not always mean attack. The verdict must address content and context, not scores alone.
 - Never fetch URLs or resources referenced in the message during analysis.
 - Inconclusive is an acceptable verdict — when in doubt, escalate to phishing-triage handling rather than forcing a call. A false escalation is cheap, a missed compromise isn't.
+
+## Unattended (Flows) variant
+
+- Follows the Unattended Output Discipline contract: the entire reply is the plain-text verdict block (VERDICT / CONFIDENCE / KEY EVIDENCE / RECOMMENDED NEXT STEP) posted verbatim as an internal note. No narration, no markdown.
+- Deterministic inputs from the flow: the ticket whose thread contains the raw headers. Headers absent or unparseable → output nothing — a verdict without headers is fabrication.
+- Inconclusive is a valid unattended verdict: post it with CONFIDENCE low and RECOMMENDED NEXT STEP "escalate to phishing-triage handling"; never force spoofed/legitimate to avoid it.
+- Permitted writes: `add_ticket_note` only. No status, priority, or assignment changes; containment actions stay attended.
+- Never fetch URLs or resources from the analyzed message, in any mode; `web_search` stays passive (registration facts only).

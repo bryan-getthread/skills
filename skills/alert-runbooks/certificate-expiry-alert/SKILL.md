@@ -1,0 +1,44 @@
+---
+name: Certificate Expiry Alert
+description: Triage a certificate-expiring/expired alert — tier the urgency by days remaining, identify what the certificate secures and who owns renewal, and route into the renewal runbook. Use when a cert-expiry alert fires from monitoring, Liongard, or a vendor console.
+category: Alert Runbooks
+tools: [search_tickets, liongard_metric, liongard_timeline, liongard_launchpoint, search_itglue, search_hudu, search_knowledge_base, add_ticket_note, update_ticket]
+---
+
+# Certificate Expiry Alert
+
+Certificate alerts are pure countdowns: the only questions are how many days remain, what breaks at zero, and who renews it. This skill answers those three and routes; the renewal itself is the SSL Certificate Renewal skill, and fleet-wide posture is the Certificate Inventory skill.
+
+## When to use
+
+- A "certificate expires in N days" or "certificate expired" alert lands.
+- "What is this cert alert about and who owns it?"
+- A Flow sweeps expiry alerts weekly (see Unattended variant).
+
+## Steps
+
+1. Parse the alert anatomy: subject/common name (and SANs if given), expiry date, issuer, and the system that raised the alert. Compute days remaining yourself from the expiry date — do not trust a stale "N days" in the alert text.
+2. Dedupe via `search_tickets`: same certificate CN in 30 days. Expiry monitors re-fire on a schedule; if an open renewal ticket exists, add the new alert as a note on it rather than opening parallel work.
+3. Verify current state — the cert may already have been renewed and the monitor is looking at a cached/old endpoint. Where a Liongard inspector covers the system (web server, firewall, load balancer), use `liongard_metric`/`liongard_timeline` against that inspector's dataprint to read the currently-served certificate and confirm its expiry; verify the inspector last ran successfully via `liongard_launchpoint` and state the dataprint age. No inspector → rely on documentation and flag that live verification needs a tech.
+4. Identify what it secures and who owns renewal: `search_itglue`/`search_hudu`/`search_knowledge_base` for the CN — public website, VPN endpoint, mail, RADIUS/Wi-Fi, internal CA cert, code-signing. Ownership matters: client-purchased certs and vendor-managed certs are needs-client/vendor; MSP-managed certs are needs-tech. Auto-renewing certs (short-lived ACME-style issuance) that alert anyway are usually monitor noise — but verify the renewal actually happened before saying so.
+5. Tier by days remaining:
+   - Expired or ≤7 days: act-now. Users see trust errors at zero (or already do); route to the SSL Certificate Renewal skill immediately, flag services that hard-fail on expiry (VPN, RADIUS, federation) as outage-class.
+   - 8–30 days: schedule-now. Route as a planned renewal with the ownership finding.
+   - 31–60 days: plan. Note ownership and CSR/validation lead times (EV/OV validation can take days).
+   - >60 days: early warning — usually threshold noise; note and close unless it is a cert with long procurement lead time.
+6. Classify: self-healed (renewed cert verified in place) → close with evidence; needs-tech (MSP-owned) → route into SSL Certificate Renewal with the tier; needs-client (client/vendor-owned) → route to account owner with the deadline; noise (auto-renew verified working, duplicate alert) → close with the verification evidence.
+7. Output/post: CN, days remaining, what it secures, owner, tier, and route — plain-text note via `add_ticket_note`. Recommend a Certificate Inventory pass if this client has had 2+ expiry surprises in 90 days.
+
+## Guardrails
+
+- Never close an expiry alert on the assumption that "someone probably renewed it" — close only on verified current-cert evidence (dataprint or explicit confirmation).
+- Days-remaining is computed from the expiry date at triage time; state the date, not just the countdown.
+- Wildcard and multi-SAN certs multiply blast radius — list every documented system using the cert before tiering, and tier by the most critical one.
+- Liongard data is only as fresh as the last inspector run; always state dataprint age, and degrade to documentation when the inspector is absent or stale.
+- Plain-text notes only; do not invent issuer portals or renewal links.
+
+## Unattended (Flows) variant
+
+- Your entire reply is posted verbatim as the ticket note — plain text, no narration.
+- Deterministic gates: close ONLY when the currently-served certificate is verified renewed (new expiry beyond alert horizon) via fresh inspector data, or the alert duplicates an open renewal ticket (then note-and-merge). Expired or ≤7 days → escalate to the urgent queue. 8–30 days → route to renewal queue with ownership. >30 days → route as planned work, do not close.
+- No inspector coverage or stale dataprint → route to a human; never close on assumption.
