@@ -40,7 +40,9 @@ tools: [search_tickets, list_ticket_statuses, add_ticket_note, update_ticket, sc
 - Disclose result caps; a waiting audit that silently missed a status is misleading.
 - If write tools are disabled for this tenant, deliver the audit and drafts in chat only.
 
-## Unattended (Flows) variant
+## Running this unattended
+
+> **Flows cannot schedule or time-trigger this.** Thread Flows fire on ticket *events* and conditions only — there is no schedule, cron, ticket-age, or elapsed-time trigger. This is a cadence/sweep skill, so run it **manually** on demand, or from an external scheduler that invokes Super Magic. A Flow can only reach it via **Run Skill** on a qualifying ticket event, never "every morning" or "after N hours". The output discipline below applies whenever it runs unattended.
 
 - Follows the Unattended Output Discipline contract: the entire reply is the artifact — the plain-text audit table (classification, ticket, client, days waiting, ask-sent yes/no, waiting-for, recommended action), with the false-wait count as the first line. No narration.
 - Deterministic inputs from the flow: the board(s), the waiting statuses to audit, and the cadence window. Statuses not supplied are not guessed.

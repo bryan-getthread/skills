@@ -33,7 +33,9 @@ Step 1 (handoff) and step 3 (unassigned zero). Tomorrow's schedule can be sanity
 - Schedule fixes that move client appointments require confirmation (and client notice via the proper skill) — flag, don't silently move.
 - Skip-with-note beats fake completion; disclose result caps.
 
-## Unattended (Flows) variant
+## Running this unattended
+
+> **Flows cannot schedule or time-trigger this.** Thread Flows fire on ticket *events* and conditions only — there is no schedule, cron, ticket-age, or elapsed-time trigger. This is a cadence/sweep skill, so run it **manually** on demand, or from an external scheduler that invokes Super Magic. A Flow can only reach it via **Run Skill** on a qualifying ticket event, never "every morning" or "after N hours". The output discipline below applies whenever it runs unattended.
 
 - Your entire reply is the posted closing card, verbatim — no narration.
 - Read-only: list unassigned tickets and schedule conflicts; never auto-reassign or move appointments after hours.

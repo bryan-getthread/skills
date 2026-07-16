@@ -34,7 +34,9 @@ Catch relationship damage while it is still one bad thread, not a churn conversa
 - Internal analysis and client-facing draft are clearly separated in the output; the draft contains no ticket IDs and no internal commentary.
 - Do not speculate about causes the threads do not support.
 
-## Unattended (Flows) variant
+## Running this unattended
+
+> **Flows cannot schedule or time-trigger this.** Thread Flows fire on ticket *events* and conditions only — there is no schedule, cron, ticket-age, or elapsed-time trigger. This is a cadence/sweep skill, so run it **manually** on demand, or from an external scheduler that invokes Super Magic. A Flow can only reach it via **Run Skill** on a qualifying ticket event, never "every morning" or "after N hours". The output discipline below applies whenever it runs unattended.
 
 - Follows the Unattended Output Discipline contract: the entire reply is the plain-text watch report — per declining client: the one-line trend with the interaction count it rests on, the at-risk conversations in plain language (no ticket IDs), and the outreach draft clearly labeled DRAFT. Worst decline first. No narration.
 - Deterministic inputs from the flow: scope and the two comparison windows. The multiple-interaction bar is hard: clients with too few scored interactions never appear, whatever a single score says.

@@ -40,7 +40,9 @@ A queue's data quality decays quietly: contacts missing, statuses lying, notes e
 - The score measures data hygiene, not tech performance — do not present it as a people metric.
 - If write tools are disabled for this tenant, deliver score and fix list in chat only.
 
-## Unattended (Flows) variant
+## Running this unattended
+
+> **Flows cannot schedule or time-trigger this.** Thread Flows fire on ticket *events* and conditions only — there is no schedule, cron, ticket-age, or elapsed-time trigger. This is a cadence/sweep skill, so run it **manually** on demand, or from an external scheduler that invokes Super Magic. A Flow can only reach it via **Run Skill** on a qualifying ticket event, never "every morning" or "after N hours". The output discipline below applies whenever it runs unattended.
 
 - Follows the Unattended Output Discipline contract: the entire reply is the artifact — score headline, per-signal defect table, and top fix list in plain text. No narration, no questions.
 - Deterministic inputs from the flow: board(s), the statuses that count as open, and the grace windows. Missing inputs are not improvised; board not supplied or not found → output nothing.

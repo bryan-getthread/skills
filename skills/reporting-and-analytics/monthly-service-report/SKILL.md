@@ -34,7 +34,9 @@ Produce the monthly report a client actually receives: what happened with their 
 - Do not invent SLA targets, agreement terms, or upcoming work — if targets are unknown, report raw speed numbers without a pass/fail framing.
 - Keep the internal footer visually separate and labeled so it cannot be pasted to the client by accident.
 
-## Unattended (Flows) variant
+## Running this unattended
+
+> **Flows cannot schedule or time-trigger this.** Thread Flows fire on ticket *events* and conditions only — there is no schedule, cron, ticket-age, or elapsed-time trigger. This is a cadence/sweep skill, so run it **manually** on demand, or from an external scheduler that invokes Super Magic. A Flow can only reach it via **Run Skill** on a qualifying ticket event, never "every morning" or "after N hours". The output discipline below applies whenever it runs unattended.
 
 - Your entire reply is the report, posted verbatim — no narration, no questions, and no internal footer (the unattended output must be 100% client-safe).
 - If the client's agreement targets are unknown, omit the pass/fail column silently rather than guessing.

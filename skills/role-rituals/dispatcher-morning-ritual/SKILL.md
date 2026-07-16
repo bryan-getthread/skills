@@ -35,7 +35,9 @@ Steps 2 and 3 only — owned tickets and protected clocks are the job; the repor
 - Skip-with-note beats fake completion; disclose result caps if queue searches may have truncated.
 - The audit is for patterns, not blame — no naming-and-shaming in output that gets pasted to a channel.
 
-## Unattended (Flows) variant
+## Running this unattended
+
+> **Flows cannot schedule or time-trigger this.** Thread Flows fire on ticket *events* and conditions only — there is no schedule, cron, ticket-age, or elapsed-time trigger. This is a cadence/sweep skill, so run it **manually** on demand, or from an external scheduler that invokes Super Magic. A Flow can only reach it via **Run Skill** on a qualifying ticket event, never "every morning" or "after N hours". The output discipline below applies whenever it runs unattended.
 
 - Your entire reply is the posted dispatch card, verbatim — no narration.
 - Read-only unless the flow explicitly enables assignment writes; if enabled, only assign unambiguous tickets and list the rest as "needs human dispatch".

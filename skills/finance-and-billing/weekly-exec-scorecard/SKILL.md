@@ -33,7 +33,9 @@ Produce the owner's fixed weekly scorecard: a small, stable set of revenue-relev
 - Numbers are desk-level aggregates — no per-tech figures on the exec scorecard; that routes to Tech Utilization Report (leadership-only) or Tech Performance Review with role-aware framing.
 - Do not editorialize beyond the one trend and one ask; the owner asked for numbers.
 
-## Unattended (Flows) variant
+## Running this unattended
+
+> **Flows cannot schedule or time-trigger this.** Thread Flows fire on ticket *events* and conditions only — there is no schedule, cron, ticket-age, or elapsed-time trigger. This is a cadence/sweep skill, so run it **manually** on demand, or from an external scheduler that invokes Super Magic. A Flow can only reach it via **Run Skill** on a qualifying ticket event, never "every morning" or "after N hours". The output discipline below applies whenever it runs unattended.
 
 - Your entire reply is the scorecard, posted verbatim — no narration, no questions.
 - Fixed section order (Scorecard / Trend / Decision / Methodology), plain text safe for email or PSA sync — no emojis; use "up/down/flat" words if arrows may not render.

@@ -33,7 +33,9 @@ Step 2 (time gaps — the only thing that's hard to reconstruct later), the "mus
 - If something must not sit overnight and there is no coverage, say so explicitly rather than burying it in a list.
 - Output goes to the tech's chat/flow destination; the only writes are time entries the tech confirmed.
 
-## Unattended (Flows) variant
+## Running this unattended
+
+> **Flows cannot schedule or time-trigger this.** Thread Flows fire on ticket *events* and conditions only — there is no schedule, cron, ticket-age, or elapsed-time trigger. This is a cadence/sweep skill, so run it **manually** on demand, or from an external scheduler that invokes Super Magic. A Flow can only reach it via **Run Skill** on a qualifying ticket event, never "every morning" or "after N hours". The output discipline below applies whenever it runs unattended.
 
 - Your entire reply is the posted EOD card, verbatim — no narration.
 - Read-only: list time-entry gaps, never auto-log time (hours require human confirmation).

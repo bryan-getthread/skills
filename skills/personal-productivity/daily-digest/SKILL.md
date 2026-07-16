@@ -39,7 +39,9 @@ The morning read: everything on your plate, sorted into what needs you now. Buil
 - Every bucket line must be actionable — a state without a next action is a line wasted.
 - Keep the full digest skimmable: if it doesn't fit on one screen, tighten the lines; never pad.
 
-## Unattended (Flows) variant
+## Running this unattended
+
+> **Flows cannot schedule or time-trigger this.** Thread Flows fire on ticket *events* and conditions only — there is no schedule, cron, ticket-age, or elapsed-time trigger. This is a cadence/sweep skill, so run it **manually** on demand, or from an external scheduler that invokes Super Magic. A Flow can only reach it via **Run Skill** on a qualifying ticket event, never "every morning" or "after N hours". The output discipline below applies whenever it runs unattended.
 
 - Your entire reply is delivered verbatim as the morning briefing — no narration, no questions, no "let me know if".
 - Always include the Start here line and the bucket counts; omit the follow-up offer.

@@ -33,7 +33,9 @@ Whole-client sweep of the RMM: every device's status, active alerts, disk pressu
 - If NinjaOne is not enabled for the tenant, say so; do not substitute guesses. If ConnectWise RMM is the enabled RMM instead, state that this sweep should run against it and cover what its device reads expose.
 - No client names in any example output you template; use <client>.
 
-## Unattended (Flows) variant
+## Running this unattended
+
+> **Flows cannot schedule or time-trigger this.** Thread Flows fire on ticket *events* and conditions only — there is no schedule, cron, ticket-age, or elapsed-time trigger. This is a cadence/sweep skill, so run it **manually** on demand, or from an external scheduler that invokes Super Magic. A Flow can only reach it via **Run Skill** on a qualifying ticket event, never "every morning" or "after N hours". The output discipline below applies whenever it runs unattended.
 
 - Follows the Unattended Output Discipline contract: the entire reply is the plain-text fleet digest posted verbatim — summary counts (total devices, online/offline split, alert count), then the ranked issue list with device, problem, and next action. No narration.
 - Deterministic inputs from the flow: the RMM organization id (not a name to resolve — attended runs may rank name matches; unattended runs never guess an organization) and the top-N size. Organization id missing or not found → output nothing.

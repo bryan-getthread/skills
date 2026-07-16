@@ -35,7 +35,9 @@ Find the chronic issues — the same problem recurring on the same client, devic
 - Aggregate the report by issue; cite one representative ticket per issue, not the full recurrence list.
 - Recommendations only — do not open problem tickets or merge recurrences without explicit confirmation.
 
-## Unattended (Flows) variant
+## Running this unattended
+
+> **Flows cannot schedule or time-trigger this.** Thread Flows fire on ticket *events* and conditions only — there is no schedule, cron, ticket-age, or elapsed-time trigger. This is a cadence/sweep skill, so run it **manually** on demand, or from an external scheduler that invokes Super Magic. A Flow can only reach it via **Run Skill** on a qualifying ticket event, never "every morning" or "after N hours". The output discipline below applies whenever it runs unattended.
 
 - Follows the Unattended Output Discipline contract: the entire reply is the plain-text report — per confirmed chronic issue: client, asset/user affected, recurrence count and dates, cumulative time (labeled logged vs estimated), and RCA status — band-aid loops first, with the methodology line (period, matching criteria, caps) at the end. No narration.
 - Deterministic inputs from the flow: the period and board scope. Thread verification stays mandatory: candidate clusters that cannot be verified as the same underlying problem are dropped, never padded in.

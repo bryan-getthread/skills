@@ -35,7 +35,9 @@ The "what needs my attention" view for a service leader: only the items that war
 - Do not fabricate risk where searches returned nothing — an honest "nothing needs you today" is a valid, valuable digest.
 - Disclose result caps rather than presenting a partial scan as a full one.
 
-## Unattended (Flows) variant
+## Running this unattended
+
+> **Flows cannot schedule or time-trigger this.** Thread Flows fire on ticket *events* and conditions only — there is no schedule, cron, ticket-age, or elapsed-time trigger. This is a cadence/sweep skill, so run it **manually** on demand, or from an external scheduler that invokes Super Magic. A Flow can only reach it via **Run Skill** on a qualifying ticket event, never "every morning" or "after N hours". The output discipline below applies whenever it runs unattended.
 
 - Entire reply is the digest, verbatim, fixed sections: Escalations / Breaches / At-Risk Clients / Staffing / All-Clear.
 - Empty sections print "none". If every section is "none", the digest is one line: nothing needs leadership attention today.

@@ -37,7 +37,9 @@ The first thing a dispatcher reads: everything the phone lines collected while t
 - No invented deadlines: a callback with no stated time gets the desk's standard SLA, labeled as such.
 - Keep client and caller references to what recipients need (name + client); no full transcripts in the digest.
 
-## Unattended (Flows) variant
+## Running this unattended
+
+> **Flows cannot schedule or time-trigger this.** Thread Flows fire on ticket *events* and conditions only — there is no schedule, cron, ticket-age, or elapsed-time trigger. This is a cadence/sweep skill, so run it **manually** on demand, or from an external scheduler that invokes Super Magic. A Flow can only reach it via **Run Skill** on a qualifying ticket event, never "every morning" or "after N hours". The output discipline below applies whenever it runs unattended.
 
 - Deterministic sections in the order above, plain text, every line with a ticket number; empty sections stated as "none" rather than omitted.
 - If zero real items: post the one-line digest "No after-hours voice activity in window. <n> junk calls filtered." — do not stay silent, absence of the digest must never be ambiguous with absence of calls.

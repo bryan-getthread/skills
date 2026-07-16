@@ -1,13 +1,13 @@
 ---
 name: Status Nudger
-description: Flow-fired when a ticket enters a waiting status — after the configured dwell time, re-send the pending approval or post the templated client nudge for that specific status, never nudging twice within the window. Answers the commonly requested "chase tickets stuck in Waiting on X" workflow, per-status and event-driven.
+description: Chase tickets stuck in a waiting status — re-send the pending approval or post the templated client nudge for that status, never nudging twice within the window. Run as a manual or scheduled sweep: the "after N hours in status" dwell trigger is NOT automatable by Flows today (Flows have no duration/age condition); a Flow can only post an immediate nudge the moment a ticket enters the status.
 category: QA & Closure
 tools: [search_tickets, send_approval, add_ticket_note, list_ticket_statuses]
 ---
 
 # Status Nudger
 
-Per-status, event-driven chasing: when a ticket sits in a waiting status past its configured dwell time, fire the right nudge for that status — re-send the approval for "Waiting on Approval", post the templated client follow-up for "Waiting on Customer". Sibling of `qa-and-closure/stale-ticket-followup-cadence`: that skill is the general scheduled sweep across the queue; this one is the single-ticket, single-status event version that a Flow attaches to the status change itself.
+Per-status chasing: when a ticket has sat in a waiting status past its configured dwell time, fire the right nudge for that status — re-send the approval for "Waiting on Approval", post the templated client follow-up for "Waiting on Customer". Reading dwell (time since the ticket entered the status) from the ticket at run time is fine; what Flows cannot do is *trigger* on that elapsed time. So run this as a manual or scheduled sweep. A Flow can attach to the status-change event to post an *immediate* on-entry message, but not a delayed "after N hours" nudge. Sibling of `qa-and-closure/stale-ticket-followup-cadence` (the general queue sweep); this one is the single-status version.
 
 ## When to use
 
@@ -34,7 +34,9 @@ Per-status, event-driven chasing: when a ticket sits in a waiting status past it
 - Respect stop signals: if the latest message on the ticket is from the client or approver (they already replied), do nothing — a nudge after a reply reads as ignoring them.
 - Do not invent approver identities, links, or deadlines. Re-send only what was originally sent.
 
-## Unattended (Flows) variant
+## Running this unattended
+
+> **Flows cannot fire on dwell time.** Thread Flows have no duration/age trigger, so the "after N hours in status" behavior runs manually or from an external scheduler, not from a Flow. The one Flow-native slice is the *immediate* on-entry message (attach a Reply/Note action, or Run Skill, to the status-change event). The discipline below applies whenever it runs unattended.
 
 - Your entire reply is posted verbatim as the internal note — plain text, no narration, no markdown, no questions.
 - Deterministic stops, in order: status changed → do nothing; dwell under window → do nothing; prior nudge in window → do nothing; client/approver already replied → do nothing; no template configured for a client-facing nudge → internal note only.

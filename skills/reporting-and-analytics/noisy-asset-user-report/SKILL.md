@@ -35,7 +35,9 @@ Rank the noisiest devices and users per client by ticket volume and time consume
 - Exclude junk/NOC alert tickets from user noise (users don't generate those) and count them for assets only when a human actually worked them.
 - Replace/train recommendations are advisory — cost and client-relationship context live with the account manager.
 
-## Unattended (Flows) variant
+## Running this unattended
+
+> **Flows cannot schedule or time-trigger this.** Thread Flows fire on ticket *events* and conditions only — there is no schedule, cron, ticket-age, or elapsed-time trigger. This is a cadence/sweep skill, so run it **manually** on demand, or from an external scheduler that invokes Super Magic. A Flow can only reach it via **Run Skill** on a qualifying ticket event, never "every morning" or "after N hours". The output discipline below applies whenever it runs unattended.
 
 - Follows the Unattended Output Discipline contract: the entire reply is the plain-text report — per client, the two ranked tables (top assets, top users) with a one-line recommendation each, estimated recoverable hours, and the methodology note including the unattributed share. No narration.
 - Internal destinations only: user-level rankings must never land anywhere client-visible unattended. Even so, write the report as if the client could read it — factual, respectful, no "problem user" framing.

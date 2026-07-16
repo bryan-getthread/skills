@@ -37,7 +37,9 @@ If the tech has under 5 minutes: step 1 (digest), step 4 (first-response sweep �
 - Disclose result caps if the queue search may have truncated.
 - Output lands in chat (or the flow's configured destination) — do not create tickets or notes as a side effect of a morning read.
 
-## Unattended (Flows) variant
+## Running this unattended
+
+> **Flows cannot schedule or time-trigger this.** Thread Flows fire on ticket *events* and conditions only — there is no schedule, cron, ticket-age, or elapsed-time trigger. This is a cadence/sweep skill, so run it **manually** on demand, or from an external scheduler that invokes Super Magic. A Flow can only reach it via **Run Skill** on a qualifying ticket event, never "every morning" or "after N hours". The output discipline below applies whenever it runs unattended.
 
 - Your entire reply is the posted ritual card, verbatim — no narration, no questions.
 - Steps 1–4 become read-only: list the first-response tickets, do NOT auto-send replies.

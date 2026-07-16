@@ -38,7 +38,9 @@ Assemble a structured daily standup message the team can absorb in under a minut
 - Disclose result caps in a trailing note if overnight volume exceeded a search.
 - Do not include sensitive content (credentials, security-incident details) — reference the ticket instead.
 
-## Unattended (Flows) variant
+## Running this unattended
+
+> **Flows cannot schedule or time-trigger this.** Thread Flows fire on ticket *events* and conditions only — there is no schedule, cron, ticket-age, or elapsed-time trigger. This is a cadence/sweep skill, so run it **manually** on demand, or from an external scheduler that invokes Super Magic. A Flow can only reach it via **Run Skill** on a qualifying ticket event, never "every morning" or "after N hours". The output discipline below applies whenever it runs unattended.
 
 - Your entire reply is the posted huddle message, verbatim — no narration, no questions.
 - If a section has nothing to report, print the header with "none" rather than omitting it, so the format stays deterministic.

@@ -32,7 +32,9 @@ Produce the weekly operations readout for the service desk: what came in, what g
 - Per-tech numbers in this report are context, not rankings — benchmark role-aware and never flag a person on volume alone.
 - Do not fabricate a prior-week baseline; if last week's data is unavailable, report this week standalone and say so.
 
-## Unattended (Flows) variant
+## Running this unattended
+
+> **Flows cannot schedule or time-trigger this.** Thread Flows fire on ticket *events* and conditions only — there is no schedule, cron, ticket-age, or elapsed-time trigger. This is a cadence/sweep skill, so run it **manually** on demand, or from an external scheduler that invokes Super Magic. A Flow can only reach it via **Run Skill** on a qualifying ticket event, never "every morning" or "after N hours". The output discipline below applies whenever it runs unattended.
 
 - Your entire reply is the report, posted verbatim — no narration or questions.
 - Use fixed sections (Headlines / Anomalies / Actions / Methodology) so downstream consumers can parse it.

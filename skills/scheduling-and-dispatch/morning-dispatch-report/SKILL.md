@@ -33,7 +33,9 @@ Everything a dispatcher needs before the first assignment of the day, in one ski
 - Cite real ticket numbers only; never fabricate tickets, counts, or SLA states.
 - If the overnight window or business hours are unstated and it matters, use the defaults and say which window was used.
 
-## Unattended (Flows) variant
+## Running this unattended
+
+> **Flows cannot schedule or time-trigger this.** Thread Flows fire on ticket *events* and conditions only — there is no schedule, cron, ticket-age, or elapsed-time trigger. This is a cadence/sweep skill, so run it **manually** on demand, or from an external scheduler that invokes Super Magic. A Flow can only reach it via **Run Skill** on a qualifying ticket event, never "every morning" or "after N hours". The output discipline below applies whenever it runs unattended.
 
 - Your entire reply is the posted report — no narration, no questions, no preamble before the headline.
 - Fixed section order and format every run, so readers can scan it on autopilot; include the date and the overnight window used.

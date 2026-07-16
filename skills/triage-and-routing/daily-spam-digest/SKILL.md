@@ -37,7 +37,9 @@ Unattended closers (spam-sender-triage, noise-auto-close) work in silence — th
 - Tickets closed by humans in the window are out of scope — this audits the unattended closers only; exclude closes without an auto-close marker from the pattern groups (they may appear in "unattributed" only if the note suggests automation).
 - Sister skills: spam-sender-triage and noise-auto-close do the closing; this skill audits them. Tuning suggestions point at those skills' patterns, not at ad-hoc rule changes.
 
-## Unattended (Flows) variant
+## Running this unattended
+
+> **Flows cannot schedule or time-trigger this.** Thread Flows fire on ticket *events* and conditions only — there is no schedule, cron, ticket-age, or elapsed-time trigger. This is a cadence/sweep skill, so run it **manually** on demand, or from an external scheduler that invokes Super Magic. A Flow can only reach it via **Run Skill** on a qualifying ticket event, never "every morning" or "after N hours". The output discipline below applies whenever it runs unattended.
 
 - Your entire reply is the digest, verbatim, plain text — no narration, no preamble, no markdown tables destined for a PSA.
 - If zero tickets were auto-closed in the window, reply exactly: `SPAM DIGEST <window>: no auto-closes.`

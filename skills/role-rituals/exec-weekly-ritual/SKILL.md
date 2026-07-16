@@ -34,7 +34,9 @@ Step 2 only. The scorecard can be read async; the one decision is the part that 
 - Skip-with-note beats fake completion.
 - Output lands where the exec already looks (their channel/notes), and decision communications go to the waiting party's channel.
 
-## Unattended (Flows) variant
+## Running this unattended
+
+> **Flows cannot schedule or time-trigger this.** Thread Flows fire on ticket *events* and conditions only — there is no schedule, cron, ticket-age, or elapsed-time trigger. This is a cadence/sweep skill, so run it **manually** on demand, or from an external scheduler that invokes Super Magic. A Flow can only reach it via **Run Skill** on a qualifying ticket event, never "every morning" or "after N hours". The output discipline below applies whenever it runs unattended.
 
 - Your entire reply is the posted exec card, verbatim — no narration.
 - Read-only: post the scorecard, the top decision ask (framed with options), and the escalation-queue list. Decisions are never made autonomously.

@@ -36,7 +36,9 @@ Profile one board's current state — open volume, aging distribution, unassigne
 - Exclude auto-closed statuses from open/aging math; if this is a junk/NOC board, say the score is not comparable to human boards.
 - Recommendations only — do not close, reassign, or bulk-update anything from this snapshot.
 
-## Unattended (Flows) variant
+## Running this unattended
+
+> **Flows cannot schedule or time-trigger this.** Thread Flows fire on ticket *events* and conditions only — there is no schedule, cron, ticket-age, or elapsed-time trigger. This is a cadence/sweep skill, so run it **manually** on demand, or from an external scheduler that invokes Super Magic. A Flow can only reach it via **Run Skill** on a qualifying ticket event, never "every morning" or "after N hours". The output discipline below applies whenever it runs unattended.
 
 - Follows the Unattended Output Discipline contract: the entire reply is the plain-text snapshot — score headline with sub-scores, the per-signal table, the top 3 cleanup moves, and the methodology note (status classification, searches, caps). No narration.
 - Deterministic inputs from the flow: the board, the score weights, and — for a trend line — the prior score if the flow supplies one; a scheduled run never invents last week's number.

@@ -122,6 +122,66 @@ connected them):**
   NO Microsoft Bookings, NO Planner, Teams has no meeting-create (use Outlook "Create
   Event"), Entra ID has writes but no user search.
 
+## ⛔ Capability honesty — verify before you build (read this first)
+
+A skill may ONLY promise an outcome Thread/Super Magic can actually deliver. Before writing
+a skill, confirm the capability exists — via the live Thread MCP tool list for the tenant,
+the flow-capability lists below, or the connector reality check. If it can't be verified,
+don't build it.
+
+**Things Thread does NOT support (do not build skills whose core outcome is one of these):**
+- **SMS / texting** — there is no SMS channel and no supported SMS-send path. SMS may only
+  appear as an *auth-factor being audited* (e.g. "SMS is a weak MFA method"), never as a
+  send capability. (Removed: zapier-twilio-sms-updates, zapier-ringcentral-telephony,
+  sms-channel-etiquette.)
+- **Telephony control** (dialing, call routing, porting) — Voice AI is a product surface,
+  not an agent tool.
+- **RMM script execution / software deploy / policy push** — see NinjaOne note above.
+
+**Connector reality (production-verified).** The only member-MCP connectors that exist are
+**Notion, Linear, Zapier** (SUPER_AGENT_MCP_CATALOG). In the entire production history the
+only connectors partners actually invoked are Notion (heavy), Linear (light), and Zapier
+(light — mostly Firecrawl web-scraping). Zapier's 9,000-app catalog is *theoretically*
+reachable, but a Zapier-app skill is only real when (a) the member has connected Zapier,
+(b) that app is authenticated in their Zapier, and (c) the specific action exists. Every
+Zapier skill MUST open with that verify-first gate (zapier-action-discovery) and stay
+honest that it depends on member setup. Do not add Zapier skills for apps that don't map to
+a genuine, supported MSP↔Thread workflow.
+
+## Flows — exact ground truth (a skill's "Unattended (Flows) variant" must fit this)
+
+Skills run **manually** (a member invokes them in chat / on a ticket) OR **through a Flow**
+(the `Run Skill` / `New Super Magic Agent` flow action fires them). A skill whose only
+viable mode would be an unsupported flow trigger cannot exist as a Flows skill "right now" —
+make it a manual skill and OMIT the Unattended section, or drop it.
+
+**Flows are ticket-EVENT triggered, evaluated against conditions. Flows are NOT scheduled
+and have NO cron.** There is no "daily/weekly/nightly" flow. Recurring digests and sweeps
+are **manual** skills (or run by an external scheduler), never a Flows variant.
+
+**Flow CONDITIONS (filter attributes) that exist** — board, status (+ status name),
+priority, type/subType/item, ticketType/ticketCategory, summary, site/serviceLocation/
+territory/city/addressLine1/country, company/companyType, contact/contactType, team, owner,
+member, source, agreement/agreementName/agreement_type, sla, severity, budgetHours,
+opportunity, threadSentiment (number) + sentimentRange, inbox/messenger touchpoint,
+**dateEntered (day-of-week), timeEntered (time-of-day), date**.
+**Conditions that DO NOT exist** — ticket **age / duration / time-in-status / time-since-
+last-update / elapsed time**, "minutes remaining on SLA", or any relative-time trigger.
+So skills keyed on "after N hours idle", "dwell time in a status", "N days stale",
+"X minutes after appointment end" CANNOT be flow-triggered. A flow CAN fire on the *event*
+of entering a status; it CANNOT fire "N hours after" that. Correct the Unattended section
+accordingly (fire-on-event, not fire-after-duration), or make the skill manual-only.
+
+**Flow ACTIONS that exist (the only things a flow can DO natively):** set priority, set
+status, set board, assign member, set agreement, set resource team, Reply, Note,
+Auto Prioritize, Auto Categorize, Generate Title, Generate Recap (template), **Run Skill**,
+**New Super Magic Agent**. A flow CANNOT natively send email/SMS, create/merge/schedule a
+ticket, log time, send an approval, call a webhook, or run a Zapier action. Those only
+happen when a flow calls Run Skill / New Super Magic Agent and the *skill* (running as a
+Super Magic agent) uses its own tools. So an Unattended variant's writes are limited to
+what a Super Magic agent can do when invoked — state that, and keep unattended writes
+conservative.
+
 ## Category taxonomy
 
 triage-and-routing · qa-and-closure · communication · documentation · escalation ·

@@ -35,7 +35,9 @@ Keeps waiting-on-client tickets moving on a predictable rhythm. Counts the attem
 - Never bulk-send follow-ups without the user reviewing the drafts.
 - Keep language simple and localizable; match the client's language where the thread is not in English.
 
-## Unattended (Flows) variant
+## Running this unattended
+
+> **Flows cannot schedule or time-trigger this.** Thread Flows fire on ticket *events* and conditions only — there is no schedule, cron, ticket-age, or elapsed-time trigger. This is a cadence/sweep skill, so run it **manually** on demand, or from an external scheduler that invokes Super Magic. A Flow can only reach it via **Run Skill** on a qualifying ticket event, never "every morning" or "after N hours". The output discipline below applies whenever it runs unattended.
 
 - Trigger: schedule (e.g. hourly sweep) or waiting-status age timer.
 - Your entire reply is the client-facing follow-up message, posted verbatim — no narration, no attempt counters, no internal commentary. Write nothing else.

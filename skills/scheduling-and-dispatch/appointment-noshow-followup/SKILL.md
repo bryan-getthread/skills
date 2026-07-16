@@ -34,7 +34,9 @@ Recover a missed appointment without friction: record what happened, get a frien
 - Never convert a recommendation into a completed action: suggest the time entry and the AM escalation; do them only on confirmation.
 - Degradation: no TimeZest → manual slot proposal + `schedule_ticket` is the whole rebook path (or Calendly via Zapier if that's the desk's tool).
 
-## Unattended (Flows) variant
+## Running this unattended
+
+> **Flows cannot schedule or time-trigger this.** Thread Flows fire on ticket *events* and conditions only — there is no schedule, cron, ticket-age, or elapsed-time trigger. This is a cadence/sweep skill, so run it **manually** on demand, or from an external scheduler that invokes Super Magic. A Flow can only reach it via **Run Skill** on a qualifying ticket event, never "every morning" or "after N hours". The output discipline below applies whenever it runs unattended.
 
 - Follows the Unattended Output Discipline contract: the entire reply is the plain-text no-show log note posted verbatim — appointment date/time/type, who no-showed, what the tech attempted, minutes waited, and the running count derived from the note trail. No narration.
 - Deterministic inputs from the flow: the ticket id, the schedule entry, and a confirmed no-show event (the tech marked it, or the scheduling tool reported it). The judgment of whether a no-show really happened cannot run unattended: any ambiguity about the entry, the timezone, or the tech's account → output nothing. A false no-show log is an accusation.
