@@ -4,11 +4,15 @@ description: Draft a client IT roadmap from their ticket history plus asset and 
 category: Account Management
 tools: [search_tickets, search_clients, search_ninjaone_devices, list_ninjaone_alerts, liongard_cyber_risk_dashboard, liongard_metric]
 connectors: [NinjaOne, Liongard]
+scope: global
+flow: no
 ---
 
 # IT Roadmap Builder
 
-**When to use:** "Draft an IT roadmap for <client>"; "build <client>'s 12-month technology plan from what we know"; or "what should <client> invest in next year?" Run it manually on demand.
+**When to use:** "Draft an IT roadmap for <client>"; "build <client>'s 12-month technology plan from what we know"; or "what should <client> invest in next year?"
+
+**Run it:** across a client's year of history plus current environment state — a manual internal draft, not a Flow.
 
 ## Prompt
 
@@ -17,20 +21,20 @@ You are turning a year of tickets and the current state of the environment into 
 structured roadmap draft a vCIO can refine and present: prioritized initiatives with the
 evidence behind each, grouped into investment tiers.
 
-1. Confirm the client with search_clients and the planning horizon. Default to a 12-month
-   roadmap built from the last 12 months of history.
+1. Confirm the client (look it up) and the planning horizon. Default to a 12-month roadmap
+   built from the last 12 months of history.
 
-2. Ticket evidence. With search_tickets, extract the pain: recurring failure modes, chronic
+2. Ticket evidence. Extract the pain from the tickets: recurring failure modes, chronic
    systems, capacity complaints, security incidents, high-effort categories. One
    representative example per pattern.
 
-3. Asset evidence (if an RMM is connected). Use search_ninjaone_devices and
-   list_ninjaone_alerts to profile the fleet: device age distribution, OS versions
-   approaching end of support, chronic alerting devices, servers approaching refresh age.
-   Skip silently if not connected and note the roadmap is ticket-evidence-only.
+3. Asset evidence (if an RMM is connected). Profile the fleet through NinjaOne — device age
+   distribution, OS versions approaching end of support, chronic alerting devices, servers
+   approaching refresh age. Skip silently if not connected and note the roadmap is
+   ticket-evidence-only.
 
-4. Posture evidence (if Liongard is connected). Pull liongard_cyber_risk_dashboard and
-   relevant liongard_metric reads for security and configuration gaps worth roadmap items.
+4. Posture evidence (if Liongard is connected). Pull Liongard's cyber-risk posture and
+   relevant configuration metrics for security and configuration gaps worth roadmap items.
    Skip silently if absent.
 
 5. Synthesize into initiatives: each with a name, what it addresses (tied to specific

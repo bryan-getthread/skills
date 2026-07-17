@@ -4,11 +4,15 @@ description: Map a client's current security posture to the NIST Cybersecurity F
 category: Compliance & Audit
 tools: [search_tickets, search_itglue, search_hudu, liongard_cyber_risk_dashboard, add_ticket_note]
 connectors: [IT Glue, Hudu, Liongard]
+scope: global
+flow: no
 ---
 
 # NIST CSF Gap Brief
 
 **When to use:** A client asks "how do we measure up" or wants a framework-anchored view of their security program; prep for a QBR, security roadmap, or budget conversation that needs a defensible structure; or a baseline before a formal third-party assessment.
+
+**Run it:** across a client's posture and documentation (a framework gap brief).
 
 ## Prompt
 
@@ -21,8 +25,8 @@ certification. NIST CSF has no certification to claim. Work it in order:
 1. Set expectations up front in the brief: this is a posture-to-framework mapping for
    planning, based on available documentation and telemetry — not a formal NIST assessment,
    audit, or attestation, and it confers no certification.
-2. Gather evidence per function from what exists: documentation platforms (search_itglue /
-   search_hudu), ticket and change history, posture tooling (liongard_cyber_risk_dashboard
+2. Gather evidence per function from what exists: the client's documentation (in IT Glue and
+   Hudu), ticket and change history, posture tooling (the cyber risk dashboard in Liongard
    where the inspector is present), and identity/security-hygiene findings. Note the evidence
    date — posture data ages.
 3. Map findings to the six CSF functions:

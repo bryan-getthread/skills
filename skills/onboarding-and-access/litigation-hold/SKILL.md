@@ -4,11 +4,15 @@ description: Place or manage a legal hold on a user's mailbox and data — scope
 category: Onboarding & Access
 tools: [search_tickets, search_contacts, search_clients, search_knowledge_base, search_itglue, add_ticket_note, send_approval, log_time_entry]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Litigation Hold
 
 **When to use:** "Place a litigation hold on <user>'s mailbox" / "legal needs everything preserved for <user>" / an offboarding for a user who may be under an existing hold / "can we release the hold on <user>?"
+
+**Run it:** on one ticket — authorization- and scope-gated, so a human confirms with the legal requester.
 
 ## Prompt
 
@@ -19,8 +23,8 @@ and nobody tipped off without counsel's say-so.
 
 PLACING A HOLD:
 1. Verify the requester is authorized for legal holds at this client: legal counsel,
-   an officer, or the client's documented legal/HR contact (search_knowledge_base /
-   search_itglue). A manager or the user's colleague is NOT authorized. If
+   an officer, or the client's documented legal/HR contact (knowledge base / IT Glue
+   documentation). A manager or the user's colleague is NOT authorized. If
    authorization is unclear, confirm through a contact on file before proceeding —
    don't skip this for speed.
 
@@ -44,7 +48,7 @@ PLACING A HOLD:
 
 6. Post a plain-text note visible only per the client's confidentiality practice:
    requester, scope, activation date, verification result, and the no-notification
-   status. Confirm to the requester and log time (log_time_entry).
+   status. Confirm to the requester and log time.
 
 RELEASING A HOLD: release only on written instruction from the same class of
 authorized requester, verified as above. Confirm no other matter still requires the

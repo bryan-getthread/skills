@@ -4,11 +4,15 @@ description: Assemble everything a third-party vendor's support team needs to wo
 category: Escalation
 tools: [search_tickets, add_ticket_note, search_knowledge_base, search_itglue, search_hudu, web_search]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # Vendor Escalation Package
 
 **When to use:** "Open a case with the vendor for this" / "prep this ticket for <vendor> support"; the desk has hit the limit of what it can do and vendor support is next; or the vendor bounced a case for missing info and it needs resubmitting properly.
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -18,7 +22,7 @@ their intake questions answered before they're asked, in a copy-paste-ready bloc
 
 1. Read the full ticket thread and pull environment context: affected product, exact
    version/build, OS and platform, deployment shape (cloud/on-prem, single/multi-site),
-   and affected scope at <client>. Use search_itglue / search_hudu for documented
+   and affected scope at <client>. Use IT Glue / Hudu documentation for documented
    environment details where those connectors are enabled; otherwise ask the technician.
 
 2. Build reproduction: numbered steps to reproduce (or "intermittent — occurs roughly
@@ -30,10 +34,10 @@ their intake questions answered before they're asked, in a copy-paste-ready bloc
    that is missing (e.g. a support bundle) so the tech gathers it before submitting.
 
 4. Find the support entitlement: contract number, support agreement level, customer/site
-   ID with the vendor, licensed-under name — from documentation (search_itglue /
-   search_hudu / search_knowledge_base). If not documented, leave the field blank and
-   flag it; do not guess. Use web_search only for the vendor's public case-submission
-   process, never for entitlement data.
+   ID with the vendor, licensed-under name — from documentation (IT Glue / Hudu / the
+   knowledge base). If not documented, leave the field blank and flag it; do not guess.
+   Look up only the vendor's public case-submission process on the web, never entitlement
+   data.
 
 5. Scrub the package: remove passwords, API keys, tokens, and internal-only remarks from
    everything outgoing — including inside pasted log excerpts (mask as <redacted>).

@@ -4,11 +4,15 @@ description: Draft reply-ready instructions for an end user to add their work ac
 category: End-User Guides
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, view_openDraft]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # Outlook Profile Setup Guide
 
 **When to use:** "Send <user> instructions to add their email to Outlook." / new machine, new profile, or profile-rebuild tickets where the user does the add themselves / "user's Outlook profile was removed — walk them through re-adding."
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -16,11 +20,9 @@ connectors: [IT Glue, Hudu]
 Draft a client-ready instruction block for adding the work email account to desktop Outlook —
 branched by platform, with ONLY the branch that matches the user's machine. Verify the environment
 before you write; when unsure, ask one identifying question rather than sending a two-platform
-mega-guide. Draft only — present via view_openDraft (in-app) or, over external MCP, output labeled
-"DRAFT — review before sending." Do not send.
+mega-guide. Draft only — show me the reply as a draft to review first, and don't send it.
 
-1. Verify the environment FIRST from the ticket, prior tickets (search_tickets), and client docs
-   (search_itglue / search_hudu / search_knowledge_base): (a) Windows or Mac, (b) which Outlook —
+1. Verify the environment FIRST from the ticket, prior tickets, and client docs: (a) Windows or Mac, (b) which Outlook —
    classic Outlook, new Outlook for Windows, or Outlook for Mac, (c) is the mailbox Microsoft 365
    (the normal case) or something else (hosted Exchange, IMAP). The flow differs completely. If
    platform or mailbox type is unknown, ask the technician ONE question — or open the draft with one

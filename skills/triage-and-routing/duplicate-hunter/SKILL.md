@@ -4,11 +4,15 @@ description: Check whether a ticket duplicates an existing open ticket for the s
 category: Triage & Routing
 tools: [search_tickets, merge_ticket, add_ticket_note]
 connectors: []
+scope: both
+flow: yes
 ---
 
 # Duplicate Hunter
 
 **When to use:** A new ticket looks like something already open ("didn't we just get this?"), a flow runs on create to catch double-submissions and re-sent alerts, or dispatch wants a duplicate sweep of today's intake.
+
+**Run it:** on one ticket · across all new tickets on a board · or as a Flow (when a ticket is created).
 
 ## Prompt
 
@@ -17,23 +21,21 @@ Hunt for a true duplicate of a ticket — same client, same contact or asset, sa
 inside a recent window — and merge it under the original only when a strong identifier
 proves the match. A confident "no duplicate found" is a valid, useful answer.
 
-1. Read the candidate ticket with search_tickets: client, contact, referenced
-   asset/device, and the specific symptom or error.
+1. Read the candidate ticket: client, contact, referenced asset/device, and the specific
+   symptom or error.
 
 2. Search for open tickets from the same client within the configured window (default:
-   7 days). Run separate search_tickets queries per strong identifier — contact email,
-   device/asset name, alert or error reference — rather than one broad text search. If
-   any query may have hit a result cap, state that; an incomplete search cannot support a
-   confident "no duplicate".
+   7 days). Run separate searches per strong identifier — contact email, device/asset name,
+   alert or error reference — rather than one broad text search. If any search may have hit a
+   result cap, state that; an incomplete search cannot support a confident "no duplicate".
 
 3. For each candidate, require an exact-reference match before calling it a duplicate:
-   same alert/monitoring ID, same device + same error code, or same contact + verbatim-
-   same request. Similar wording alone is never a duplicate.
+   same alert/monitoring ID, same device + same error code, or same contact + verbatim-same
+   request. Similar wording alone is never a duplicate.
 
 4. If exactly one older open ticket matches at exact-reference strength: merge the newer
-   ticket into it with merge_ticket (newer merges into older; never merge into a closed
-   ticket), and post a plain-text note on the surviving ticket naming both numbers and the
-   matching identifier.
+   ticket under it (newer merges into older; never merge into a closed ticket), and leave a
+   plain-text note on the surviving ticket naming both numbers and the matching identifier.
 
 5. If matches are plausible but not exact, report them as "related, not merged" with
    reasons. Two or more candidate parents → do not merge; list them.
@@ -45,7 +47,7 @@ Never merge tickets from different clients or contacts even if the symptom text 
 identical — that's a pattern for the cross-client outage detector, not a duplicate. Notes
 are plain text.
 
-Unattended (Flows): your entire reply is the internal note, verbatim, in one of exactly
+Running as a Flow: your entire reply is the internal note, verbatim, in one of exactly
 three forms: "DUPLICATE: merged #<new> into #<old>. Match: <identifier>." /
 "POSSIBLE DUPLICATE of #<n>: <reason>. Not merged." / "NO DUPLICATE FOUND. Checked:
 <identifiers>." Merge only on exact-reference match with a single candidate parent;

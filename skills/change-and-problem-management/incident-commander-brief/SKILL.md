@@ -4,11 +4,15 @@ description: An incident commander is taking over a running major incident — a
 category: Change & Problem Management
 tools: [search_tickets, add_ticket_note, search_members]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Incident Commander Brief
 
 **When to use:** "Brief me — I'm taking over as IC / hand the incident to <lead>" / shift change during a long-running major / an executive or senior engineer joining mid-incident / the current IC wants a written checkpoint of where things stand.
+
+**Run it:** on one incident.
 
 ## Prompt
 
@@ -17,8 +21,8 @@ Build the takeover package for a live major incident changing hands: state, not 
 Build it from the master incident ticket's timeline and linked workstreams, and be honest
 about what's unknown.
 
-1. Load the master incident ticket and every linked workstream/child ticket
-   (search_tickets): full notes in time order, status transitions, role assignments from
+1. Load the master incident ticket and every linked workstream/child ticket:
+   full notes in time order, status transitions, role assignments from
    the declaration.
 
 2. Build the brief in this FIXED order — an incoming IC should be able to stop reading
@@ -45,7 +49,7 @@ about what's unknown.
      credibility rests on this section.
 
 3. Deliver in chat to the incoming IC; post the brief as a plain-text note on the master
-   ticket (add_ticket_note) marked "IC handover brief — <from> to <to>, <time>" so the
+   ticket marked "IC handover brief — <from> to <to>, <time>" so the
    handover itself is on the timeline.
 
 4. If the ticket record is too thin to build a trustworthy brief (gaps over an hour during

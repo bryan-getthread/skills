@@ -4,20 +4,24 @@ description: Diagnose AD-integrated DNS problems — machines resolving stale/wr
 category: Troubleshooting Playbooks
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, add_ticket_note, liongard_launchpoint, liongard_metric, liongard_timeline, web_search]
 connectors: [IT Glue, Hudu, Liongard]
+scope: single
+flow: no
 ---
 
 # Internal DNS Server Issues
 
 **When to use:** Internal names resolve to wrong/old IPs or stop resolving after a weekend, internal resolution works but the internet fails from domain machines (or only at one site), records for live machines keep disappearing, or the client's internal domain overlaps a public one and some names go to the wrong place. (Public records, registrars, SPF/MX belong to the dns-domain-issues and dmarc-spf-dkim-setup playbooks, not this one.)
 
+**Run it:** on the one ticket you're working — a tech drives the lookups hands-on and makes changes with the infra owner's approval; not unattended.
+
 ## Prompt
 
 ```
 You are diagnosing the client's internal AD-integrated DNS servers. The rule: identify which server answered and what it answered before theorizing — "DNS is broken" is four different problems. Work these in order.
 
-1. History first. search_tickets for this client on DNS symptoms and for recent changes: a new DC, a decommissioned DC, a firewall/ISP change, or scavenging "cleanup" someone enabled. Records vanishing on a cycle strongly suggests a scavenging change — find when it started.
+1. History first. Search this client's past tickets on DNS symptoms and for recent changes: a new DC, a decommissioned DC, a firewall/ISP change, or scavenging "cleanup" someone enabled. Records vanishing on a cycle strongly suggests a scavenging change — find when it started.
 
-2. Docs second. Search IT Glue and Hudu (search_itglue / search_hudu) and search_knowledge_base for the DNS design: which DCs run DNS, forwarder targets, the internal domain name (is it a .local, a subdomain of the public domain, or — the trap — the same name as the public domain?), and the DHCP-DNS registration setup. If Liongard's Active Directory / DNS-capable inspectors run for this tenant, use liongard_launchpoint + liongard_metric for zone and forwarder config and liongard_timeline for recent changes — state the dataprint age. IT Glue/Hudu/Liongard coverage varies per tenant — note anything you could not check.
+2. Docs second. Check the client's documentation and knowledge base for the DNS design: which DCs run DNS, forwarder targets, the internal domain name (is it a .local, a subdomain of the public domain, or — the trap — the same name as the public domain?), and the DHCP-DNS registration setup. If Liongard's Active Directory / DNS-capable inspectors run for this tenant, use its inspector data for zone and forwarder config and its change timeline for recent changes — state the dataprint age. Documentation and Liongard coverage varies per tenant — note anything you could not check.
 
 3. Get the evidence before theorizing. Guide the tech (these are commands the tech runs — you do not execute anything remotely): `ipconfig /all` on an affected machine (which DNS servers is it actually using — a machine pointed at the router or 8.8.8.8 explains "internal names don't resolve" instantly), then `nslookup <name> <specific-DC-IP>` against EACH internal DNS server to see whether they disagree, then the same lookup for an external name. Capture verbatim answers, not "it didn't work".
 
@@ -30,5 +34,5 @@ You are diagnosing the client's internal AD-integrated DNS servers. The rule: id
 
 If the problem turns out to be public records, a registrar, or mail DNS — that is the dns-domain-issues / dmarc-spf-dkim-setup playbooks, not this one.
 
-Verify and note. Success = the same nslookup that failed now returning the right answer from every internal server, and the end-user symptom gone. Post a plain-text note (destined for a PSA sync — plain text, no markdown or emojis, raw URLs not links): symptom, which server answered what (verbatim), branch, change made or handed off, verification queries and time, and anything you could not check (docs/Liongard coverage, dataprint age).
+Verify and note. Success = the same nslookup that failed now returning the right answer from every internal server, and the end-user symptom gone. Leave a plain-text internal note (plain text, no markdown or emojis, raw URLs not links): symptom, which server answered what (verbatim), branch, change made or handed off, verification queries and time, and anything you could not check (documentation/Liongard coverage, dataprint age).
 ```

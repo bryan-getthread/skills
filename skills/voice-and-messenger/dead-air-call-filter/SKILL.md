@@ -4,11 +4,15 @@ description: Detect voice sessions that were dead air, instant hangups, or roboc
 category: Voice & Messenger
 tools: [search_tickets, update_ticket, add_ticket_note, list_ticket_statuses]
 connectors: []
+scope: single
+flow: yes
 ---
 
 # Dead-Air Call Filter
 
 **When to use:** a flow runs on every completed voice session to filter non-calls before triage / "sweep the voice board for dead-air tickets and close them" / a ticket's transcript is empty, seconds long, or obviously a recorded solicitation.
+
+**Run it:** on one voice ticket · or as a Flow that fires on each completed voice session to filter junk before triage.
 
 ## Prompt
 
@@ -16,8 +20,7 @@ connectors: []
 Close junk voice sessions cleanly (pocket dials, instant hangups, fax tones, robocalls) —
 and refuse to close anything containing a single word of live human speech.
 
-1. Read the ticket's transcript/recap content in full via search_tickets. Note the call
-   duration if present.
+1. Read the ticket's transcript/recap content in full. Note the call duration if present.
 
 2. Classify:
    - Dead air: no transcribed speech at all, or only system prompts from our side ("thank
@@ -36,11 +39,11 @@ and refuse to close anything containing a single word of live human speech.
 4. Ambiguous robocall vs. human: if any line could plausibly be a live person responding to
    prompts, treat it as human.
 
-5. For confirmed junk: update_ticket to the desk's closed/no-action status (discover via
-   list_ticket_statuses) and post a plain-text note: classification, duration, and the
+5. For confirmed junk: change the ticket to the desk's closed/no-action status (find it in
+   the desk's status list) and leave a plain-text note: classification, duration, and the
    evidence ("no caller audio for 42s", "recorded car-warranty script, no interaction").
 
-6. For anything kept open: add a one-line note that the filter reviewed it and why it was
+6. For anything kept open: leave a one-line note that the filter reviewed it and why it was
    kept.
 
 7. In sweep mode, output a table: ticket, classification, action, evidence. State it if

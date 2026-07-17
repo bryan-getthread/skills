@@ -4,11 +4,15 @@ description: Check a ticket's closure note against the house standard before the
 category: QA & Closure
 tools: [search_tickets, add_ticket_note, update_ticket, run_assistive_ai]
 connectors: []
+scope: both
+flow: yes
 ---
 
 # Closure Note Completeness
 
 **When to use:** "Check my closure note" / "is this ticket documented well enough to close?" — the documentation companion to Ticket QA Review when only note quality is in question, bulk-checking pending closures before EOD, or "draft a compliant closure note for this ticket."
+
+**Run it:** on one ticket · across all pending closures · or as a Flow (when a ticket reaches ready-to-close).
 
 ## Prompt
 
@@ -17,8 +21,8 @@ The closure note is what the desk knows in six months: the next tech's starting 
 client's record, the billing narrative. Grade the note against the house standard and, unlike a
 pure gate, draft the missing pieces from the thread so compliance costs seconds.
 
-1. Retrieve the ticket with search_tickets: full thread, time entries, classification, and the
-   current closure/resolution note.
+1. Retrieve the ticket: full thread, time entries, classification, and the current
+   closure/resolution note.
 
 2. Grade the closure note against the house standard (override with the desk's own where
    provided):
@@ -38,16 +42,16 @@ pure gate, draft the missing pieces from the thread so compliance costs seconds.
 4. If everything is PRESENT: report pass, one line per element, and let the close stick.
 
 5. If anything is MISSING: draft the compliant closure note from evidence already in the thread —
-   run_assistive_ai can produce the base summary/recap, then structure it to the standard. Every
+   an assistive summary/recap can produce the base, then structure it to the standard. Every
    sentence must trace to a thread entry; where the thread itself lacks the fact (no cause
    anywhere, no confirmation), leave an explicit placeholder like "CONFIRMATION: not yet obtained
    - confirm with <user> before closing" rather than papering over the gap. The draft documents
    what happened; it never invents what should have happened.
 
-6. Present the draft. On approval, post it with add_ticket_note (plain text, no markdown/emojis —
-   syncs to the PSA and is often client-visible in exports). Where the desk's process requires it
-   and the confirmation element is genuinely missing, recommend holding the close (update_ticket
-   back to ready-to-close) until it exists.
+6. Present the draft. On approval, post it as a plain-text note (no markdown/emojis — it syncs to
+   the PSA and is often client-visible in exports). Where the desk's process requires it and the
+   confirmation element is genuinely missing, recommend holding the close (move it back to
+   ready-to-close) until it exists.
 
 7. For batches, output a compliance table (ticket, missing elements) and offer drafts ticket by
    ticket.

@@ -4,11 +4,15 @@ description: Translate a technical resolution, diagnosis, or explanation into la
 category: Communication
 tools: [search_tickets]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Technical to Plain English
 
 **When to use:** "Explain this fix in plain English for the client" / "the office manager asked what actually happened — translate this" — any resolution note, diagnosis, or vendor explanation that needs to leave the technical bubble.
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -16,9 +20,9 @@ connectors: []
 Rewrite technical content for a non-technical reader: same truth, no jargon, framed around what
 it means for them rather than how it works.
 
-1. Read the technical source (resolution notes, diagnosis, pasted vendor response — pull from
-   the ticket via search_tickets if referenced). Identify the three things the plain version
-   must carry: what was wrong, what changed, and what it means for the reader.
+1. Read the technical source (resolution notes, diagnosis, pasted vendor response — pull it
+   from the ticket if referenced). Identify the three things the plain version must carry: what
+   was wrong, what changed, and what it means for the reader.
 
 2. Translate using these rules:
    - Replace every technical term with what it does, not a simpler synonym for what it is

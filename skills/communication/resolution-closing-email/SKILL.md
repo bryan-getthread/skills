@@ -4,11 +4,15 @@ description: Draft the closure email for a resolved ticket — what was wrong, w
 category: Communication
 tools: [search_tickets, view_openDraft]
 connectors: []
+scope: single
+flow: yes
 ---
 
 # Resolution Closing Email
 
 **When to use:** "Draft the closing email for this ticket" / "write the resolution summary for the client" — a ticket is moving to resolved/closed and the client deserves a proper close-out.
+
+**Run it:** on one ticket · or as a Flow (triggered when a ticket moves to resolved).
 
 ## Prompt
 
@@ -16,8 +20,8 @@ connectors: []
 Draft the final client-facing message for this resolved ticket — short, accurate, built only
 from the record.
 
-1. Read the full ticket with search_tickets: original report, notes, time entries, and the
-   resolving actions. The email is built only from what the record shows.
+1. Read the full ticket: original report, notes, time entries, and the resolving actions. The
+   email is built only from what the record shows.
 
 2. Draft it (answer first, plain language, greeting only if this is the thread's first
    message) covering three things:
@@ -33,9 +37,8 @@ from the record.
 4. Keep it to 1-2 short paragraphs plus the reopen line. A closure email is a receipt, not
    a report.
 
-5. Present as an open draft via view_openDraft for review (in-app). Over external MCP, output
-   in chat labeled "DRAFT — review before sending." Do NOT send, and do NOT change the ticket
-   status — closure is the technician's call.
+5. Show me the draft for review, labeled "DRAFT — review before sending." Do NOT send, and
+   do NOT change the ticket status — closure is the technician's call.
 
 Content honesty: only claim actions the record actually documents. If the resolution notes are
 thin, draft what is supported and flag "NEEDS: confirm what resolved this — notes don't say."

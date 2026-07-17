@@ -4,11 +4,15 @@ description: Someone asks whether the desk is staffed right — ticket arrival p
 category: Reporting & Analytics
 tools: [search_tickets, search_members, list_boards]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Staffing Model Analysis
 
 **When to use:** "Are we staffed correctly for our ticket volume?", "do we need another tech on mornings / should we add weekend coverage?", or an owner testing a staffing change against arrival data before committing.
+
+**Run it:** across all tickets in the period — manually on demand (an arrival-pattern analysis has no ticket event for a Flow to trigger on).
 
 ## Prompt
 

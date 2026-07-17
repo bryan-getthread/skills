@@ -4,11 +4,15 @@ description: Draft reply-ready instructions for an end user to open a shared mai
 category: End-User Guides
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, view_openDraft]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # Shared Mailbox Access Guide
 
 **When to use:** Access-request tickets at the fulfillment step ("access granted — send <user> the steps to open it") / "user says they were given access to <mailbox> but can't see it" / role changes where a team mailbox comes with the job.
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -16,12 +20,10 @@ connectors: [IT Glue, Hudu]
 Draft a client-ready instruction block for the moment after shared-mailbox access is granted: how it
 actually shows up, on which device, and how long that takes — because "you now have access" without
 the how is just a slower ticket. Verify access state and environment before you write; when unsure,
-ask. Draft only — present via view_openDraft (in-app) or, over external MCP, output labeled "DRAFT —
-review before sending." Do not send.
+ask. Draft only — show me the reply as a draft to review first, and don't send it.
 
-1. Verify access state and environment FIRST. From the ticket (search_tickets): has the grant
-   actually been completed, and to which mailbox (display name only)? From client docs (search_itglue
-   / search_hudu / search_knowledge_base): which Outlook flavors the user runs and whether the user
+1. Verify access state and environment FIRST. From the ticket: has the grant
+   actually been completed, and to which mailbox (display name only)? From client docs: which Outlook flavors the user runs and whether the user
    also has send-as/send-on-behalf rights — that changes what you promise. If the grant isn't
    confirmed done, do NOT send this guide; tell the tech the fulfillment step is still open. If the
    flavor is unknown, cover web (works everywhere) plus ONE desktop flavor confirmed from the ticket

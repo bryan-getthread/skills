@@ -4,11 +4,15 @@ description: An ops leader asks what the team is doing well and not so well — 
 category: Reporting & Analytics
 tools: [search_tickets, search_members, search_clients, list_boards]
 connectors: []
+scope: global
+flow: no
 ---
 
 # COO Ops Review
 
 **When to use:** "What is the team doing well and not so well?", a COO or ops director's monthly/quarterly desk review, or "give me an honest assessment of the operation — strengths and weaknesses."
+
+**Run it:** across all tickets in the period — manually on demand (an ops review has no ticket event for a Flow to trigger on).
 
 ## Prompt
 

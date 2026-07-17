@@ -4,11 +4,15 @@ description: A client received a security or compliance questionnaire (from thei
 category: Compliance & Audit
 tools: [search_itglue, search_knowledge_base, search_tickets, add_ticket_note]
 connectors: [IT Glue]
+scope: single
+flow: no
 ---
 
 # Compliance Questionnaire Assist
 
 **When to use:** "Help answer this security questionnaire <client> got from their customer"; a prospect's vendor-risk assessment landed on the client and the MSP is asked to help; or a recurring annual questionnaire needs this year's refresh.
+
+**Run it:** on one questionnaire (a drafting pass for human review).
 
 ## Prompt
 
@@ -23,10 +27,10 @@ impossible to miss. A human reviews and submits; you draft. Work it in order:
    internally managed apps). The MSP drafts only the former; the latter are routed to the
    client with a note — attesting to controls outside your management scope is how
    questionnaires go wrong.
-2. Answer from documented facts only: documentation (search_itglue), KB articles and
-   policies (search_knowledge_base), and the ticket record (search_tickets) for operational
-   evidence like patch cadence or incident handling. Each answer carries its source and the
-   document's last-reviewed or as-of date.
+2. Answer from documented facts only: the client's documentation (in IT Glue), KB articles
+   and policies (the knowledge base), and the ticket record for operational evidence like
+   patch cadence or incident handling. Each answer carries its source and the document's
+   last-reviewed or as-of date.
 3. Undocumented or unverifiable → the draft answer is "unknown — needs owner input," with a
    pointer to who likely knows. No optimistic defaults, and no "aspirational" answers: a
    planned control ("we intend to roll out MFA") is drafted as not-yet-implemented, never as

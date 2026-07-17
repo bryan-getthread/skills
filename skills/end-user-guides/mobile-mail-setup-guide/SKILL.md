@@ -4,11 +4,15 @@ description: Draft reply-ready instructions for an end user to get work email on
 category: End-User Guides
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, view_openDraft]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # Mobile Mail Setup Guide
 
 **When to use:** "Send <user> instructions to get email on their phone." / new hire or new phone tickets where mobile mail is part of setup / "user's phone stopped getting mail after the security rollout."
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -16,11 +20,9 @@ connectors: [IT Glue, Hudu]
 Draft a client-ready instruction block for setting up work mail on a phone. Default path is the
 Outlook mobile app (same on iPhone and Android, plays well with security policies); native mail
 apps only if the client's policy explicitly allows them. Verify the mobile policy before you write;
-when unsure, ask. Draft only — present via view_openDraft (in-app) or, over external MCP, output
-labeled "DRAFT — review before sending." Do not send.
+when unsure, ask. Draft only — show me the reply as a draft to review first, and don't send it.
 
-1. Verify the client's mobile policy FIRST (search_itglue / search_hudu / search_knowledge_base /
-   search_tickets): is there MDM/app protection (e.g., Intune) that requires a companion app or
+1. Verify the client's mobile policy FIRST by checking the client's documentation and past tickets: is there MDM/app protection (e.g., Intune) that requires a companion app or
    blocks native mail? Are personal devices allowed at all? Is this a corporate-managed phone (mail
    may deploy automatically — no guide needed)? If policy is unknown, ask the technician ONE
    question — native-app steps sent to a client that blocks native mail create a "broken"
@@ -47,5 +49,5 @@ Guardrails: policy verification is mandatory — the failure mode isn't wrong st
 silently hit a policy wall and generate a frustrated callback. Never draft privacy/consent claims
 about MDM beyond what the client's documentation states. No admin-side steps (Intune console,
 conditional-access) in the user block. No server settings, app passwords, or "less secure app"
-workarounds — ever. Localizable; version-cautious cues. Docs tools exist only when enabled.
+workarounds — ever. Localizable; version-cautious cues. The client's documentation is available only when those integrations are enabled.
 ```

@@ -4,11 +4,15 @@ description: Someone pasted raw email headers and wants a verdict — parse auth
 category: Security
 tools: [search_tickets, web_search, add_ticket_note]
 connectors: []
+scope: single
+flow: yes
 ---
 
 # Email Header Analysis
 
 **When to use:** "Analyze this header" / "is this email legit?" with raw headers pasted; phishing-triage needs the header-level detail behind a verdict; or a DMARC/SPF ticket needs the per-message evidence read.
+
+**Run it:** on one ticket · or as a Flow (triggered on a ticket whose thread contains raw headers).
 
 ## Prompt
 
@@ -28,9 +32,9 @@ referenced in the message. Work it in order:
    unrelated domain is a high-weight lure indicator. Check the Message-ID domain against
    the claimed sender, and note filter-added X-headers (spam scores, gateway verdicts) as
    corroborating signals.
-4. Contextual checks, passive only: web_search for the sending domain's registration
-   recency (never visit links from the message), and search_tickets for prior reports of
-   the same sender at the client.
+4. Contextual checks, passive only: search the public web for the sending domain's
+   registration recency (never visit links from the message), and search related tickets
+   for prior reports of the same sender at the client.
 5. Weigh the picture — including the trap cases: full authentication pass with lure content
    can be a compromised legitimate account (auth pass ≠ safe); authentication fail on a
    forwarded message can be innocent (forwarding breaks SPF). Say which case applies.
@@ -38,7 +42,7 @@ referenced in the message. Work it in order:
    compromised-sender suspected / inconclusive), CONFIDENCE (high / medium / low) with one
    line on why, KEY EVIDENCE (the specific header lines, quoted), and RECOMMENDED NEXT STEP
    (phishing-triage containment, quarantine-release path, dmarc-spf-failure-triage, or no
-   action). Post as a note when working a ticket.
+   action). Leave it as an internal note when working a ticket.
 
 Unattended (Flows) variant:
 - The entire reply is the plain-text verdict block (VERDICT / CONFIDENCE / KEY EVIDENCE /
@@ -48,7 +52,7 @@ Unattended (Flows) variant:
 - Inconclusive is a valid unattended verdict: post it with CONFIDENCE low and RECOMMENDED
   NEXT STEP "escalate to phishing-triage handling"; never force spoofed/legitimate to avoid
   it.
-- Permitted writes: add_ticket_note only. No status, priority, or assignment changes;
+- Permitted writes: the internal note only. No status, priority, or assignment changes;
   containment stays attended.
 
 Guardrails — always:
@@ -57,7 +61,7 @@ Guardrails — always:
   chain are trustworthy and which are claimed.
 - Authentication pass does not mean safe; authentication fail does not always mean attack.
   The verdict must address content and context, not scores alone.
-- Never fetch URLs or resources referenced in the message during analysis; web_search stays
+- Never fetch URLs or resources referenced in the message during analysis; web search stays
   passive (registration facts only).
 - Inconclusive is an acceptable verdict — when in doubt, escalate to phishing-triage rather
   than forcing a call. Never invent header lines.

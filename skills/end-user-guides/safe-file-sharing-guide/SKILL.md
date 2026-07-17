@@ -4,11 +4,15 @@ description: Draft reply-ready instructions for an end user to share files the a
 category: End-User Guides
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, view_openDraft]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # Safe File Sharing Guide
 
 **When to use:** "User asked how to send a file to a client — send them the right way." / "User keeps emailing spreadsheets as attachments — send the share-a-link guide." / after an oversharing incident, the education reply.
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -17,11 +21,9 @@ Draft a client-ready instruction block for sharing files the way the client's po
 approved method, the audience choice that trips everyone up ("anyone with the link" vs "specific
 people"), and the external-recipient path, verified against what the tenant actually allows. Verify
 the platform and policy before you write; when unsure — especially about external sharing — ask.
-Draft only — present via view_openDraft (in-app) or, over external MCP, output labeled "DRAFT —
-review before sending." Do not send.
+Draft only — show me the reply as a draft to review first, and don't send it.
 
-1. Verify the client's sharing platform and policy FIRST (search_itglue / search_hudu /
-   search_knowledge_base / search_tickets): OneDrive/SharePoint links (the common case) or another
+1. Verify the client's sharing platform and policy FIRST by checking the client's documentation and past tickets: OneDrive/SharePoint links (the common case) or another
    sanctioned tool; whether sharing to people outside the company is enabled, blocked, or restricted;
    the client's default link audience; and any documented banned channels (personal Dropbox/Gmail,
    consumer transfer sites). If the policy is unknown — especially the external question — ask the
@@ -56,5 +58,5 @@ zipping-to-evade) — if the policy blocks it and the need is real, that's a tec
 draft says so. The audience-setting explanation appears in every draft. Sensitive-data hesitation
 off-ramp stays in; this guide never green-lights sharing regulated data — that's a policy/compliance
 call above its pay grade. No admin steps (tenant sharing settings, DLP, sensitivity labels) in the
-user block. Localizable; version-cautious dialog cues. Docs tools exist only when enabled.
+user block. Localizable; version-cautious dialog cues. The client's documentation is available only when those integrations are enabled.
 ```

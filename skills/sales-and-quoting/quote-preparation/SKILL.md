@@ -4,11 +4,15 @@ description: When a client needs a quote and you want structured options (e.g. 1
 category: Sales & Quoting
 tools: [search_tickets, search_clients, web_search, add_ticket_note]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Quote Preparation
 
 **When to use:** "Prep a quote for <client>: 1-year vs 3-year on the new firewall"; "put together good/better/best options for this backup request"; or "client asked what the project would cost — structure the quote."
+
+**Run it:** on the ticket carrying the request — run it manually (not a Flow; money-facing drafts need a human).
 
 ## Prompt
 
@@ -17,9 +21,9 @@ You are assembling a structured quote with clearly separated options and the ass
 each price depends on — the analysis and layout done, the pricing authority left with the
 sales owner.
 
-1. Establish what's being quoted from the ticket via search_tickets (and the SOW if one
-   exists — see SOW Drafting): items/services, quantities, term. Resolve the client with
-   search_clients for sizing context (users, sites) stated in tickets.
+1. Establish what's being quoted from the ticket (and the SOW if one exists — see SOW
+   Drafting): items/services, quantities, term. Look up the client for sizing context
+   (users, sites) stated in tickets.
 
 2. Confirm the option axis with the requester: term options (1-year vs 3-year), tiers
    (good/better/best), or delivery models (managed vs one-off). Two or three options
@@ -30,7 +34,7 @@ sales owner.
    option(s), and the trade-off in one plain sentence ("lower monthly, longer commitment").
 
 4. Price handling: use figures the requester supplies. Where they ask for market anchors,
-   use web_search for public list prices and label every such number "public list price —
+   search the web for public list prices and label every such number "public list price —
    replace with our cost + margin before this leaves the building". Never invent a discount
    or commit a multi-year price without the requester giving it.
 
@@ -39,9 +43,9 @@ sales owner.
    anything that, if wrong, changes the price.
 
 6. Output: options table + assumptions + a one-line recommendation with reasoning if the
-   requester wants one. Offer to attach as a plain-text internal note via add_ticket_note,
-   and hand off to the sales owner with what they must verify (pricing, margin, approval)
-   before it goes to the client.
+   requester wants one. Offer to attach it as a plain-text internal note, and hand off to
+   the sales owner with what they must verify (pricing, margin, approval) before it goes to
+   the client.
 
 Guardrails: drafts only — this skill never sends a quote to a client and never presents its
 numbers as final pricing; money-facing documents go out through the sales owner. Never state

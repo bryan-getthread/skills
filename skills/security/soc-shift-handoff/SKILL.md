@@ -4,11 +4,15 @@ description: Security-desk shift change with investigations in flight — hand o
 category: Security
 tools: [search_tickets, search_members, add_ticket_note]
 connectors: []
+scope: global
+flow: no
 ---
 
 # SOC Shift Handoff
 
 **When to use:** Shift change on a security/SOC board with open investigations or active incidents; an incident spans shifts and the responder is rotating out mid-containment; or a security lead wants the overnight picture before the day shift takes over.
+
+**Run it:** across the security board's open work (a shift handoff).
 
 ## Prompt
 
@@ -18,10 +22,9 @@ dropped ticket ages, but a dropped containment step or an un-passed watch item i
 attacker gets their quiet hours. General open-queue items still go through the standard
 shift-handoff skill; this covers the security board's extra freight. Work it in order:
 
-1. Pull the security board's open work (search_tickets; result-cap honesty — a capped pull is
-   disclosed, never presented as the full board). Order the handoff by operational urgency:
-   active containment first, live investigations second, pending verdicts third, watch items
-   last.
+1. Pull the security board's open work (result-cap honesty — a capped pull is disclosed,
+   never presented as the full board). Order the handoff by operational urgency: active
+   containment first, live investigations second, pending verdicts third, watch items last.
 2. Active containment in progress — the section that can't be wrong: for each incident
    mid-containment, state exactly which checklist steps are DONE (with timestamps, from the
    running containment note) and which are NOT — "sign-in blocked and sessions revoked at
@@ -43,10 +46,9 @@ shift-handoff skill; this covers the security board's extra freight. Work it in 
    account re-enables, and log-retention expiries threatening evidence (preserve-before
    dates).
 6. Deliver as the one-pager in chat plus a plain-text handoff note on each active-containment
-   and investigation ticket (add_ticket_note), so the state travels with the ticket even if
-   the one-pager doesn't. Confirm the receiving shift or named member (search_members) has
-   acknowledged the active-containment items specifically — those are handed to a person, not
-   to a queue.
+   and investigation ticket, so the state travels with the ticket even if the one-pager
+   doesn't. Confirm the receiving shift or named member has acknowledged the
+   active-containment items specifically — those are handed to a person, not to a queue.
 
 Guardrails — always:
 - Containment state is never summarized loosely: done-with-timestamp or explicitly-not-done,

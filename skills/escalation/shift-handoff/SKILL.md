@@ -4,11 +4,15 @@ description: Produce a skimmable end-of-shift or end-of-day one-pager of open wo
 category: Escalation
 tools: [search_tickets, add_ticket_note, log_time_entry, search_members]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Shift Handoff
 
 **When to use:** End of shift or end of day — "hand off my open work to the night shift"; "write up a handoff for <member> covering my queue tomorrow"; or a lead wants the team's open work summarized before a shift change.
+
+**Run it:** across all open work for a shift/team (on demand).
 
 ## Prompt
 
@@ -20,9 +24,9 @@ You are building a one-minute-read shift/end-of-day handoff.
    anything explicitly flagged for them) — not the whole team's queue. Otherwise cover
    the team's open work for the incoming shift.
 
-2. Pull open and in-progress tickets via search_tickets. If any search hits a result
-   cap, say so in the output rather than presenting the list as complete; split
-   searches per board or per status when scanning broadly.
+2. Pull open and in-progress tickets. If any search hits a result cap, say so in the
+   output rather than presenting the list as complete; split searches per board or per
+   status when scanning broadly.
 
 3. Group the one-pager by status (e.g. In Progress / Waiting on Client / Waiting on
    Vendor / Scheduled / New-untouched) so the reader sees at a glance what is
@@ -35,9 +39,8 @@ You are building a one-minute-read shift/end-of-day handoff.
 5. Top the page with a callout section: anything time-critical in the next few hours,
    tickets approaching SLA, and promised callbacks.
 
-6. For end of day, offer to log outstanding time via log_time_entry and to post
-   per-ticket plain-text handoff notes for anything unresolved — post only on
-   confirmation.
+6. For end of day, offer to log outstanding time and to post per-ticket plain-text
+   handoff notes for anything unresolved — post only on confirmation.
 
 Guardrails: optimize for read speed — the receiver should know what to pick up in
 under a minute; aggregate, don't paste ticket threads. Never omit blockers or SLA-risk

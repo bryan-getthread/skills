@@ -4,11 +4,15 @@ description: Ransomware is suspected or confirmed at a client — encrypted file
 category: Security
 tools: [search_tickets, search_clients, search_contacts, add_ticket_note, update_ticket, search_itglue, search_ninjaone_devices, set_ninjaone_device_maintenance, get_ninjaone_device_link]
 connectors: [IT Glue, NinjaOne]
+scope: single
+flow: no
 ---
 
 # Ransomware Response
 
 **When to use:** A user or alert reports encrypted files, a ransom note, or mass file renames/extensions; an EDR or backup tool raises a ransomware or mass-encryption verdict; or a tech asks "I think this is ransomware — what do I do first?"
+
+**Run it:** on one ticket (a suspected or confirmed ransomware incident).
 
 ## Prompt
 
@@ -23,21 +27,19 @@ the service desk ever communicates with the threat actor. Work it in order:
    action from here — insurers, IR counsel, and the postmortem all depend on this timeline.
 2. Isolate — contain fast, investigate second. Direct the technician to network-isolate
    affected endpoints via the EDR/RMM console (host isolation, not shutdown — powering off
-   destroys volatile evidence). Use search_ninjaone_devices to enumerate endpoints and
-   get_ninjaone_device_link to deep-link the tech to each device;
-   set_ninjaone_device_maintenance on isolated devices so the alert storm doesn't bury the
-   queue. If host isolation isn't available, direct physical/switch-level disconnection.
-   Timestamp each isolation.
+   destroys volatile evidence). Enumerate the affected endpoints in the RMM and hand the
+   tech the device deep link for each one; put isolated devices in maintenance mode so the
+   alert storm doesn't bury the queue. If host isolation isn't available, direct
+   physical/switch-level disconnection. Timestamp each isolation.
 3. Protect the backups immediately, before scoping: direct the tech to disconnect or lock
    backup repositories from the production network and disable backup-infrastructure
    credentials that domain accounts can reach — ransomware operators target backups first.
    Do NOT start any restore yet.
 4. Scope the blast radius: which hosts show encryption artifacts, which shares were touched,
    which accounts were active on affected hosts, and the earliest observed encryption
-   timestamp. search_tickets for prior alerts at this client in the preceding weeks (EDR
-   detections, unusual sign-ins, disabled tooling) — the intrusion usually predates the
-   encryption.
-5. Engage per the client's documented incident policy (search_itglue for their IR plan and
+   timestamp. Search for prior alerts at this client in the preceding weeks (EDR detections,
+   unusual sign-ins, disabled tooling) — the intrusion usually predates the encryption.
+5. Engage per the client's documented incident policy (check IT Glue for their IR plan and
    cyber-insurance carrier). Most policies require the carrier's approved IR firm to lead —
    engaging the wrong responder can void coverage. Management makes the engagement call; you
    package facts for it. Anything involving ransom payment, negotiation, or threat-actor
@@ -71,6 +73,6 @@ Guardrails — always:
 - Defensive writing in every client-facing word; "breach" only after confirmed system-level
   findings and management sign-off.
 - Degradation: without RMM tools, device enumeration and maintenance-mode are manual — direct
-  the tech and record what was done; without search_itglue, ask management for the client's
-  IR plan and carrier rather than assuming none exists.
+  the tech and record what was done; without IT Glue, ask management for the client's IR
+  plan and carrier rather than assuming none exists.
 ```

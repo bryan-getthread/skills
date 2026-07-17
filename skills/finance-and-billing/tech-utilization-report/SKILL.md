@@ -4,11 +4,15 @@ description: Leadership wants billable utilization per technician — logged bil
 category: Finance & Billing
 tools: [search_tickets, search_members]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Tech Utilization Report
 
 **When to use:** "What's our utilization by tech? / who has capacity?" / pricing, hiring, or capacity planning ("can we absorb this new client?") / a quarterly economics review of the bench.
+
+**Run it:** across the whole roster (or a team you name) for a period — run it manually (not a Flow; there's no schedule trigger).
 
 ## Prompt
 
@@ -18,15 +22,15 @@ available capacity — against role-appropriate targets. This is a leadership ec
 instrument for pricing, hiring, and workload decisions. (Billable Analysis slices the billable
 hours themselves; this skill divides them by capacity and compares to targets.)
 
-1. Confirm the period (default: last full month), the roster (search_members), each person's
-   capacity baseline (default 40h/week minus known PTO — ask; do not guess PTO), and the
-   role-aware targets. If leadership has no targets, propose the conventional bands and label
-   them conventions, not benchmarks: dedicated reactive tech 70-80%, escalation/senior 50-65%,
-   lead with management duties 30-50%, dispatcher/coordinator near 0% by design.
+1. Confirm the period (default: last full month), the roster (look up the members), each
+   person's capacity baseline (default 40h/week minus known PTO — ask; do not guess PTO), and
+   the role-aware targets. If leadership has no targets, propose the conventional bands and
+   label them conventions, not benchmarks: dedicated reactive tech 70-80%, escalation/senior
+   50-65%, lead with management duties 30-50%, dispatcher/coordinator near 0% by design.
 
-2. Pull time entries per tech via search_tickets for the period, split billable vs
-   non-billable as this desk marks them. Record caps — capped pulls understate utilization;
-   split by week or client until uncapped, or report floors.
+2. Read the time entries per tech for the period, split billable vs non-billable as this desk
+   marks them. Record caps — capped pulls understate utilization; split by week or client
+   until uncapped, or report floors.
 
 3. Compute per tech: billable hours, total logged hours, capacity, billable utilization, and
    logging coverage (total logged / capacity). LOW utilization with LOW logging coverage is a

@@ -4,18 +4,22 @@ description: Verify a tenant's emergency-access accounts actually work when ever
 category: M365 Administration
 tools: [search_tickets, search_knowledge_base, add_ticket_note, update_ticket, create_ticket, schedule_ticket, send_approval, web_search]
 connectors: [IT Glue, Hudu]
+scope: global
+flow: no
 ---
 
 # Break-Glass Account Audit
 
 **When to use:** A quarterly emergency-access audit for a managed tenant, before enabling or changing any Conditional Access policy (paired with conditional-access-review and security-defaults-vs-ca migrations), when nobody knows where a client's emergency admin credentials are, or after an incident or lockout where break-glass was (or should have been) used. A break-glass account is insurance that only pays out if it was maintained: excluded from every policy, credentials actually retrievable, alerts firing on use, and tested recently enough to trust. This audit verifies all four — because the discovery moment for a broken break-glass account is a tenant lockout.
 
+**Run it:** as an on-demand audit across the tenant's emergency-access accounts and every CA policy — you compile findings and build remediation tickets, a technician walks the policies and runs the test sign-in (not a Flow: no schedule trigger, and it needs a human at the console).
+
 ## Prompt
 
 ```
 You are preparing a break-glass account audit for a technician to execute. You compile findings and build remediation tickets; the tech walks the policies and runs the test sign-in. Never mark an account as verified on intention, and never invent audit results. Credentials never appear in tickets, notes, chat, email, or documentation — only the storage-location reference and custody procedure.
 
-1. Existence and construction. Verify two emergency-access accounts exist (one is a single point of failure), and each is: cloud-only (*.onmicrosoft.com — not federated, not synced from on-prem, so an AD or federation outage can't kill them), holding Global Administrator, not assigned to any individual's daily identity, and with licensing/naming per the MSP standard (search_knowledge_base / search_itglue for the documented standard — skip gracefully if absent). Missing or mis-built accounts → remediation tickets (create_ticket), not silent fixes.
+1. Existence and construction. Verify two emergency-access accounts exist (one is a single point of failure), and each is: cloud-only (*.onmicrosoft.com — not federated, not synced from on-prem, so an AD or federation outage can't kill them), holding Global Administrator, not assigned to any individual's daily identity, and with licensing/naming per the MSP standard (check the knowledge base and the client's documentation for the documented standard — skip gracefully if absent). Missing or mis-built accounts → raise remediation tickets, not silent fixes.
 
 2. Exclusion sweep — every policy, every time. Tech walks EVERY Conditional Access policy (enabled, report-only, and disabled) and confirms both accounts are excluded. One new policy without the exclusion defeats the whole arrangement — this sweep is why the audit runs before CA changes. Also verify the accounts are excluded from Identity Protection auto-remediation and any PIM requirement that would gate activation behind systems that may be down (their GA should be a standing assignment — the one legitimate permanent assignment; see entra-pim-requests). Never "fix" a missing CA exclusion by disabling the policy; add the exclusion through the normal change process, and treat the gap as a process finding (how did a policy ship without it?).
 
@@ -25,7 +29,7 @@ You are preparing a break-glass account audit for a technician to execute. You c
 
 5. The quarterly test — actually sign in. A controlled, announced test: retrieve credentials per procedure, sign in, confirm GA access works, confirm the alert fired, sign out, and re-seal/rotate per procedure. Announce the drill window to whoever monitors the alert so it is acknowledged, not ignored. An untracked casual login by whoever holds the envelope is itself a finding. A break-glass account that hasn't been tested within the cadence is unverified insurance — record the test date every time.
 
-6. Document and schedule. Document what/why/when/rollback via a plain-text note (add_ticket_note): both accounts verified (construction, exclusions with policy count checked, custody reference, alerting test result, drill result and date), findings with remediation tickets, and the next audit scheduled (schedule_ticket, quarterly). Update the client's break-glass procedure doc in IT Glue/Hudu if anything changed. Note that these accounts are exempt from stale-account cleanup and MFA-enforcement sweeps by design — ensure hygiene automations (see identity-mfa-health-check, stale-device-cleanup patterns) know to exclude them, and document why.
+6. Document and schedule. Document what/why/when/rollback with a plain-text note: both accounts verified (construction, exclusions with policy count checked, custody reference, alerting test result, drill result and date), findings with remediation tickets, and the next audit scheduled (quarterly). Update the client's break-glass procedure doc in the client's documentation if anything changed. Note that these accounts are exempt from stale-account cleanup and MFA-enforcement sweeps by design — ensure hygiene automations (see identity-mfa-health-check, stale-device-cleanup patterns) know to exclude them, and document why.
 
 When in doubt about an unexplained sign-in or a missing exclusion, do nothing and escalate per the client's security process before proceeding.
 ```

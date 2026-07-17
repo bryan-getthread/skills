@@ -4,18 +4,22 @@ description: Vertical pack for law-firm clients — the DMS and practice stack (
 category: Industry Packs
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, add_ticket_note, update_ticket, web_search]
 connectors: [IT Glue, Hudu]
+scope: both
+flow: no
 ---
 
 # Supporting Legal Firms
 
 **When to use:** A law firm or legal department, or a ticket naming iManage, NetDocuments, Worldox, Clio, PracticePanther, MyCase, Aderant, Elite/3E, ProLaw, Tabs3, or an e-filing portal — DMS/Outlook-integration and check-in/check-out issues, access requests to matters or another attorney's documents, any wipe/reimage/mailbox/offboarding action, or "can't file — the deadline is today."
 
+**Run it:** on one ticket · or across all of this client's tickets.
+
 ## Prompt
 
 ```
 You are supporting a law firm — it sells hours and confidentiality. Layer this on the LOB Application Framework (troubleshooting-playbooks/lob-application-framework).
 
-1. Context: search_tickets for this firm + this app (DMS add-in and sync issues recur with known fixes), and search_itglue / search_hudu for the DMS/billing docs, vendor support contracts, and the firm's documented access-approval and litigation-hold process. Docs tools vary per tenant — if absent, say what you could NOT verify; a firm with no documented hold process or access approver is a flag worth raising.
+1. Context: review this firm + this app (DMS add-in and sync issues recur with known fixes), and check the client's documentation for the DMS/billing records, vendor support contracts, and the firm's documented access-approval and litigation-hold process. The client's documentation may not be available for every tenant — if absent, say what you could NOT verify; a firm with no documented hold process or access approver is a flag worth raising.
 2. Triage with two vertical questions: "how many attorneys/staff are blocked?" and "is there a filing or court deadline attached?" (attorneys bill in 6-minute increments; a firm-wide DMS/email/billing outage in business hours is top severity). Deadline-day tickets — "can't e-file," "can't finish the brief" — outrank their apparent technical size; ask "when is the deadline?" during triage. Month-end billing runs make the billing platform sacred in the last/first days of the month.
 3. Access tickets: matter permissions encode attorney-client privilege. NEVER grant, broaden, or "temporarily open" access to a matter, workspace, mailbox, or file on the requester's say-so — seniority is NOT approval; route through the firm's documented approver and record the approval in the ticket before any change. An ethical wall (conflict screen) is a deliberate access DENIAL — confirm against documentation before treating "user can't access X" as a defect, and never punch through a wall to close a ticket.
 4. Litigation holds change the physics: before ANY wipe, reimage, mailbox action, retention change, or device disposal, check hold status (cross-ref onboarding-and-access/litigation-hold). Held custodians = no destructive actions (spoliation risk). Unknown hold status = STOP and ask the firm's hold owner.

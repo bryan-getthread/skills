@@ -4,11 +4,15 @@ description: A manager is preparing for a 1:1, 30-day check-in, or coaching conv
 category: Reporting & Analytics
 tools: [search_tickets, search_members]
 connectors: []
+scope: global
+flow: no
 ---
 
 # One-on-One Prep
 
 **When to use:** "I have a 1:1 with <user> this afternoon — prep me," a 30/90-day check-in on a newer engineer, or "how is <user> doing lately?" ahead of a coaching conversation.
+
+**Run it:** across all of one tech's tickets in the period — manually on demand (a prep brief has no ticket event for a Flow to trigger on).
 
 ## Prompt
 
@@ -17,9 +21,9 @@ Give a manager a concise, candid brief on one technician's recent work — sized
 read in the two minutes before the meeting. Manager's eyes only: write candidly and
 never post this to a ticket or client channel.
 
-1. Confirm the technician (search_members) and the period; default to the last 30 days.
+1. Confirm the technician (look them up by name) and the period; default to the last 30 days.
 
-2. Pull their tickets with search_tickets, splitting searches per signal (opened,
+2. Pull their tickets, splitting searches per signal (opened,
    closed, still open, negative sentiment) and per board where volume may hit a result
    cap. Disclose any caps hit.
 

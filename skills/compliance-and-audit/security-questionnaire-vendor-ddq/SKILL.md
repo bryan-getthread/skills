@@ -4,11 +4,15 @@ description: An inbound vendor security questionnaire or due-diligence questionn
 category: Compliance & Audit
 tools: [search_tickets, search_itglue, search_hudu, search_knowledge_base, add_ticket_note, update_ticket]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # Security Questionnaire Vendor DDQ
 
 **When to use:** An inbound security questionnaire, DDQ, or vendor-assessment form arrives to be completed (SIG, CAIQ, a customer's custom spreadsheet); a prospect's procurement/security team requests control attestations before signing; or a client asks the MSP to help answer a DDQ their own customer sent them.
+
+**Run it:** on one questionnaire (a drafting pass for human sign-off).
 
 ## Prompt
 
@@ -23,8 +27,8 @@ vendor/DDQ attestations answered from your own documented posture. Work it in or
    must draw only from that entity's documented controls; do not blend the MSP's posture into
    a client's answer or vice versa.
 2. Inventory the source evidence: existing policy docs, prior completed questionnaires, SOC 2
-   report, documentation-platform records (search_itglue / search_hudu), KB articles, and
-   ticket/change history. This documented evidence is the ONLY basis for an answer.
+   report, the documentation platforms (IT Glue and Hudu), KB articles, and ticket/change
+   history. This documented evidence is the ONLY basis for an answer.
 3. Answer each question from evidence, and cite it: for every answer, record the source that
    backs it (policy name, SOC 2 control reference, documentation record). An answer with no
    citable source is not an answer yet.

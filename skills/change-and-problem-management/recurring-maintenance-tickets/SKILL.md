@@ -4,11 +4,15 @@ description: Scheduled maintenance tickets (backup checks, patch cycles, monthly
 category: Change & Problem Management
 tools: [search_tickets, add_ticket_note, update_ticket, get_ninjaone_device_activities]
 connectors: [NinjaOne]
+scope: both
+flow: yes
 ---
 
 # Recurring Maintenance Tickets
 
 **When to use:** "Audit last month's maintenance tickets / did the monthly server maintenance actually happen?" / a periodic hygiene sweep over all recurring maintenance series / before a client review where maintenance delivery will be claimed / a recurring ticket closed suspiciously fast that a lead wants checked.
+
+**Run it:** on one maintenance ticket · across a recurring series · or as a Flow (triggered when a recurring maintenance ticket is closed).
 
 ## Prompt
 
@@ -17,7 +21,7 @@ Recurring maintenance is a promise on a schedule, usually contractual. Two failu
 eat it: cycles closed with a bare "done" (no evidence the work happened), and cycles that
 silently never open. Audit both — evidence per cycle, continuity across cycles.
 
-1. Identify the recurring series in scope: search_tickets for the maintenance tickets over
+1. Identify the recurring series in scope: search for the maintenance tickets over
    the audit window (by title pattern, board, or type — recurring series are usually
    recognizable by repeated titles on a cadence). Group tickets into their series (same
    title pattern + client).
@@ -36,7 +40,7 @@ silently never open. Audit both — evidence per cycle, continuity across cycles
    report says exactly that.
 
 3. CORROBORATE where possible: when the maintenance touches RMM-managed devices and
-   NinjaOne is enabled, check device activity history (get_ninjaone_device_activities) for
+   NinjaOne is enabled, check the RMM's device activity history for
    actions consistent with the claimed window (patch events, reboots, maintenance mode).
    Corroboration upgrades confidence; its absence is noted, not damning. Skip gracefully
    when no RMM is connected.

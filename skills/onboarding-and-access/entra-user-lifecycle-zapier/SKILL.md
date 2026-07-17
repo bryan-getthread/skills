@@ -4,11 +4,15 @@ description: Create, update, or disable Microsoft Entra ID users through the Zap
 category: Onboarding & Access
 tools: [search_tickets, search_contacts, search_clients, search_knowledge_base, search_itglue, add_ticket_note, send_approval, log_time_entry]
 connectors: [Zapier: Microsoft Entra ID]
+scope: single
+flow: no
 ---
 
 # Entra User Lifecycle (Zapier)
 
 **When to use:** "Create the Entra account for <user> per the onboarding ticket" / "disable <user> in Entra now — offboarding effective today" / "update <user>'s title/department/manager in Entra" — an onboarding, offboarding, or user-update ticket where the desk executes Entra changes itself via the Zapier connector.
+
+**Run it:** on one ticket — every write is approval-gated; not eligible for unattended Flow writes.
 
 ## Prompt
 
@@ -17,17 +21,17 @@ Execute Entra ID account writes from this ticket via Zapier — with the one har
 constraint designed in: Zapier's Entra integration can write users but cannot SEARCH
 them, so identity must be fully resolved on the PSA/ticket side before any write.
 
-1. Confirm the connector: the acting member must have the Zapier MCP connected with the
+1. Confirm the connector: the acting member must have the Zapier connector with the
    Microsoft Entra ID app authorized for this client's tenant. If unavailable, degrade
    to producing the exact change specification as a plain-text note for a tech to
    execute manually — never pretend the write happened.
 
 2. Resolve identity from the PSA side FIRST. There is no user search in Entra via
-   Zapier. Build the full identity from search_contacts, search_clients, the ticket,
-   and client documentation (search_itglue / search_knowledge_base): exact UPN/email,
-   display name, and for updates/disables the unambiguous existing user identifier. If
-   the UPN cannot be established with certainty, STOP and ask — a write against a
-   guessed UPN can hit the wrong person or create a duplicate.
+   Zapier. Build the full identity by looking up the contact and client, reading the
+   ticket, and checking client documentation (IT Glue / knowledge base): exact
+   UPN/email, display name, and for updates/disables the unambiguous existing user
+   identifier. If the UPN cannot be established with certainty, STOP and ask — a write
+   against a guessed UPN can hit the wrong person or create a duplicate.
 
 3. For creates, also resolve: naming convention (from client docs), department, title,
    manager, usage location (required before licensing), and the role-based groups per
@@ -36,9 +40,10 @@ them, so identity must be fully resolved on the PSA/ticket side before any write
    was PSA-side only.
 
 4. Approval gate before EVERY write, no exceptions: post the exact intended change
-   (action, target UPN, fields/values or groups) and get sign-off via send_approval or
-   the client's documented channel. One approval may cover one ticket's coherent change
-   set, but never carries over to a second user or a later ticket.
+   (action, target UPN, fields/values or groups) and get sign-off (send an approval
+   request, or use the client's documented channel). One approval may cover one
+   ticket's coherent change set, but never carries over to a second user or a later
+   ticket.
 
 5. Execute via the corresponding Zapier action — `Zapier: Microsoft Entra ID
    "Create User"`, `"Update User"`, `"Disable User"`, or the group-membership actions —
@@ -50,7 +55,7 @@ them, so identity must be fully resolved on the PSA/ticket side before any write
 6. Verify by EFFECT, not by search (there is none): confirm through an observable
    outcome — user appears in the licensing/billing view, sign-in behaves as expected,
    or a tech eyeballs the portal. Then post a plain-text note: action, target, approver,
-   Zapier action used, verification method, outcome. Log time (log_time_entry).
+   Zapier action used, verification method, outcome. Log time.
 
 Guardrails: no Entra write without the approval gate — including "small" updates. Never
 guess a UPN; unresolvable identity = no write. Never Delete User as part of routine
@@ -60,9 +65,7 @@ secure transfer only, change forced at next sign-in, never in the ticket or emai
 any Zapier error or ambiguous result, do not retry blind — report the exact state as
 unknown and have it verified before a second attempt (a retried create makes
 duplicates). Do not write cloud-side attributes on objects mastered in on-prem AD.
-
-Running unattended (Flows): not eligible for unattended writes. If invoked from a Flow,
-produce only the proposed change specification as a plain-text note ending "PENDING
-APPROVAL — no changes made"; a human approves and triggers execution. When identity
-resolution fails, output nothing and stop.
+Never eligible for unattended writes: if this is somehow invoked from a Flow, produce
+only the proposed change specification as a plain-text note ending "PENDING APPROVAL —
+no changes made," and let a human approve and trigger execution.
 ```

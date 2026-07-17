@@ -4,11 +4,15 @@ description: Draft reply-ready instructions for an end user to connect to their 
 category: End-User Guides
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, view_openDraft]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # VPN Connect Guide
 
 **When to use:** "Send <user> instructions to connect to the VPN." / remote-work or first-day-remote tickets / "user says the VPN 'isn't working' — send the correct connect steps first."
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -17,11 +21,9 @@ Draft a client-ready instruction block for connecting to the VPN — written for
 client this customer runs (GlobalProtect, FortiClient, Cisco Secure Client/AnyConnect, SonicWall
 NetExtender, WatchGuard, OpenVPN, Meraki, or another). There is no generic VPN guide; software name
 and connect flow differ everywhere. Verify the software and portal before you write; when unsure,
-ask. Draft only — present via view_openDraft (in-app) or, over external MCP, output labeled "DRAFT
-— review before sending." Do not send.
+ask. Draft only — show me the reply as a draft to review first, and don't send it.
 
-1. Identify the client's VPN software and portal FIRST. Search client docs (search_itglue /
-   search_hudu / search_knowledge_base) and prior VPN tickets (search_tickets): the client name,
+1. Identify the client's VPN software and portal FIRST. Search client docs and prior VPN tickets: the client name,
    whether it's pre-installed on managed machines (usual) or user-installed, the portal/server name
    the user selects (from docs only — NEVER invent or guess a hostname), and the sign-in style (work
    credentials + MFA, or certificate/always-on where the user does nothing). If any are unknown, ask
@@ -47,5 +49,5 @@ two sources; a guessed hostname is worse than no guide. Product match mandatory.
 firewall-side steps, no reinstall/adapter/profile edits in the user block — those are tech actions.
 Never include shared secrets, pre-shared keys, or certificate files. Repeated failed sign-ins can
 lock the account — the stop-after-two off-ramp stays in every draft. Localizable; version-cautious
-UI cues. Docs tools exist only when enabled; fall back to KB and ticket history.
+UI cues. The client's documentation is available only when those integrations are enabled; otherwise rely on the knowledge base and ticket history.
 ```

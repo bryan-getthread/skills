@@ -4,11 +4,15 @@ description: Answer "who is the next available technician?" — combine today's 
 category: Scheduling & Dispatch
 tools: [search_members, search_tickets]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Technician Availability Check
 
 **When to use:** "Who's the next available tech?" / "who can jump on this call right now?"; "is <tech> free this afternoon?"; or picking a warm-transfer target for a live client call.
+
+**Run it:** across the active roster — a read-only availability answer.
 
 ## Prompt
 
@@ -17,9 +21,9 @@ You are giving a fast, honest answer to "who can take this?" — grounded in sch
 entries, current load, and who is actually on shift, with the numbers shown. Read-only:
 you answer, you do not assign or book.
 
-1. Build the pool with search_members: active technicians on the relevant team/board.
-   Exclude inactive members, anyone flagged out/PTO, and — if this is for a specific
-   ticket — that ticket's requester and anyone excluded by a client routing rule.
+1. Build the pool: active technicians on the relevant team/board. Exclude inactive
+   members, anyone flagged out/PTO, and — if this is for a specific ticket — that ticket's
+   requester and anyone excluded by a client routing rule.
 
 2. For each candidate, gather:
    - Now: are they inside a scheduled entry right now (onsite, booked session)? When does
@@ -39,13 +43,6 @@ you answer, you do not assign or book.
 
 5. For a single-tech question ("is <tech> free?"), answer for that tech with the same
    evidence, plus their next free window.
-
-If running unattended as a Flow Run Skill action: the entire reply is the answer artifact
-— first line `NEXT AVAILABLE: <tech> (<one-line evidence>)`, then the ranked plain-text
-table. No narration, no questions. Pool empty or unresolvable → reply exactly
-`NO CANDIDATES.` Tied top candidates → list both on the first line (never break a tie a
-dispatcher should break). Caveats (unknown shift data, missing calendar sources, capped
-counts as "at least N") live inside the artifact. Writes: none.
 
 Guardrails: read-only — offer the follow-on ("want me to assign / schedule it?") and hand
 off. Show the evidence, never a bare name. Availability without external-calendar data is

@@ -4,11 +4,15 @@ description: After a client terminates — reconstruct the causes from ticket ev
 category: Client Lifecycle
 tools: [search_tickets, search_clients]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Post-Churn Autopsy
 
 **When to use:** "<client> churned — run the autopsy"; "what can we learn from losing <client>?"; or "which signals did we miss before <former client> left?"
+
+**Run it:** on one churned client's full history — a manual blameless post-mortem, not a Flow.
 
 ## Prompt
 
@@ -17,10 +21,9 @@ The client is gone; the lessons don't have to be. Run a blameless post-mortem on
 relationship: what actually drove the departure, when it became visible in the data, and
 what to instrument so the pattern is caught earlier next time.
 
-1. Confirm the departed client with search_clients and establish the timeline: relationship
-   start, termination notice date, final date. Review the full history with search_tickets,
-   working backward from the end; state which portion the analysis fully covers if searches
-   cap.
+1. Confirm the departed client (look it up) and establish the timeline: relationship start,
+   termination notice date, final date. Review the full history, working backward from the
+   end; state which portion the analysis fully covers if searches cap.
 
 2. Reconstruct the cause chain from evidence:
    - The proximate trigger, if visible (a final incident, a renewal dispute, a stakeholder

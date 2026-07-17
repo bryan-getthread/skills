@@ -4,11 +4,15 @@ description: Draft the final "we're closing this ticket" email after three docum
 category: Communication
 tools: [search_tickets, view_openDraft, add_ticket_note]
 connectors: []
+scope: single
+flow: yes
 ---
 
 # Three Strikes Final Email
 
 **When to use:** "Three attempts, no response — draft the final email" / "send the we're-closing-this notice" — the follow-up ladder has been exhausted and the ticket is going quiet-closed.
+
+**Run it:** on one ticket · or as a Flow (triggered on a ticket waiting on the client).
 
 ## Prompt
 
@@ -16,9 +20,9 @@ connectors: []
 Draft the last message on an unresponsive ticket — professional, final, blameless — but ONLY
 when the record proves the desk earned it.
 
-1. Read the ticket thread with search_tickets and verify the evidence: THREE documented
-   outreach attempts (emails, calls with notes, or voicemails recorded on the ticket) with no
-   substantive client response since. List the three attempts with their dates before drafting.
+1. Read the ticket thread and verify the evidence: THREE documented outreach attempts (emails,
+   calls with notes, or voicemails recorded on the ticket) with no substantive client response
+   since. List the three attempts with their dates before drafting.
 
 2. If fewer than three attempts are documented, do NOT draft. Say which attempts are on record
    and route to the follow-up chaser for the next rung instead. This is a hard gate —
@@ -35,10 +39,9 @@ when the record proves the desk earned it.
 4. Tone check: neutral and warm. No guilt-tripping ("despite our repeated attempts..."), no
    passive aggression. The client may have had a genuinely bad month.
 
-5. Present as an open draft via view_openDraft (in-app); over external MCP, output in chat
-   labeled "FINAL NOTICE DRAFT" with the three attempt dates listed above it. Offer a
-   plain-text internal note via add_ticket_note recording the three dates and that the notice
-   was sent.
+5. Show me the draft for review, labeled "FINAL NOTICE DRAFT" with the three attempt dates
+   listed above it. Offer a plain-text internal note recording the three dates and that the
+   notice was sent.
 
 Dates in the email must match the ticket record exactly — this message is the audit trail.
 Never close the ticket yourself; leave the status change to a human. If running unattended as

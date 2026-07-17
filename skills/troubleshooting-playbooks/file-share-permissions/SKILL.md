@@ -4,11 +4,15 @@ description: Diagnose "access denied" and wrong-access tickets on file shares �
 category: Troubleshooting Playbooks
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, add_ticket_note, web_search]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # File Share Permissions
 
 **When to use:** A user gets Access Denied on a share or folder (or suddenly lost access); a user can see a folder they shouldn't (over-permission report); a new hire can't reach what their role should reach; or after a migration/reorg a team's access is inconsistent.
+
+**Run it:** on the one ticket you're working — a tech ladders the permissions hands-on and confirms authorization; not unattended.
 
 ## Prompt
 
@@ -17,9 +21,9 @@ Effective access is the intersection of layers — share permissions, NTFS ACLs,
 
 Work it in this order:
 
-1. History first. Run search_tickets for this share/folder and this user. A migration, folder move, or "cleanup" ticket in the window is the likely cause (moves within a volume carry ACLs; copies inherit the destination's — a folder that moved keeps stale permissions). A recent similar per-user fix suggests the group design is being bypassed — hold that for the fix step.
+1. History first. Search past tickets for this share/folder and this user. A migration, folder move, or "cleanup" ticket in the window is the likely cause (moves within a volume carry ACLs; copies inherit the destination's — a folder that moved keeps stale permissions). A recent similar per-user fix suggests the group design is being bypassed — hold that for the fix step.
 
-2. Docs second. Run search_itglue / search_hudu / search_knowledge_base for the permission design: the group-naming convention (role groups -> resource groups -> ACLs), which groups grant what on this share, and where the data lives (on-prem NTFS, or SharePoint/cloud — cloud shares follow the sharing-model of that platform; this NTFS ladder applies to SMB shares). IT Glue/Hudu coverage varies per tenant — note when no permission design is documented; that absence is itself the follow-up.
+2. Docs second. Check the client's documentation and knowledge base for the permission design: the group-naming convention (role groups -> resource groups -> ACLs), which groups grant what on this share, and where the data lives (on-prem NTFS, or SharePoint/cloud — cloud shares follow the sharing-model of that platform; this NTFS ladder applies to SMB shares). Documentation coverage varies per tenant — note when no permission design is documented; that absence is itself the follow-up.
 
 3. Pin the failing operation. Read vs write vs delete vs traverse — "can open the folder but not save" and "can't see the folder at all" are different layers. Get the exact path and the exact error.
 
@@ -35,5 +39,5 @@ Work it in this order:
 
 Guardrails to hold throughout: never grant Everyone/Authenticated Users/Full Control to make a ticket go away — least privilege through the documented group design, and flag it when no design exists. Authorization before access: membership adds to sensitive resources require the data owner or manager sign-off per client practice — the ticket request alone is not consent. Deny entries, inheritance flips, and bulk ACL changes are high-blast-radius: review what changes downstream before recommending, and prefer the narrowest change that fixes the pinned operation. Remember token freshness — verify after logoff/logon before concluding a correct fix "didn't work" and stacking more grants. No remote execution — ACL reads and changes are performed by the tech; you supply the ladder and gates. Over-permission discoveries are security findings: report them to the client contact per practice rather than silently tightening (business processes may depend on the hole — but it gets decided, not ignored).
 
-Verify and note. The user performs the exact failing operation after a fresh logon. Post a plain-text PSA note (no markdown, no emojis, raw URLs not markdown links): layer identified, effective-access evidence, fix (which group, whose authorization), any findings (Deny entries, broken inheritance, broad grants) flagged for follow-up.
+Verify and note. The user performs the exact failing operation after a fresh logon. Leave a plain-text internal note (no markdown, no emojis, raw URLs not markdown links): layer identified, effective-access evidence, fix (which group, whose authorization), any findings (Deny entries, broken inheritance, broad grants) flagged for follow-up.
 ```

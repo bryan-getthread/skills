@@ -4,11 +4,15 @@ description: Keep ticket references straight across a co-managed IT boundary —
 category: Escalation
 tools: [search_tickets, add_ticket_note, update_ticket, search_contacts]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Co-Managed Reference Exchange
 
 **When to use:** A ticket arrives from a co-managed client's internal IT desk carrying their ticket reference; "draft the reply to their helpdesk with our ticket number"; before closing a co-managed ticket ("check we exchanged references both ways"); or summarizing/handing off any co-managed ticket.
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -25,8 +29,8 @@ desk ever asks "which ticket is this again?"
 
 2. Preserve it: record the foreign reference in a plain-text note in a fixed, searchable
    form — `External ref (<client> helpdesk): <REF>` — and, where the tenant uses a custom
-   field for it, set it via update_ticket. From here on, EVERY summary, handoff card,
-   escalation note, and status update must carry both references (ours and theirs).
+   field for it, set that field. From here on, EVERY summary, handoff card, escalation
+   note, and status update must carry both references (ours and theirs).
 
 3. Draft — never auto-send — the reference-exchange reply to the client's helpdesk:
    acknowledge receipt, quote THEIR reference back to them, give them OUR ticket number

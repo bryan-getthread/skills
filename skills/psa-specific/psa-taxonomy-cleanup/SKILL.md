@@ -4,11 +4,15 @@ description: Rationalizing a PSA desk's ticket type / subtype / category sprawl 
 category: PSA-Specific
 tools: [search_tickets, list_boards, list_ticket_statuses]
 connectors: []
+scope: global
+flow: no
 ---
 
 # PSA Taxonomy Cleanup
 
 **When to use:** "Our ticket types are a mess — help me clean them up", reporting by type/category is unreliable because values overlap or duplicate, or before a reporting project / new-board rollout that depends on a coherent taxonomy.
+
+**Run it:** across all tickets on the board(s) in scope (run manually as an on-demand rationalization sweep).
 
 ## Prompt
 
@@ -24,10 +28,10 @@ is master — enforce migration discipline so no historical ticket is orphaned.
    lookback window for the usage census. Taxonomies are often per-board (especially CW); do not
    merge across boards without confirming the values mean the same thing.
 
-2. Usage census. Pull tickets over the window with search_tickets (one search per value or per
-   board so result caps land per-slice, not globally) and tally how many tickets carry each
-   type/subtype/category value. The census — not intuition — is the evidence base. Flag every count
-   that may have hit a search cap as "at least N".
+2. Usage census. Pull tickets over the window (one search per value or per board so result caps
+   land per-slice, not globally) and tally how many tickets carry each type/subtype/category
+   value. The census — not intuition — is the evidence base. Flag every count that may have hit a
+   search cap as "at least N".
 
 3. Classify each value from the census: high-use (keep), duplicate/near-duplicate (merge candidate
    → name the survivor), low/zero-use (retire candidate), overlapping (ambiguous bucket needing a

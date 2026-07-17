@@ -4,11 +4,15 @@ description: For desks synced to Autotask — read the client's Autotask contrac
 category: PSA-Specific
 tools: [search_tickets, search_clients, update_ticket, add_ticket_note]
 connectors: []
+scope: both
+flow: yes
 ---
 
 # Autotask Contract Categories
 
 **When to use:** Triage on an Autotask desk with mixed contract types ("is this covered?"), work on a block-hour or retainer client where burn-down matters, or before a tech sinks hours into a T&M client without expectations set.
+
+**Run it:** on one ticket · across all new/untriaged tickets · or as a Flow (triggered when a ticket is created).
 
 ## Prompt
 
@@ -19,8 +23,8 @@ type changes what a ticket costs the client: Recurring Service (covered), Block 
 Retainer (covered until the balance exhausts), Time & Materials (billable), Fixed Price, Per
 Ticket.
 
-1. Re-fetch the ticket with search_tickets and confirm the client with search_clients — a
-   coverage read against the wrong company is worse than no read.
+1. Re-read the ticket and confirm the client — a coverage read against the wrong company is
+   worse than no read.
 
 2. Determine the contract in effect. Evidence order: contract fields visible on the synced
    ticket/company; the desk's documented client-contract sheet; comparable recent tickets for
@@ -35,8 +39,8 @@ Ticket.
    - T&M: billable — expectations should be set with the client before significant work.
    - Fixed Price / Per Ticket: flag scope carefully; extra work erodes the fixed fee.
 
-4. Label the ticket per desk convention with update_ticket and record the coverage reasoning
-   in a plain-text add_ticket_note.
+4. Label the ticket per desk convention and record the coverage reasoning in a plain-text
+   internal note.
 
 5. For hour-based contracts, add the burn-down note convention: each significant work
    session's note states hours consumed this ticket so the client-facing balance story stays
@@ -47,7 +51,7 @@ Ticket.
    owner.
 
 Always: never guess coverage — low confidence → label "coverage unverified" and ask; a wrong
-covered/billable call is a revenue or trust incident. Re-fetch full ticket detail before
+covered/billable call is a revenue or trust incident. Re-read full ticket detail before
 labeling; contract association and company can be corrected Autotask-side at any time. Burn-
 down figures must come from evidence (logged time on tickets you can see) — never state or
 estimate the contract's remaining balance unless it is actually visible; report "balance not

@@ -4,11 +4,15 @@ description: Build the employee-termination intake intent with an authorized-req
 category: Automation & Flows
 tools: [list_intents, get_intent, create_intent, update_intent, set_variation_arguments, set_variation_replies, update_variation, search_tickets]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Offboarding Intent Design
 
 **When to use:** "Build an intent for employee terminations" / "offboarding requests come in vague and from random people — tighten the intake" / Intent Mining flagged user departures / disable-account requests as high volume.
+
+**Run it:** as a build task on request — you're designing a customer-facing intent, not acting on tickets, so there's no Flow trigger for this one.
 
 ## Prompt
 
@@ -16,7 +20,7 @@ connectors: []
 Build an offboarding intent that captures a complete, authorized termination request —
 including whether it is an immediate/for-cause lockout — and routes it to the offboarding
 workflow. The intent never disables anything itself; it produces a verified, dispatch-ready
-ticket. Intent tools are admin-only; if absent, output the complete written spec for an admin.
+ticket. Building intents is admin-only; if you can't, output the complete written spec for an admin.
 
 Design the intent to this spec:
 - Trigger phrases (adapt to real ticket language): "employee leaving", "offboard a user",
@@ -46,13 +50,13 @@ Design the intent to this spec:
   lockout time-to-dispatch.
 
 Steps:
-1. list_intents — check for an existing offboarding/termination intent; prefer updating.
-2. search_tickets for recent departure tickets; mine trigger phrasing and every clarifying
+1. List the existing intents — check for an existing offboarding/termination intent; prefer updating.
+2. Search recent departure tickets; mine trigger phrasing and every clarifying
    question techs asked (candidate arguments), and note who typically submits these.
 3. Draft the full spec with the authorized-requester rule and immediate-lockout branch
    explicit. Test plan: 5 should-match, 3–5 should-not (incl. a group-removal near-miss and a
    "reset password for leaving employee" case that must still hand off). Show before any write.
-4. On explicit confirmation: create_intent then the variation tools.
+4. On explicit confirmation: create the intent, then set its variations.
 5. Report what was created, restate the test plan, recommend activation after tests pass. Do
    NOT activate.
 

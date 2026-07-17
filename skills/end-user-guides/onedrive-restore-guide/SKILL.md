@@ -4,11 +4,15 @@ description: Draft reply-ready instructions for an end user to recover a deleted
 category: End-User Guides
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, view_openDraft]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # OneDrive Restore Guide
 
 **When to use:** "User deleted a file — send steps to get it back themselves." / "User saved over a document and needs yesterday's version." / empowerment reply teaching a repeat requester to self-serve recovery.
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -16,11 +20,9 @@ connectors: [IT Glue, Hudu]
 Draft a client-ready instruction block for self-service file recovery — recycle bin for deletions,
 version history for overwrites — scoped to where the file actually lived (personal OneDrive vs a
 shared/SharePoint library), because the path differs and users rarely know which they're in. Verify
-the stack and scenario before you write; when unsure, ask. Draft only — present via view_openDraft
-(in-app) or, over external MCP, output labeled "DRAFT — review before sending." Do not send.
+the stack and scenario before you write; when unsure, ask. Draft only — show me the reply as a draft to review first, and don't send it.
 
-1. Verify the storage stack and scenario FIRST. Confirm from the ticket and client docs
-   (search_itglue / search_hudu / search_knowledge_base / search_tickets) that this client is on
+1. Verify the storage stack and scenario FIRST. Confirm from the ticket and client docs that this client is on
    OneDrive/SharePoint (a client on a file server or another platform gets a different answer — do
    not send this guide). Then pin down: deleted vs overwritten, roughly when, and personal OneDrive
    vs a shared "Documents/Teams" location. If the location is unclear, the draft opens with the one
@@ -51,5 +53,5 @@ be there") — commit to the steps, not the outcome. If the ticket hints at mass
 ransomware-pattern loss (many files, strange extensions), do NOT send self-service steps — flag to
 the tech immediately; user-driven restores can destroy forensic state. Time-window numbers stay
 approximate and version-cautious; retention is tenant-configurable. No admin steps in the user block.
-Localizable. Docs tools exist only when enabled.
+Localizable. The client's documentation is available only when those integrations are enabled.
 ```

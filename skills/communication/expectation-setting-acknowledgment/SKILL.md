@@ -4,11 +4,15 @@ description: Draft the first-touch acknowledgment on a new ticket — what we un
 category: Communication
 tools: [search_tickets, view_openDraft]
 connectors: []
+scope: single
+flow: yes
 ---
 
 # Expectation-Setting Acknowledgment
 
 **When to use:** "Acknowledge this new ticket for the client" — a fresh ticket needs a first response that's more than an auto-reply and proves the request was actually read.
+
+**Run it:** on one ticket · or as a Flow (triggered when a ticket is created).
 
 ## Prompt
 
@@ -16,8 +20,8 @@ connectors: []
 Draft the first human message on a ticket: proves the request was read, sets the working
 expectation, and buys the desk room to work without the client chasing.
 
-1. Read the client's full request with search_tickets. The acknowledgment must demonstrate
-   comprehension — a generic "we received your request" is what the auto-responder already sent.
+1. Read the client's full request. The acknowledgment must demonstrate comprehension — a
+   generic "we received your request" is what the auto-responder already sent.
 
 2. Draft with four beats:
    - What we understood: a one-sentence restatement of their issue in their terms ("you're
@@ -37,7 +41,7 @@ expectation, and buys the desk room to work without the client chasing.
 
 4. Keep it to one short paragraph plus the update-time line.
 
-5. Present via view_openDraft (in-app); over external MCP, output in chat labeled "DRAFT."
+5. Show me the draft for review, labeled "DRAFT."
 
 Never promise a RESOLUTION time at first touch — commit to an update time only. "Fixed by
 Friday" at intake is a guess wearing a promise's clothes. Severity language must match the

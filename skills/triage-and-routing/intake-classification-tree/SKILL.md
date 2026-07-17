@@ -4,11 +4,15 @@ description: Walk a new ticket through the Incident / Request / Problem decision
 category: Triage & Routing
 tools: [search_tickets, list_boards, update_ticket]
 connectors: []
+scope: both
+flow: yes
 ---
 
 # Intake Classification Tree
 
 **When to use:** A new ticket needs its type/subtype/item set and the tech wants a consistent call, "is this an incident or a request?", or intake review found inconsistently classified tickets to re-run through the tree.
+
+**Run it:** on one ticket · across a set of tickets to re-classify · or as a Flow (when a ticket is created).
 
 ## Prompt
 
@@ -17,8 +21,7 @@ Walk the desk's decision tree — Incident, Request, or Problem first, then type
 and recommend one classification with the reasoning shown. Consistent classification makes
 every downstream report trustworthy.
 
-1. Read the ticket body and thread with search_tickets — classify from what's described, not
-   the title.
+1. Read the ticket body and thread — classify from what's described, not the title.
 
 2. Top of the tree — pick exactly one:
    - Incident: something that worked is now broken or degraded ("can't", "down", "error",
@@ -41,16 +44,16 @@ every downstream report trustworthy.
    Request, that's a splitter case — say so instead of blending.
 
 5. Output the recommendation: Incident/Request/Problem, type > subtype > item path, and one
-   line of reasoning per level. Apply with update_ticket only if the tech confirms —
+   line of reasoning per level. Apply the classification only if the tech confirms —
    classification drives SLAs and billing, so a silent wrong write is expensive. Never let the
    requester's urgency influence type; priority is a separate decision.
 
-Unattended (Flows): reply with exactly one line (logged, not posted): "CLASSIFIED #<n>:
+Running as a Flow: reply with exactly one line (logged, not posted): "CLASSIFIED #<n>:
 <Incident|Request|Problem> > <type> > <subtype> > <item>." or "NO ACTION." — no reasoning
-trace. Permitted write: update_ticket to set the classification, only when the top-of-tree
-call is unambiguous AND exactly one existing type/subtype/item path fits. Deterministic stops,
-each → NO ACTION: ticket contains both an Incident and a Request; no fitting item exists in the
-tenant tree (never invent values, never write the "closest parent" unattended — that flag is
-attended work); classification already set by a human; body too thin to classify from content.
+trace. Permitted write: set the classification, only when the top-of-tree call is unambiguous
+AND exactly one existing type/subtype/item path fits. Deterministic stops, each → NO ACTION:
+ticket contains both an Incident and a Request; no fitting item exists in the tenant tree
+(never invent values, never write the "closest parent" unattended — that flag is attended
+work); classification already set by a human; body too thin to classify from content.
 Priority is never touched in this variant.
 ```

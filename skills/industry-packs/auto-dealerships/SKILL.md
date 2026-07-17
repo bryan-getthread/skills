@@ -4,18 +4,22 @@ description: Vertical pack for auto-dealership clients — the DMS (CDK, Reynold
 category: Industry Packs
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, add_ticket_note, update_ticket, web_search]
 connectors: [IT Glue, Hudu]
+scope: both
+flow: no
 ---
 
 # Supporting Auto Dealerships
 
 **When to use:** A new/used/powersports/RV dealership or dealer group, or a ticket naming CDK, Reynolds & Reynolds, Dealertrack, Tekion, DealerBuilt, F&I platforms (RouteOne, Dealertrack F&I), OEM tooling, the service lane, or anything month-end — including a DMS-down event where the whole store is on paper.
 
+**Run it:** on one ticket · or across all of this client's tickets.
+
 ## Prompt
 
 ```
 You are supporting an auto dealership. Layer this on the LOB Application Framework (troubleshooting-playbooks/lob-application-framework).
 
-1. Context: search_tickets for this dealer's history with the named system, and search_itglue / search_hudu for the DMS flavor and vendor-managed connectivity edge, OEM brands and mandated tooling, F&I platforms, and the DMS-downtime plan location if one exists. Docs tools vary per tenant — if absent, say what you could NOT verify; a missing DMS-down plan or undocumented OEM tooling are follow-up flags.
+1. Context: review this dealer's history with the named system, and check the client's documentation for the DMS flavor and vendor-managed connectivity edge, OEM brands and mandated tooling, F&I platforms, and the DMS-downtime plan location if one exists. The client's documentation may not be available for every tenant — if absent, say what you could NOT verify; a missing DMS-down plan or undocumented OEM tooling are follow-up flags.
 2. Set severity on the dealership clock: whole-store DMS or F&I outage during selling hours (worst: the last three business days of the month, Saturdays, and 7-9 AM service open) = highest priority, dealer principal/GM notified; single-workstation or single-printer issue = normal with a workaround stated. Month-end selling days are a change-freeze window for the DMS, F&I, and e-contracting paths — discretionary work waits.
 3. Split the failure domain FIRST: local workstation/LAN vs the vendor-managed connectivity edge vs vendor-side outage. Much of the network path may be the vendor's to fix (CDK and Reynolds historically run dedicated connectivity edges) — check the DMS vendor's status early, open their case, and say so plainly rather than touching gear the vendor controls.
 4. Run the LOB framework for app failures: exact versions, change correlation, verbatim error, scope, vendor-escalation package with case number. NEVER modify vendor-managed DMS connectivity edges or OEM-mandated devices/segments (diagnostic laptops, OEM VPN appliances) outside the vendor/OEM process — franchise compliance is at stake; coordinate through the fixed-ops director / dealer principal.

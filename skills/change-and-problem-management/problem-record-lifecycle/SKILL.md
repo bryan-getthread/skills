@@ -4,11 +4,15 @@ description: Drive a problem record through its states — opened from an incide
 category: Change & Problem Management
 tools: [search_tickets, update_ticket, add_ticket_note, list_ticket_statuses, create_ticket]
 connectors: []
+scope: both
+flow: no
 ---
 
 # Problem Record Lifecycle
 
 **When to use:** "Where are we on this problem ticket? / advance the problem record for <recurring issue>" / a periodic problem-board review / an investigation concluded and the problem needs to transition / a problem with no movement in 30+ days that needs a decision.
+
+**Run it:** on one problem record · or as a problem-board review sweep.
 
 ## Prompt
 
@@ -17,12 +21,12 @@ Move this problem through explicit states with evidence at each transition, and 
 only two legitimate endings: fixed and verified, or risk accepted by someone with the
 authority to accept it. A problem stuck in "open" forever is worse than none.
 
-1. Locate the problem record (search_tickets on the problem board). If the pattern has no
+1. Locate the problem record (search the problem board). If the pattern has no
    record yet, hand creation to the problem-ticket-creation skill — this one owns
    everything after.
 
 2. Determine the current state and validate against the desk's status set
-   (list_ticket_statuses; map to nearest equivalents):
+   (map to nearest equivalents):
    - OPEN / INVESTIGATING: root cause unknown; active investigation with an owner.
    - KNOWN ERROR: root cause identified and documented, permanent fix not yet in place,
      workaround documented (feeds the known-error-database).
@@ -41,12 +45,12 @@ authority to accept it. A problem stuck in "open" forever is worse than none.
      ACCEPTED RISK: cost of recurrence vs. cost of fix stated, and the named acceptor
      recorded — silence from management is not acceptance.
    - FIX IN PROGRESS → CLOSED: FIXED: change completed (change-completion-verification
-     standard) plus a recurrence check — search_tickets for matching incidents since
+     standard) plus a recurrence check — search for matching incidents since
      deployment; zero recurrence over the verification window (default 30 days) closes it.
 
 4. On every transition, post a plain-text state-change note: from-state → to-state, the
    evidence satisfying the exit criteria, and the next action with owner. Update the
-   ticket status (update_ticket).
+   ticket status.
 
 5. On CLOSED: FIXED — retire the corresponding known-error entry and its workaround so
    techs stop applying a workaround to a solved problem. On CLOSED: ACCEPTED RISK — the
@@ -65,6 +69,6 @@ met on evidence, and recommends — humans own the accept-risk decision and fix
 prioritization. Never mark FIXED on deployment alone; verification means observed
 non-recurrence, and the note says what window was checked. A KNOWN ERROR whose incident
 count is climbing should reopen the accept-vs-fix conversation — surface it. One problem per
-signature; if investigation reveals two distinct root causes, split (create_ticket) and
+signature; if investigation reveals two distinct root causes, split and
 cross-link.
 ```

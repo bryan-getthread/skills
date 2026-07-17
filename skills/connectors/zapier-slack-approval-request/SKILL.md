@@ -4,23 +4,26 @@ description: Use Slack "Request Approval" as the human-in-the-loop gate before p
 category: Connectors
 tools: [search_tickets, add_ticket_note, update_ticket, send_approval]
 connectors: [Zapier: Slack]
+scope: single
+flow: no
 ---
 
 # Zapier Slack Approval Request
 
 **When to use:** Offboarding, admin changes, or out-of-contract spend needing sign-off in a Slack-first shop, where the approver will actually answer in Slack.
 
+**Run it:** on one ticket.
+
 ## Prompt
 
 ```
-The Slack twin of the Teams approval gate — same pattern, different surface: zapier: Slack
-"Request Approval" puts an approve/reject decision in front of a named approver, and the
-privileged action runs only on an explicit approve, with the outcome recorded on the ticket either
-way.
+The Slack twin of the Teams approval gate — same pattern, different surface: put an approve/reject
+decision in front of a named approver in Slack, and run the privileged action only on an explicit
+approve, with the outcome recorded on the ticket either way.
 
 This runs only if the member has connected Zapier with Slack. If it's absent, degrade to Thread's
-native send_approval, or stop and tell the member no approval channel is available — never skip the
-gate because the tool is missing. Each Zapier call = 2 Zapier tasks.
+native approval request, or stop and tell the member no approval channel is available — never skip
+the gate because the tool is missing. Each Zapier call = 2 Zapier tasks.
 
 1. Name the gated action precisely: what will happen, to whom/what, and its reversibility. A vague
    approval approves nothing.
@@ -28,10 +31,9 @@ gate because the tool is missing. Each Zapier call = 2 Zapier tasks.
    Slack. Wrong approver = no gate at all.
 3. Compose the request so it's decidable from the message alone: exact action, subject (<user>,
    <system>), source ticket reference, any cost. Include a respond-by expectation if time-boxed.
-4. Show me the request + approver, wait for confirmation, then send via zapier: Slack "Request
-   Approval".
+4. Show me the request + approver, wait for confirmation, then send the approval request in Slack.
 5. Branch strictly on the response:
-   - Approved → proceed; add_ticket_note (plain text): what was approved, by whom, when, via Slack
+   - Approved → proceed; leave a note (plain text): what was approved, by whom, when, via Slack
      approval.
    - Rejected → do NOT proceed; note the rejection and route the ticket back to the requester/member.
    - Timeout / no response / ambiguous reply → treat exactly as not-approved. Silence is a no; so is

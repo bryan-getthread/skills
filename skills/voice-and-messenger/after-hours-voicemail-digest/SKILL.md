@@ -4,11 +4,15 @@ description: Build the morning digest of overnight voicemails and after-hours ca
 category: Voice & Messenger
 tools: [search_tickets, list_boards, add_ticket_note]
 connectors: []
+scope: global
+flow: no
 ---
 
 # After-Hours Voicemail Digest
 
 **When to use:** "What came in on the after-hours line last night?" / a scheduled morning run before the desk opens / the Monday edition covering the whole weekend.
+
+**Run it:** across all overnight voice/voicemail tickets in the window — run it manually or from an external scheduler (not a Flow; Flows fire on ticket events, they can't schedule a digest).
 
 ## Prompt
 
@@ -20,9 +24,9 @@ deadlines, then the routine remainder.
 1. Establish the window: close of business yesterday (or Friday, on Mondays) to now, in the
    desk's timezone.
 
-2. Gather with search_tickets: voice- and voicemail-sourced tickets created or updated in the
-   window. Split searches per board/source if needed for cap honesty, and say so if any
-   search may have hit a result cap.
+2. Read the voice- and voicemail-sourced tickets created or updated in the window. Split
+   searches per board/source if needed for cap honesty, and say so if any search may have hit
+   a result cap.
 
 3. Exclude tickets Dead-Air Call Filter closed as junk, but count them in one summary line
    ("6 junk calls filtered") — a junk spike is itself worth a human glance.
@@ -42,8 +46,8 @@ deadlines, then the routine remainder.
 6. Every line carries its ticket number. Flag repeat callers (same number/contact more than
    once in the window) — repetition overnight usually means something is down.
 
-7. Output the digest in chat (or as the run's post). Offer, don't assume, to add a "surfaced
-   in morning digest" note to the urgent tickets via add_ticket_note.
+7. Output the digest in chat (or as the run's post). Offer, don't assume, to leave a
+   "surfaced in morning digest" note on the urgent tickets.
 
 Guardrails: the digest reports; it does not act — no priority changes, no assignments, no
 callbacks marked done. Urgency must trace to stated words in the source ticket; the digest
@@ -53,12 +57,11 @@ invented deadlines — a callback with no stated time gets the desk's standard S
 such. Keep client/caller references to what recipients need (name + client); no full
 transcripts.
 
-Running this: Thread Flows can't schedule or time-trigger a digest (they fire on ticket
-events, no cron/age/elapsed-time trigger). Run it manually on demand or from an external
-scheduler that invokes Super Magic; a Flow can only reach it via Run Skill on a qualifying
-event. When it runs unattended, output deterministic sections in the order above, plain text,
-every line with a ticket number; empty sections stated as "none" rather than omitted. If zero
-real items: post the one-line "No after-hours voice activity in window. <n> junk calls
-filtered." — never stay silent, absence of the digest must not be ambiguous with absence of
-calls. Never write to tickets in unattended mode; the digest post is the entire output.
+Running it unattended: run it manually on demand or from an external scheduler that invokes
+Super Magic; a Flow can only reach it via Run Skill on a qualifying ticket event. When it runs
+unattended, output deterministic sections in the order above, plain text, every line with a
+ticket number; empty sections stated as "none" rather than omitted. If zero real items: post
+the one-line "No after-hours voice activity in window. <n> junk calls filtered." — never stay
+silent, absence of the digest must not be ambiguous with absence of calls. Never write to
+tickets in unattended mode; the digest post is the entire output.
 ```

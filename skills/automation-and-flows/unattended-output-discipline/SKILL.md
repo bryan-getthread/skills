@@ -4,11 +4,15 @@ description: BASE skill — the output contract for any prompt or skill that run
 category: Automation & Flows
 tools: []
 connectors: []
+scope: both
+flow: yes
 ---
 
 # Unattended Output Discipline
 
 **When to use:** Writing or reviewing any agent prompt a flow executes automatically; adding an unattended variant to another skill; or debugging a flow whose notes are full of "Sure! Here's the summary you asked for…".
+
+**Run it:** on one ticket · across a set · or as a Flow — it's a base output contract you fold into any skill's prompt.
 
 ## Prompt
 

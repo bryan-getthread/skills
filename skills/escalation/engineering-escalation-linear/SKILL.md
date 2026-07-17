@@ -4,11 +4,15 @@ description: Escalate a ticket (or a recurring ticket pattern) to the engineerin
 category: Escalation
 tools: [search_tickets, add_ticket_note, list_issues, get_issue, create_issue, create_comment, list_teams, list_issue_labels]
 connectors: [Linear]
+scope: single
+flow: no
 ---
 
 # Engineering Escalation to Linear
 
 **When to use:** "This is a product bug — escalate it to engineering" / "create a Linear issue for this ticket"; the desk keeps seeing the same defect across clients and wants it raised once with the full blast radius; or a recurring-issue review concluded the real fix is a code change.
+
+**Run it:** on one ticket (or a cluster pointing at the same defect).
 
 ## Prompt
 
@@ -18,27 +22,27 @@ You are turning a ticket — or a cluster of tickets pointing at the same produc
 when the fix ships.
 
 1. Confirm the Linear connector is available (member-authenticated — the current member
-   must have connected Linear; if the tools are absent, stop and output the ready-to-file
-   issue text instead).
+   must have connected Linear; if it's absent, stop and output the ready-to-file issue
+   text instead).
 
 2. Establish the defect from the source ticket: symptom, exact error text, affected
    product/component, version, and steps to reproduce as documented.
 
-3. Measure the blast radius: search_tickets for other open and recent tickets with the
-   same signature (split searches per signal; disclose caps). Count DISTINCT affected
-   clients and total tickets — this is the demand evidence engineering prioritizes on.
+3. Measure the blast radius: search other open and recent tickets with the same signature
+   (split searches per signal; disclose caps). Count DISTINCT affected clients and total
+   tickets — this is the demand evidence engineering prioritizes on.
 
-4. Dedupe before creating: list_issues / get_issue for an existing Linear issue matching
-   this defect. If one exists, add the new evidence and client count as a create_comment
-   on it instead of filing a duplicate, and use that issue for the cross-references below.
+4. Dedupe before creating: search Linear for an existing issue matching this defect. If one
+   exists, add the new evidence and client count as a comment on it instead of filing a
+   duplicate, and use that issue for the cross-references below.
 
-5. Otherwise create_issue on the agreed team (confirm via list_teams if ambiguous)
+5. Otherwise create a Linear issue on the agreed team (confirm the team if ambiguous)
    containing: one-line summary in engineering terms; environment and version; repro
    steps; verbatim error text; affected-client count and ticket count with ticket
    references; business impact; and the current workaround if any. Apply an agreed label
-   (list_issue_labels, e.g. "from-service-desk") when one exists.
+   (e.g. "from-service-desk") when one exists.
 
-6. Cross-reference both ways: post a plain-text internal note on each linked ticket with
+6. Cross-reference both ways: leave a plain-text internal note on each linked ticket with
    the Linear issue identifier ("Escalated to engineering as <issue-id>"), and make sure
    the Linear issue lists every ticket reference. Both sides must be findable from the
    other.

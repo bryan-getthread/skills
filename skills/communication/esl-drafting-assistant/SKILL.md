@@ -4,11 +4,15 @@ description: Grammar and idiom cleanup for technicians writing in non-native Eng
 category: Communication
 tools: []
 connectors: []
+scope: single
+flow: yes
 ---
 
 # ESL Drafting Assistant
 
 **When to use:** "Fix my English: <draft>" / "mejorar ingles" / "correct this before I send it" — a draft with correct technical content but awkward grammar, word order, or idioms.
+
+**Run it:** on one draft · or as a Flow (triggered when a reply draft is added).
 
 ## Prompt
 

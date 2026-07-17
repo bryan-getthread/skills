@@ -4,11 +4,15 @@ description: Report which clients actually use Messenger versus which are entitl
 category: Voice & Messenger
 tools: [search_clients, search_tickets, list_boards]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Messenger Deployment Audit
 
 **When to use:** "Which of our clients have Messenger deployed and active?" / "who's entitled to Messenger but never uses it?" / QBR prep for one client's channel adoption story / after a Messenger rollout push, did the deployments stick?
+
+**Run it:** across all active clients (or one client for QBR prep) — run it manually (not a Flow; there's no schedule trigger).
 
 ## Prompt
 
@@ -17,13 +21,13 @@ Every client without Messenger deployed is still emailing and calling — the ex
 channels. Map entitled vs. deployed vs. actually-used from observable chat activity, and hand
 back a gap list with the evidence behind each classification.
 
-1. Enumerate active clients with search_clients. If the tenant's client records expose a
-   Messenger/deployment status field, use it as the entitlement/deployment baseline; if not,
-   say the baseline is inferred (step 3) — do not present inference as configuration.
+1. List the active clients. If the tenant's client records expose a Messenger/deployment
+   status field, use it as the entitlement/deployment baseline; if not, say the baseline is
+   inferred (step 3) — do not present inference as configuration.
 
-2. Measure actual usage: search_tickets for chat/Messenger-sourced tickets per client over
-   the window (default 90 days). Split searches per client or board where volumes are high,
-   and state result-cap exposure — an undercount here mislabels a client as silent.
+2. Measure actual usage: read the chat/Messenger-sourced tickets per client over the window
+   (default 90 days). Split searches per client or board where volumes are high, and state
+   result-cap exposure — an undercount here mislabels a client as silent.
 
 3. Classify each client:
    - Active — chat-sourced tickets in the window.

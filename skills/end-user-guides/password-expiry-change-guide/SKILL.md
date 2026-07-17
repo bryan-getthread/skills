@@ -4,11 +4,15 @@ description: Draft reply-ready instructions for an end user to change a password
 category: End-User Guides
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, view_openDraft]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # Password Expiry Change Guide
 
 **When to use:** "User got the 'your password expires in N days' warning — send them how to change it." / "User's password expired and can't sign in — send change steps." / proactive nudge from an expiry report.
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -16,11 +20,9 @@ connectors: [IT Glue, Hudu]
 Draft a client-ready instruction block for an end user whose password is expiring or has expired,
 walking them through changing it themselves the way this client's environment expects — before a
 lockout turns a two-minute self-service into a help-desk call. Verify the environment before you
-write; when unsure, ask, don't guess. Draft only — present via view_openDraft (in-app) or, over
-external MCP, output labeled "DRAFT — review before sending." Do not send.
+write; when unsure, ask, don't guess. Draft only — show me the reply as a draft to review first, and don't send it.
 
-1. Identify the client's change path FIRST. Check client docs (search_itglue / search_hudu /
-   search_knowledge_base) and prior tickets (search_tickets): where passwords change for this shop
+1. Identify the client's change path FIRST. Check client docs and prior tickets: where passwords change for this shop
    — the Windows Ctrl+Alt+Del "Change a password" screen (domain-joined), the Microsoft/Entra
    change-password page, a self-service portal, or the sign-in "your password has expired" flow.
    Note the client's actual complexity and password-history rules if documented. If the path is
@@ -49,6 +51,6 @@ Guardrails: never include, ask for, or propose a specific password in the email.
 steps (resetting from the console, unlocking, changing expiry policy) in the user block — those are
 tech actions. A domain Ctrl+Alt+Del walkthrough sent to a cloud-only user fails at step one — path
 match is mandatory. Keep phrasing localizable and UI cues version-cautious. Never invent a policy or
-a URL. Docs tools (search_itglue/search_hudu) exist only when enabled; fall back to KB and ticket
+a URL. Docs tools by checking the client's documentation exist only when enabled; fall back to KB and ticket
 history.
 ```

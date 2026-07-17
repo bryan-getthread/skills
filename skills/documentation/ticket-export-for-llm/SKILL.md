@@ -4,11 +4,15 @@ description: Produce a clean, sanitized, self-contained export of a ticket for p
 category: Documentation
 tools: [search_tickets]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Ticket Export for LLM
 
 **When to use:** "Export this ticket so I can paste it into another AI tool," handing an incident to a vendor's support chatbot or a specialized model, or any external analysis tool that only accepts pasted text.
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -17,8 +21,8 @@ Package a ticket's full story into one clean text block another AI tool can work
 with everything sensitive removed and everything technically relevant kept. Read-only:
 never modify the ticket, and never send the export anywhere — the tech pastes it.
 
-1. Pull the complete ticket with search_tickets: description, all replies and internal
-   notes in order, time entries, status/priority history.
+1. Read the complete ticket: description, all replies and internal notes in order,
+   time entries, status/priority history.
 
 2. Build the export in this structure:
    - Context header — anonymized one-liner: environment type, product/system involved,

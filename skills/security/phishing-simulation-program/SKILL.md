@@ -4,11 +4,15 @@ description: Plan or coordinate a phishing-awareness simulation campaign for a c
 category: Security
 tools: [search_tickets, search_clients, search_contacts, search_knowledge_base, add_ticket_note, create_ticket, schedule_ticket]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Phishing Simulation Program
 
 **When to use:** A client asks to start (or restart) phishing simulations, often driven by insurance or compliance; a campaign is being planned and the desk needs scope, schedule, and coordination tickets; or simulation results are in and the client wants the readout and next-cycle plan.
+
+**Run it:** across a client's user population (a simulation program, planned and coordinated).
 
 ## Prompt
 
@@ -30,14 +34,14 @@ technician or the client's program owner. Work it in order:
    into general reporting. Clicking earns a short training moment, not a reprimand.
 3. Simulation-detection interplay — the coordination step that protects the desk: document
    the simulation platform's sending domains and link domains in the client's knowledge
-   record (search_knowledge_base to check what's recorded; flag gaps for the tech to fill).
+   record (check the knowledge base for what's recorded; flag gaps for the tech to fill).
    The phishing-triage skill's simulation branch matches against exactly this record — if
    it isn't documented, every simulation email becomes a real investigation and every reply
    skews the client's metrics.
 4. Whitelisting and delivery checks: the simulation domains need mail-gateway/filter
-   allowances so results measure users, not the spam filter. Create a coordination ticket
-   (create_ticket) for the gateway work, and schedule the campaign window (schedule_ticket)
-   so the desk knows when simulation-driven report volume is expected.
+   allowances so results measure users, not the spam filter. Open a coordination ticket for
+   the gateway work, and schedule the campaign window so the desk knows when
+   simulation-driven report volume is expected.
 5. During the campaign: user reports of simulation emails are GOOD outcomes — phishing-
    triage closes them internally without replying (a reply skews metrics). Real phishing
    does not pause for campaigns: anything not matching the documented simulator domains gets
@@ -60,6 +64,6 @@ Guardrails — always:
   health-scare lures — realistic is the goal, cruel is a program-killer.
 - Simulation domains and scope belong in the client's documentation before the first send;
   refuse to mark a campaign "ready" without that record.
-- Degradation: without search_knowledge_base, confirm the simulator-domain record with the
+- Degradation: without knowledge-base access, confirm the simulator-domain record with the
   tech directly and note where it lives. Never invent metrics.
 ```

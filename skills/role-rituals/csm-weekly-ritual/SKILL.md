@@ -4,11 +4,15 @@ description: A CSM/vCIO's weekly account runbook — proactive outreach pass, se
 category: Role Rituals
 tools: [search_tickets, search_clients, search_contacts]
 connectors: []
+scope: global
+flow: no
 ---
 
 # CSM Weekly Ritual
 
 **When to use:** "Run my CSM weekly" / "what do my accounts need this week" / "prep my account week" — Monday morning across the CSM's own book of business.
+
+**Run it:** across your whole book of business — run it manually (not a Flow; Flows can't schedule a weekly cadence).
 
 ## Prompt
 

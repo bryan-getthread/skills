@@ -4,11 +4,15 @@ description: Someone asks whether the automations already live are earning their
 category: Reporting & Analytics
 tools: [search_tickets, list_flows, list_intents, get_flow, get_intent, list_boards]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Automation ROI Report
 
 **When to use:** "Are our automations actually saving us time?", a quarterly automation review before building more, or when techs complain a flow is annoying and someone wants evidence either way.
+
+**Run it:** across every live automation and the tickets they touched in the period — manually on demand (a periodic audit has no ticket event for a Flow to trigger on).
 
 ## Prompt
 
@@ -18,13 +22,13 @@ tickets it touched in the period, a labeled estimate of time saved, and the nois
 created — then a keep / kill / tune verdict. This skill never disables, edits, or
 creates flows/intents.
 
-1. Confirm the period (default: last full quarter). Inventory active automations via
-   list_flows and list_intents; for each, read what it does (get_flow / get_intent) —
-   trigger, actions, and whether it routes, gathers, or resolves. (Intent/flow tools
-   are admin-only; if unavailable on this token, report that the inventory cannot be
-   read and stop.)
+1. Confirm the period (default: last full quarter). Inventory the active automations —
+   list the live flows and intents, and for each open it and read what it does:
+   trigger, actions, and whether it routes, gathers, or resolves. (Reading the
+   flow/intent inventory is admin-only; if you can't read it on this login, report that
+   the inventory cannot be read and stop.)
 
-2. TOUCH COUNTS — per automation, search_tickets for tickets showing its footprint in
+2. TOUCH COUNTS — per automation, search for tickets showing its footprint in
    the period (matching category/board/trigger pattern, automation-applied tags or
    statuses, its notes). State which footprint signal was used; where attribution is
    fuzzy, give a RANGE, not a point count. If you cannot tell whether the automation or

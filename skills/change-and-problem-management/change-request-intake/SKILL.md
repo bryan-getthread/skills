@@ -4,11 +4,15 @@ description: A change ask arrived as prose ("can we upgrade the firewall this we
 category: Change & Problem Management
 tools: [search_tickets, search_knowledge_base, create_ticket, update_ticket, add_ticket_note, list_boards, list_ticket_statuses]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Change Request Intake
 
 **When to use:** "Client wants us to migrate their file server — write this up as a change" / a change ask buried in an incident thread ("while you're in there, can you also...") / normalizing a batch of informal requests before the weekly review / a tech about to make a change with no change record yet.
+
+**Run it:** on one change request.
 
 ## Prompt
 
@@ -33,15 +37,14 @@ and later audit. Intake normalizes; it does NOT approve, schedule, or execute.
    - Risk: what could go wrong and who feels it, as an initial sketch (full scoring is
      change-risk-assessment's job).
 
-3. Check for an existing change record covering the same ask (search_tickets on the
-   change board) — extend it rather than creating a duplicate.
+3. Check for an existing change record covering the same ask (search the change board)
+   — extend it rather than creating a duplicate.
 
-4. Create or update the change ticket on the change board (list_boards; create_ticket /
-   update_ticket) with the structured fields as a plain-text body. Title pattern:
+4. Create or update the change ticket on the change board with the structured fields as a plain-text body. Title pattern:
    "CHANGE: <system/component> — <one-line what>".
 
 5. Route to the approval track by an initial read of risk and precedent:
-   - Matches a documented pre-approved standard change (search_knowledge_base for the
+   - Matches a documented pre-approved standard change (check the client's documentation for the
      desk's standard-change list) → note as a standard-change candidate; still
      confirmed in change-risk-assessment.
    - Anything else → normal track: hand to the pre-approval completeness gate, then

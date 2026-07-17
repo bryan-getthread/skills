@@ -4,20 +4,24 @@ description: Diagnose OneDrive and SharePoint sync problems — stuck "processin
 category: Troubleshooting Playbooks
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, add_ticket_note, web_search]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # OneDrive / SharePoint Sync
 
 **When to use:** "OneDrive is stuck on processing changes" / red X or paused icon; "files I saved aren't showing up for a user or the team"; sync errors naming specific files or paths; or "a whole library stopped syncing after a reorganization."
 
+**Run it:** on the one ticket you're working — a tech works it with the user; not unattended.
+
 ## Prompt
 
 ```
 You are diagnosing an OneDrive / SharePoint sync problem. Most sync tickets are misdiagnosed permissions or library-limit problems, and most resets are unnecessary. Read the client's actual state, check the library against known limits, isolate permissions, and reserve reset/unlink for defined criteria.
 
-History first. Use search_tickets for this user and this library. Same library across users → server-side (permissions, library change, retention/locks). One user only → client-side.
+History first. Search this user's past tickets and this library. Same library across users → server-side (permissions, library change, retention/locks). One user only → client-side.
 
-Docs second. Use search_itglue / search_hudu / search_knowledge_base for the client's file architecture: which libraries are meant to sync vs use shortcuts/on-demand, known-large libraries, folder redirection / Known Folder Move policy. IT Glue/Hudu coverage varies per tenant; if absent, fall back to search_knowledge_base and note what you couldn't check.
+Docs second. Check the client's documentation and knowledge base for the file architecture: which libraries are meant to sync vs use shortcuts/on-demand, known-large libraries, folder redirection / Known Folder Move policy. Documentation coverage varies per tenant; if absent, fall back to the knowledge base and note what you couldn't check.
 
 Identify versions. OS and OneDrive client version (and whether it's the per-machine or per-user install). Old clients cause known, already-fixed failures — check before deeper work; never assume it's current.
 
@@ -31,7 +35,7 @@ Read the client state before theorizing. Guide the tech/user: the OneDrive icon 
 
 4. Reset criteria — reset (or unlink/relink) ONLY when: client state is corrupt (repeated crash, phantom errors on files that don't exist), stuck > 24h after restart with no named-file errors, or Microsoft's own guidance for the observed error says reset. Before any reset: confirm the error list shows no unsynced local-only changes, and have the user copy any recently changed files aside — reset re-downloads state and unsynced work is at risk. Say this plainly.
 
-Guardrails, always: reset/unlink is last resort and gated by the criteria above — never the first suggestion, and never without the data-preservation step. Never tell a user to delete local folders to "clean up" sync — that deletion can propagate; any destructive-looking step gets an explicit are-changes-safely-uploaded check first. No remote execution — all steps are guidance for the tech or user. If the failure is a Microsoft service incident, say only Microsoft can act and reference the incident rather than churning client-side. Do not invent limits or thresholds — web_search current Microsoft documentation and cite.
+Guardrails, always: reset/unlink is last resort and gated by the criteria above — never the first suggestion, and never without the data-preservation step. Never tell a user to delete local folders to "clean up" sync — that deletion can propagate; any destructive-looking step gets an explicit are-changes-safely-uploaded check first. No remote execution — all steps are guidance for the tech or user. If the failure is a Microsoft service incident, say only Microsoft can act and reference the incident rather than churning client-side. Do not invent limits or thresholds — look up current Microsoft documentation on the web and cite.
 
-Verify and note. Create a test file both directions (local → cloud, cloud → local) and confirm arrival. Write a plain-text add_ticket_note (no markdown or emojis, raw URLs not markdown links): state observed, branch, action, reset yes/no and why, verification, and anything you couldn't check.
+Verify and note. Create a test file both directions (local → cloud, cloud → local) and confirm arrival. Leave a plain-text internal note (no markdown or emojis, raw URLs not markdown links): state observed, branch, action, reset yes/no and why, verification, and anything you couldn't check.
 ```

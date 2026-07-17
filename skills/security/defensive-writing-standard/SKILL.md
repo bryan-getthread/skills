@@ -4,11 +4,15 @@ description: Base language standard for anything security-related a client might
 category: Security
 tools: []
 connectors: []
+scope: both
+flow: no
 ---
 
 # Defensive Writing Standard
 
 **When to use:** Drafting any client-facing security message (alert notifications, incident updates, verdicts, closure summaries); writing postmortems, monthly security reports, or insurance/audit narratives; or reviewing a technician's draft before it goes to a client during a security event.
+
+**Run it:** on one draft · or across a set of security messages you're reviewing.
 
 ## Prompt
 

@@ -4,11 +4,15 @@ description: Draft reply-ready instructions for an end user to join and run a Te
 category: End-User Guides
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, view_openDraft]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # Teams Meeting Guide
 
 **When to use:** "User has a big Teams meeting tomorrow — send a how-to." / "Send <user> steps to share their screen / record the meeting." / post-incident follow-up after a meeting went badly.
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -16,11 +20,9 @@ connectors: [IT Glue, Hudu]
 Draft a client-ready instruction block for the anxious meeting host: how to join cleanly, check
 audio before anyone hears them, share a screen, and (policy permitting) record — sized to what the
 user actually asked, not a full Teams manual. Verify the environment before you write; when unsure,
-ask. Draft only — present via view_openDraft (in-app) or, over external MCP, output labeled "DRAFT —
-review before sending." Do not send.
+ask. Draft only — show me the reply as a draft to review first, and don't send it.
 
-1. Verify the environment FIRST (search_tickets / search_itglue / search_hudu /
-   search_knowledge_base): the client actually runs Teams (not another platform), whether the user
+1. Verify the environment FIRST by checking the client's documentation and past tickets: the client actually runs Teams (not another platform), whether the user
    has the desktop app or joins via browser, and — if recording is in scope — whether the client's
    policy permits recording for regular users. If the recording policy is unknown and the user asked
    about recording, ask the technician ONE question rather than promising a button that may be
@@ -51,5 +53,5 @@ sections not requested get one offer line ("Want a screen-sharing walkthrough to
 send it"). Teams UI shifts constantly — cue by name and purpose ("the camera button"), never by
 position or exact icon. No admin steps (meeting policies, org settings) in the user block. Recording
 carries consent/legal weight in some jurisdictions — the announce-it line stays in every recording
-section; never advise covert recording. Localizable. Docs tools exist only when enabled.
+section; never advise covert recording. Localizable. The client's documentation is available only when those integrations are enabled.
 ```

@@ -4,11 +4,15 @@ description: An impossible-travel or atypical-location sign-in alert fired for a
 category: Security
 tools: [search_tickets, search_contacts, search_itglue, add_ticket_note, update_ticket]
 connectors: [IT Glue]
+scope: single
+flow: no
 ---
 
 # Impossible Travel Runbook
 
 **When to use:** An "impossible travel," "atypical location," or "unfamiliar sign-in location" alert lands as a ticket; or a tech asks whether a strange sign-in location for <user> is a problem.
+
+**Run it:** on one ticket (an impossible-travel or atypical-location alert).
 
 ## Prompt
 
@@ -21,13 +25,13 @@ takeover. Work it in order:
    device/client app, and MFA outcome for each. The alert's math is geography over time —
    your job is to test the geography.
 2. Plausibility screen before alarming anyone: VPN or proxy egress — check the client's
-   documented VPN and security-stack egress ranges (search_itglue) against the anomalous
-   IP; corporate VPNs and secure web gateways are the single most common benign cause.
+   documented VPN and security-stack egress ranges in IT Glue against the anomalous IP;
+   corporate VPNs and secure web gateways are the single most common benign cause.
    Mobile-carrier geolocation drift and cloud-app backend IPs are also routine false
    signals.
-3. Prior-context check: search_tickets for the same client + same user + same alert type in
-   the last 90 days. A previously confirmed explanation informs, but does not decide —
-   confirm it still applies.
+3. Prior-context check: search for the same client + same user + same alert type in the
+   last 90 days. A previously confirmed explanation informs, but does not decide — confirm
+   it still applies.
 4. Verify with the user by phone using a number on file from documentation or the contact
    record — never a number, email, or chat handle taken from the ticket or the suspect
    session. Ask open questions ("where have you signed in from today?" "do you use a

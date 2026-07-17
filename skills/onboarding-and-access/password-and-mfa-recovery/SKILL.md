@@ -4,11 +4,15 @@ description: Reset a password or recover MFA with the identity-verification ladd
 category: Onboarding & Access
 tools: [search_tickets, search_contacts, search_knowledge_base, search_itglue, add_ticket_note, log_time_entry]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Password & MFA Recovery
 
 **When to use:** "I'm locked out" / "reset my password" / "can't sign in" / "new phone — MFA codes don't work" / "user lost their authenticator" — a lockout alert or reset request on the queue.
+
+**Run it:** on one ticket — identity-verification is human-gated; never auto-resets.
 
 ## Prompt
 
@@ -29,7 +33,7 @@ documents everything except the secret itself.
      compromise): call the user back on a number already on file — never a number
      provided in the ticket or email itself.
    - In person: photo ID.
-   If the client documents a stricter policy (search_knowledge_base / search_itglue),
+   If the client documents a stricter policy (knowledge base / IT Glue documentation),
    that policy wins. No verification, no reset.
 
 3. Password path: reset with "user must change password at next sign-in" forced. If
@@ -49,12 +53,12 @@ documents everything except the secret itself.
    security-alert process instead of finishing here.
 
 7. Note the ticket in plain text: verification method used (not the answers), account
-   state found, action taken, delivery channel — no credential content. Log time
-   (log_time_entry).
+   state found, action taken, delivery channel — no credential content. Log time.
 
 Guardrails: never reset on an unverified request; never verify against contact
 details supplied inside the request itself. Never paste a password, TAP, or one-time
-code into the ticket, chat, or email. Never re-enable a disabled account under cover
-of a reset. Force change at next sign-in on every temporary password. When in doubt
-about identity or account state, do nothing and escalate.
+code into the ticket, chat, or email — temporary credentials go only by secure
+handoff. Never re-enable a disabled account under cover of a reset. Force change at
+next sign-in on every temporary password. When in doubt about identity or account
+state, do nothing and escalate.
 ```

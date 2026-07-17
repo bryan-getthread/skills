@@ -4,11 +4,15 @@ description: "Recommend an easy ticket that just came in" — surface quick-win 
 category: Personal Productivity
 tools: [search_tickets, search_members]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Easy Win Finder
 
 **When to use:** "Recommend an easy ticket that just came in" / "I've got 20 minutes — what can I knock out?" / "give me a quick win" / a new tech asking "what's a good starter ticket right now?" — quick wins matched to *this* tech's own close history, for the gap between meetings or momentum after a brutal ticket.
+
+**Run it:** across the boards you work (or your own queue) — run it manually (not a Flow; there's no schedule trigger).
 
 ## Prompt
 
@@ -21,9 +25,9 @@ specifically, based on what I've closed before. Easy is relative; make it easy f
    the "just came in" case. If the search may be capped, say so; don't present a
    partial scan as the whole queue.
 
-2. Build my skill fingerprint from my own history — search_tickets on my recently
-   closed work — to find the categories I close fast and clean. This is what makes a
-   ticket easy for me. (search_members if you need to resolve who I am.)
+2. Build my skill fingerprint from my own history — read my recently closed work — to
+   find the categories I close fast and clean. This is what makes a ticket easy for me.
+   (Look me up if you need to resolve who I am.)
 
 3. Score candidates for quick-win-ness:
    - Category matches my fast-close fingerprint.

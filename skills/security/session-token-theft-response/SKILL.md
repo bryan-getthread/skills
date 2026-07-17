@@ -4,11 +4,15 @@ description: An account shows malicious activity even though MFA passed and the 
 category: Security
 tools: [search_tickets, search_contacts, add_ticket_note, update_ticket, view_openDraft]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Session Token Theft Response
 
 **When to use:** Malicious or anomalous activity on an account where sign-in logs show MFA succeeded and no password change explains it; a user's session appears active from an unfamiliar IP/device while the user is elsewhere; or post-phishing where the lure harvested a session (adversary-in-the-middle / token-replay), not just credentials.
+
+**Run it:** on one ticket (a suspected stolen-session case).
 
 ## Prompt
 

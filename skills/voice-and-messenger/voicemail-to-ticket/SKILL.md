@@ -4,11 +4,15 @@ description: Convert a voicemail transcription into a ticket with a callback com
 category: Voice & Messenger
 tools: [search_contacts, search_clients, search_tickets, create_ticket, update_ticket, assign_contact, add_ticket_note, list_ticket_priorities]
 connectors: []
+scope: single
+flow: yes
 ---
 
 # Voicemail to Ticket
 
 **When to use:** a voicemail transcription arrives on the intake board or is pasted into chat / "left on the after-hours line: <transcription> — make a ticket" / a flow routes every voicemail-sourced ticket through structuring.
+
+**Run it:** on one voicemail · or as a Flow that fires on each voicemail-sourced ticket to structure it and record the callback.
 
 ## Prompt
 
@@ -24,11 +28,11 @@ message.
 2. Transcribed phone numbers are error-prone: keep the number exactly as transcribed and
    flag it as unverified if it doesn't match the contact record found in step 3.
 
-3. Resolve identity: search_contacts on stated name/number, search_clients on stated
-   company. Check search_tickets for an open ticket this voicemail continues ("calling
-   about my ticket from yesterday") — update that ticket instead of creating a duplicate.
+3. Resolve identity: look up the contact by stated name/number and the client by stated
+   company. Check for an open ticket this voicemail continues ("calling about my ticket from
+   yesterday") — update that ticket instead of creating a duplicate.
 
-4. Set urgency from CONTENT only, via list_ticket_priorities:
+4. Set urgency from CONTENT only:
    - Stated business stoppage, safety issue, security concern, or "everyone is down" →
      high.
    - Stated deadline today → elevated.
@@ -36,9 +40,9 @@ message.
    Never raise priority because the caller "sounded" angry or stressed — transcripts carry
    no reliable tone, and guessing writes fiction into the queue.
 
-5. create_ticket (or update_ticket on the existing one): title "<request/symptom> —
-   voicemail from <caller>", description = cleaned transcription plus extracted fields.
-   assign_contact only on an unambiguous match.
+5. Open a ticket (or update the existing one): title "<request/symptom> — voicemail from
+   <caller>", description = cleaned transcription plus extracted fields. Attach the contact
+   only on an unambiguous match.
 
 6. Record the callback commitment in a plain-text note: number to call, best-by time if the
    caller stated one, otherwise the desk's standard callback SLA. Keep the format

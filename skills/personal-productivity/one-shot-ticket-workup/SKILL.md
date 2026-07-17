@@ -4,11 +4,15 @@ description: Chain the assistive AI on an in-flight ticket — recap, suggested 
 category: Personal Productivity
 tools: [run_assistive_ai, search_tickets, list_recap_templates]
 connectors: []
+scope: single
+flow: no
 ---
 
 # One-Shot Ticket Workup
 
 **When to use:** "Work up this ticket for me" / "get me caught up and ready to act" / "recap, next step, a reply, and a time entry for #<n>" — returning to an in-flight ticket you need to re-engage fast, and want the full assist in one shot instead of four separate asks.
+
+**Run it:** on one in-flight ticket — run it manually (not a Flow; everything here is a preview you approve).
 
 ## Prompt
 
@@ -18,12 +22,12 @@ ticket only. EVERYTHING you produce is a preview I approve or edit — nothing i
 sent, or logged without my explicit per-item go-ahead. That is the core promise of this
 skill.
 
-1. Load the ticket's full context with search_tickets / the ticket thread. Note where
-   things stand: who has the ball, what's unresolved.
+1. Load the ticket's full context — read the whole ticket thread. Note where things
+   stand: who has the ball, what's unresolved.
 
-2. Chain run_assistive_ai to produce, in order, four PREVIEWS:
+2. Use the assistive AI to produce, in order, four PREVIEWS:
    - Recap — what's happened and the current state. If the desk uses recap templates,
-     offer one via list_recap_templates.
+     offer to pick one.
    - Suggested next step — the single most useful next action, with a one-line why.
    - Drafted reply — a client-ready message for that next step, in the desk's tone.
    - Drafted time entry — a plain-text, PSA-safe summary of the work reflected on the

@@ -4,11 +4,15 @@ description: A Trend Micro Worry-Free alert landed — triage by detection engin
 category: Vendor Runbooks
 tools: [search_tickets, search_clients, search_contacts, search_itglue, add_ticket_note, update_ticket]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Trend Micro Worry-Free
 
 **When to use:** A Worry-Free detection, outbreak, or web-reputation alert arrives as a ticket; a tech asks what a Predictive Machine Learning or Behavior Monitoring event means; or an alert references Apex One/Apex Central or Vision One and the desk needs to route it against the right console.
+
+**Run it:** on the alert ticket.
 
 ## Prompt
 
@@ -19,7 +23,7 @@ You are triaging a Trend Micro Worry-Free alert — a vendor specialization of s
 
 2. Parse anatomy per security-vendor-generic and route per security-alert-response. MSP tier note: alerts typically flow through the multi-client management layer (Remote Manager), so confirm which customer company the alert belongs to from the alert's company field — never from name similarity. Low confidence → flag for a human.
 
-3. Tier awareness before directing any console work: Worry-Free Services (SMB, cloud console, limited EDR), vs Apex One with Apex Central (larger orgs, richer investigation/EDR), vs Vision One (current XDR platform). Check the client's stack documentation (search_itglue) for which edition is deployed; a runbook step that assumes Apex Central investigation features will strand a tech on a Worry-Free tenant. State the edition in the ticket — never direct a tech to console features without confirming the client's edition, because Worry-Free vs Apex vs Vision One differ materially.
+3. Tier awareness before directing any console work: Worry-Free Services (SMB, cloud console, limited EDR), vs Apex One with Apex Central (larger orgs, richer investigation/EDR), vs Vision One (current XDR platform). Check the client's stack documentation for which edition is deployed; a runbook step that assumes Apex Central investigation features will strand a tech on a Worry-Free tenant. State the edition in the ticket — never direct a tech to console features without confirming the client's edition, because Worry-Free vs Apex vs Vision One differ materially.
 
 4. Containment matrix per edr-detection-runbook: cleaned/quarantined + verifiable → verify, then scope; "unable to clean," "passed" (action failed), or detect-only → treat as live, contain first. "Cleaned" covers the object, not the incident — scope before closing; "unable to clean" is a live-threat state, not a lesser warning. Behavior Monitoring ransomware events → ransomware-response immediately, regardless of the action field. Isolation availability depends on edition — where absent, containment degrades to network-level steps the tech executes (disconnect, disable switch port/Wi-Fi) — direct and record them.
 

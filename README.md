@@ -71,7 +71,7 @@ _662 skills across 32 categories._
 - **[Scheduling Intent Detector](skills/triage-and-routing/scheduling-intent-detector/SKILL.md)** — Find "can we get on a call / book a time" requests hiding in recent tickets and route them to scheduling — skipping tickets where a tech has already engaged.
 - **[Sentiment Score Explainer](skills/triage-and-routing/sentiment-score-explainer/SKILL.md)** — Explain why a ticket thread received its sentiment score by citing the exact messages that drove it — no hand-waving, no re-scoring.
 - **[Spam Sender Triage](skills/triage-and-routing/spam-sender-triage/SKILL.md)** — Close tickets from known-spam senders and patterns — after verifying a human did not forward the message in for investigation.
-- **[Ticket Triage](skills/triage-and-routing/ticket-triage/SKILL.md)** — Classify a new or unassigned ticket, gauge severity, catch duplicates, and recommend where it should go before it enters the queue.
+- **[Ticket Triage](skills/triage-and-routing/ticket-triage/SKILL.md)** — Classify a new or unassigned ticket, gauge severity, catch duplicates, and route it to the right board, status, and priority.
 - **[VIP Priority Handling](skills/triage-and-routing/vip-priority-handling/SKILL.md)** — Detect VIP contacts and VIP clients at ticket intake, apply the configured priority bump, and fire the desk's notify rules — without letting VIP status distort classification.
 
 ### QA & Closure
@@ -95,7 +95,7 @@ _662 skills across 32 categories._
 ### Scheduling & Dispatch
 - **[After-Hours Coverage Handoff](skills/scheduling-and-dispatch/after-hours-coverage-handoff/SKILL.md)** — Build the end-of-business handoff to on-call or after-hours coverage — open urgent work, expected client callbacks, and site notes the night crew needs.
 - **[Appointment No-Show Follow-Up](skills/scheduling-and-dispatch/appointment-noshow-followup/SKILL.md)** — A client missed a scheduled appointment — log the no-show on the ticket, draft a courteous rebooking email, and apply the desk's repeat-no-show policy note when it's the third miss.
-- **[Calendar-Aware Scheduling](skills/scheduling-and-dispatch/calendar-aware-scheduling/SKILL.md)** — Put ticket work on a technician's schedule around their real calendar — check busy periods before proposing a slot, then book it with schedule_ticket.
+- **[Calendar-Aware Scheduling](skills/scheduling-and-dispatch/calendar-aware-scheduling/SKILL.md)** — Put ticket work on a technician's schedule around their real calendar — check busy periods before proposing a slot, then book it.
 - **[Dispatch & Workload](skills/scheduling-and-dispatch/dispatch-and-workload/SKILL.md)** — A dispatcher wants the full queue picture — unassigned tickets by priority and age, open work per technician, lightest-load assignment proposals, and a daily audit of what got assigned where.
 - **[Dispatch Control Tower](skills/scheduling-and-dispatch/dispatch-control-tower/SKILL.md)** — The dispatcher's live picture in one view — unassigned queue, at-risk tickets, today's scheduled work, and who is free right now.
 - **[Field Visit Scheduler](skills/scheduling-and-dispatch/field-visit-scheduler/SKILL.md)** — Schedule an onsite visit and make the trip count — sweep for other open onsite-worthy tickets at the same site, group travel sensibly, book the visit, and draft the client confirmation.

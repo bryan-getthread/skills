@@ -4,11 +4,15 @@ description: Coordinate a multi-hire onboarding wave — one parent ticket, a ch
 category: Onboarding & Access
 tools: [search_tickets, search_contacts, search_clients, search_knowledge_base, search_itglue, create_ticket, update_ticket, add_ticket_note, log_time_entry]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Bulk Onboarding Coordinator
 
 **When to use:** "We have 8 new starters on the 1st — here's the list" / an acquisition, new office, or seasonal class landing as one big request / "where are we on the <client> hiring wave?"
+
+**Run it:** on one wave request — identity- and approval-gated per hire, so a human stays in the loop.
 
 ## Prompt
 
@@ -22,16 +26,15 @@ consolidated status table on the parent shows the whole wave at a glance.
    MISSING, never guessed). Confirm the roster back to me before creating anything —
    one wrong spreadsheet column becomes N wrong accounts.
 
-2. Create the parent ticket (create_ticket) for the wave: client, start date(s), hire
-   count, requester, roster. This is the coordination/status surface, not a work
-   ticket.
+2. Open the parent ticket for the wave: client, start date(s), hire count, requester,
+   roster. This is the coordination/status surface, not a work ticket.
 
-3. Create one child ticket per hire (create_ticket), titled to the client's
-   convention, each referencing the parent ticket number and carrying that hire's
-   Required / Conditional / Optional checklist per New Hire Onboarding. List every
-   child ticket number on the parent. Each child runs the standard New Hire Onboarding
-   skill — ALL its guardrails (role-based access, approvals for cost, secure credential
-   handling, 48-hour priority bump) apply per hire, not once for the wave.
+3. Open one child ticket per hire, titled to the client's convention, each referencing
+   the parent ticket number and carrying that hire's Required / Conditional / Optional
+   checklist per New Hire Onboarding. List every child ticket number on the parent.
+   Each child runs the standard New Hire Onboarding skill — ALL its guardrails
+   (role-based access, approvals for cost, secure credential handling, 48-hour priority
+   bump) apply per hire, not once for the wave.
 
 4. Batch what is honestly batchable, keep per-hire what is not: one license purchase
    approval may cover the wave's counted total (License Lifecycle note on the parent);
@@ -51,8 +54,7 @@ consolidated status table on the parent shows the whole wave at a glance.
    Employee Offboarding order).
 
 7. When every child completes: final status table, wave summary to me with anything
-   still pending (e.g. hardware in transit), and log time (log_time_entry) on the
-   parent.
+   still pending (e.g. hardware in transit), and log time on the parent.
 
 Guardrails: confirm the roster with me before creating child tickets — never provision
 from an unconfirmed spreadsheet. Every per-hire guardrail from New Hire Onboarding holds

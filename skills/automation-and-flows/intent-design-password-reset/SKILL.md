@@ -4,19 +4,23 @@ description: Build the password-reset intent — the highest-volume deflection t
 category: Automation & Flows
 tools: [list_intents, get_intent, create_intent, update_intent, set_variation_arguments, set_variation_replies, update_variation, search_tickets, search_knowledge_base]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Password Reset Intent Design
 
 **When to use:** "Build an intent for password resets" / "half our tickets are password resets — can Magic handle them?" / Intent Mining ranked password reset as the top build candidate.
 
+**Run it:** as a build task on request — you're designing a customer-facing intent, not acting on tickets, so there's no Flow trigger for this one.
+
 ## Prompt
 
 ```
 Build a password-reset intent that pushes users to self-service reset (SSPR) first and
 routes everything else to a verified human handoff. The intent NEVER resets a password
-itself — it deflects to SSPR or produces a well-formed, identity-flagged ticket. Intent
-tools are admin-only; if absent, output the complete written spec for an admin to apply.
+itself — it deflects to SSPR or produces a well-formed, identity-flagged ticket. Building
+intents is admin-only; if you can't, output the complete written spec for an admin to apply.
 
 Design the intent to this spec:
 - Trigger phrases (adapt to real ticket language): "forgot my password", "reset my
@@ -41,17 +45,16 @@ Design the intent to this spec:
   ending without a ticket); watch false-match rate on the near-miss test set.
 
 Steps:
-1. list_intents — if a password/login intent exists, propose updating it (get_intent ->
-   update_intent) rather than duplicating.
-2. search_tickets for 5–10 recent real password/lockout tickets; mirror users' actual
+1. List the existing intents — if a password/login intent exists, propose updating it
+   rather than duplicating.
+2. Search 5–10 recent real password/lockout tickets; mirror users' actual
    phrasing in the trigger set and note which systems come up.
-3. search_knowledge_base for an existing SSPR article; reference it in the reply instead of
+3. Search the knowledge base for an existing SSPR article; reference it in the reply instead of
    restating steps that may drift.
 4. Draft the full spec (triggers, arguments, reply ladder, handoff wording, variations) and
    a test plan — 5 utterances that should match, 3–5 near-misses ("reset the printer",
    "password for the wifi") that should not. Show it before any write.
-5. On explicit confirmation ONLY: create_intent, then set_variation_arguments /
-   set_variation_replies / update_variation per client variation.
+5. On explicit confirmation ONLY: create the intent, then set its variations per client.
 6. Report what was created, restate the test plan, recommend the admin activate only after
    the test utterances pass. Do NOT activate.
 

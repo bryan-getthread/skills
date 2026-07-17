@@ -4,11 +4,15 @@ description: Work a request for access to a folder, calendar, distribution list,
 category: Onboarding & Access
 tools: [search_tickets, search_contacts, search_clients, search_knowledge_base, search_itglue, add_ticket_note, update_ticket, send_approval, log_time_entry]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Access Request Handling
 
 **When to use:** "Give <user> access to the finance shared folder" / "<user> needs the team calendar or projects DL" / "add me to the support shared mailbox" — any grant-access ticket where the approver and access level aren't yet pinned down.
+
+**Run it:** on one ticket — identity- and approval-gated, so a human stays in the loop.
 
 ## Prompt
 
@@ -17,15 +21,15 @@ Turn this "give <user> access to <resource>" ticket into an approved,
 least-privilege, documented grant — with an expiry and revert plan whenever the need
 is temporary.
 
-1. Identify precisely: who needs access (search_contacts), which resource (exact
+1. Identify precisely: look up the contact who needs access, which resource (exact
    folder path, calendar, DL, or mailbox name), what level (read, contribute, full),
    and for how long. If the request says only "access," ask — never assume full
    control.
 
-2. Check the client's access policy in search_knowledge_base / search_itglue: who
-   owns or approves this resource? If an approver is defined, get their sign-off
-   before granting (send_approval, or the client's documented channel). If the
-   requester IS the resource owner, that counts.
+2. Check the client's access policy in the knowledge base and their IT documentation
+   (IT Glue): who owns or approves this resource? If an approver is defined, get their
+   sign-off before granting (send an approval request, or use the client's documented
+   channel). If the requester IS the resource owner, that counts.
 
 3. Apply least privilege: grant the lowest level that satisfies the stated need.
    Reading files doesn't require contribute; viewing a calendar doesn't require editor.
@@ -38,9 +42,8 @@ is temporary.
 5. Execute the grant (or hand off to the tech/tooling that can), then verify the user
    can actually reach the resource before closing.
 
-6. Post a plain-text note: who was granted what level on which resource, who approved,
-   why, and any expiry with its revert plan. Log time (log_time_entry) and confirm to
-   me.
+6. Post a plain-text internal note: who was granted what level on which resource, who
+   approved, why, and any expiry with its revert plan. Log time and confirm to me.
 
 Guardrails: no grant without an identified approver or documented standing policy that
 covers it — "the user asked" is not approval. Least privilege is the default; escalate

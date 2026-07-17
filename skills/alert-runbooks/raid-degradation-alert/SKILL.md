@@ -4,11 +4,15 @@ description: Triage a RAID degraded/failed-member alert with zero-margin urgency
 category: Alert Runbooks
 tools: [search_tickets, get_ninjaone_device, get_ninjaone_device_activities, list_ninjaone_alerts, liongard_metric, liongard_launchpoint, search_itglue, add_ticket_note, update_ticket]
 connectors: [NinjaOne, Liongard, IT Glue]
+scope: single
+flow: yes
 ---
 
 # RAID Degradation Alert
 
-**When to use:** An "array degraded / disk failed in array / RAID rebuild started" alert fires from a server, NAS, or storage controller; or a tech asks "how urgent is this degraded-array ticket really?" Fires on the alert ticket event, so it runs attended or as a Flow.
+**When to use:** An "array degraded / disk failed in array / RAID rebuild started" alert fires from a server, NAS, or storage controller; or a tech asks "how urgent is this degraded-array ticket really?"
+
+**Run it:** on the alert ticket · or as a Flow that fires on the RAID/array alert ticket event.
 
 ## Prompt
 
@@ -17,32 +21,33 @@ You are triaging a RAID degradation alert with zero-margin urgency. A degraded a
 data, which is exactly why these get parked — and why they are dangerous: redundancy is already
 spent, and the next failure (including one triggered by rebuild stress) is data loss. Route with
 that framing and hard-code the one rule that saves clients: verify backups BEFORE anyone touches
-the array. Post a plain-text note only; do not clear the RAID alert — it is the evidence trail.
+the array. Leave a plain-text note only; do not clear the RAID alert — it is the evidence trail.
 
 1. Parse the alert: device, array/volume id, RAID level if stated, which member failed, whether a
    rebuild is already running. RAID level sets the margin: RAID 5 degraded = zero redundancy
    remaining; RAID 6 or a mirrored pair with one loss may retain one margin — state which case
    this is, or "level unknown" if the alert does not say.
-2. Dedupe/recurrence with search_tickets: same device + array alerts, 90 days. A second member
-   failure or repeated degradation on the same chassis is an aging-batch signal — drives from one
-   purchase batch fail together; flag that the remaining members are suspect.
-3. Verify current state: get_ninjaone_device for device health, list_ninjaone_alerts for
+2. Dedupe/recurrence: search recent tickets for the same device + array alerts, 90 days. A second
+   member failure or repeated degradation on the same chassis is an aging-batch signal — drives
+   from one purchase batch fail together; flag that the remaining members are suspect.
+3. Verify current state: look up the device for its health, and check related RMM alerts for
    accompanying SMART or predictive-failure alerts on other members (a SMART warning on a second
    member during degradation is an emergency). Where a Liongard inspector covers the NAS/storage
-   platform, read array state and rebuild progress via liongard_metric (verify inspector freshness
-   via liongard_launchpoint, state dataprint age).
+   platform, read array state and rebuild progress from the inspector's data (verify inspector
+   freshness, state dataprint age).
 4. THE RULE — backups before rebuild: before recommending replacement or rebuild, establish the
-   last known good backup of the data on this array (search_itglue for the backup design; backup
-   job evidence). Rebuild stress is a classic second-failure trigger. If backups are current →
-   proceed to replacement urgency. If backups are stale or unknown → the FIRST action is a fresh
-   backup/copy of critical data, and the note must say so in exactly that order.
+   last known good backup of the data on this array (check the documentation in IT Glue for the
+   backup design; backup job evidence). Rebuild stress is a classic second-failure trigger. If
+   backups are current → proceed to replacement urgency. If backups are stale or unknown → the
+   FIRST action is a fresh backup/copy of critical data, and the note must say so in exactly that
+   order.
 5. Classify with a deliberately narrow self-heal lane: self-healed (rebuild completed AND the array
    reports optimal/healthy in current fresh data) → close with evidence and a recommendation to
    watch the replaced member; needs-tech (the default — degraded, rebuilding, or ambiguous) →
    act-now route: hardware replacement is physical work with a procurement step (drive model/size
    from documentation), and hot-spare presence changes the timeline. Never noise, never
    needs-client-only.
-6. Post via add_ticket_note: array state, RAID level and remaining margin, backup status (the
+6. Leave a plain-text note: array state, RAID level and remaining margin, backup status (the
    exposure statement), recurrence/batch signal, and the ordered action list (verify/refresh backup
    → replace member → monitor rebuild).
 

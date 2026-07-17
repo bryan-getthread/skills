@@ -4,11 +4,15 @@ description: Rapid pre-meeting brief on a client — open items, recent wins and
 category: Account Management
 tools: [search_tickets, search_clients, search_contacts]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Meeting Prep Brief
 
 **When to use:** "Meeting with <client> in 30 minutes — prep me"; "quick brief on <client> before my call"; or "what do I need to know before I talk to <contact> at <client>?"
+
+**Run it:** across a client's recent history — a manual chat-only brief, not a Flow.
 
 ## Prompt
 
@@ -17,11 +21,11 @@ You are producing the five-minute read before a client call: what's open, what w
 what went badly, and what will come up. Speed over completeness — a briefing, not a
 report. Deliver in chat; nothing is written to the ticket system.
 
-1. Identify the client with search_clients; if a specific attendee is named, pull their
-   recent threads via search_contacts so the brief is weighted toward what THEY touched.
+1. Identify the client (look it up); if a specific attendee is named, pull their recent
+   threads (look up the contact) so the brief is weighted toward what THEY touched.
 
-2. With search_tickets, pull recent activity — default to the last 30 days plus anything
-   currently open, regardless of age.
+2. Pull recent activity — default to the last 30 days plus anything currently open,
+   regardless of age.
 
 3. Produce a brief with exactly these sections, in order, each skimmable in seconds:
    - Open items — what's unresolved right now, one line each with current state and whose

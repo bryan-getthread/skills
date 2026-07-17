@@ -4,11 +4,15 @@ description: A business-email-compromise or payment-fraud attempt was reported (
 category: Security
 tools: [search_tickets, search_contacts, add_ticket_note, update_ticket, view_openDraft]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Vendor Fraud BEC Alert
 
 **When to use:** A client reports a suspicious invoice, banking-detail change, or wire request; an executive- or vendor-impersonation email is reported; or account-takeover blast radius surfaced outbound payment-fraud attempts.
+
+**Run it:** on one ticket (a reported payment-fraud / BEC attempt).
 
 ## Prompt
 
@@ -39,9 +43,9 @@ Work it in order:
    mailbox, where the thread history is genuine and only the banking details changed.
    Reply-to divergence and fresh banking details in an old thread are the tells. If the
    compromised side might be the client's own mailbox, branch to account-takeover-runbook.
-6. Blast radius: search_tickets and ask the client — who else received the request, and did
-   anyone begin acting on it? Every recipient gets the warning; anyone who processed anything
-   gets the time-critical path.
+6. Blast radius: search related tickets and ask the client — who else received the request,
+   and did anyone begin acting on it? Every recipient gets the warning; anyone who processed
+   anything gets the time-critical path.
 7. Notify with the vendor-fraud template from the soc-client-email-pack, and document the
    decision, not just the action: the request, the verification outcome, the money status,
    and the verdict reasoning. Classify per soc-classification-tree.

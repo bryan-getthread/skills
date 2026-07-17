@@ -4,23 +4,24 @@ description: Draft reply-ready instructions for an end user who got a new phone 
 category: End-User Guides
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, view_openDraft]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # MFA New Phone Guide
 
 **When to use:** "User got a new phone and MFA prompts go nowhere." / "Send <user> steps to move their authenticator to the new phone." / a ticket mentions an upcoming phone upgrade.
 
+**Run it:** on one ticket.
+
 ## Prompt
 
 ```
 Draft a client-ready instruction block for the most common MFA lockout: a new phone. The steps
 branch HARD on one question — does the user still have the old phone — because the safe path is
-completely different in each case. Verify the product first; when unsure, ask. Draft only — present
-via view_openDraft (in-app) or, over external MCP, output labeled "DRAFT — review before sending."
-Do not send.
+completely different in each case. Verify the product first; when unsure, ask. Draft only — show me the reply as a draft to review first, and don't send it.
 
-1. Verify the client's MFA product (search_itglue / search_hudu / search_knowledge_base /
-   search_tickets) — Microsoft Authenticator, Duo, Okta Verify, etc. If unknown, ask the technician
+1. Verify the client's MFA product by checking the client's documentation and past tickets — Microsoft Authenticator, Duo, Okta Verify, etc. If unknown, ask the technician
    ONE question before drafting anything.
 2. Determine which branch applies from the ticket: does the user still have the old, working phone?
    If the ticket doesn't say, the draft OPENS with that question and includes ONLY the still-have-it

@@ -4,11 +4,15 @@ description: Scan the whole client portfolio for at-risk accounts using four sig
 category: Account Management
 tools: [search_tickets, search_clients]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Client Risk Scan
 
-**When to use:** "Which of my clients are at risk right now?"; "run a churn-risk scan across the portfolio"; or "any accounts I should worry about before renewals season?" Run it manually on demand.
+**When to use:** "Which of my clients are at risk right now?"; "run a churn-risk scan across the portfolio"; or "any accounts I should worry about before renewals season?"
+
+**Run it:** across the whole portfolio — a manual internal scan, not a Flow.
 
 ## Prompt
 
@@ -19,8 +23,7 @@ read every thread. This report is internal only.
 
 1. Confirm the scan window. Default to the last 90 days, compared against the prior 90.
 
-2. Run a SEPARATE search per signal with search_tickets — do not answer all four from one
-   query:
+2. Run a SEPARATE ticket search per signal — do not answer all four from one query:
    - Declining sentiment: clients whose sentiment trend is down versus the prior window.
    - Aging / no-response: open tickets past the desk's staleness threshold where the last
      outbound touch is ours-overdue (distinguish from tickets legitimately waiting on the

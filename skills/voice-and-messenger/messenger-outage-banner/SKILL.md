@@ -4,11 +4,15 @@ description: Draft, update, and retire the Messenger banner clients see during a
 category: Voice & Messenger
 tools: [search_tickets, add_ticket_note, schedule_ticket]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Messenger Outage Banner
 
 **When to use:** "Put up a Messenger banner about the M365 outage" / "update the banner — we have an ETA now" / incident resolved, retire the banner / a banner hygiene check ("is anything stale showing right now?").
+
+**Run it:** on the incident ticket — run it manually (not a Flow; it needs a human confirming facts and posting the copy).
 
 ## Prompt
 
@@ -17,8 +21,8 @@ During an incident the Messenger banner is the highest-leverage sentence the MSP
 it deflects the flood of duplicate chats — but only while it's accurate. Write banner copy to
 the outage-notification standard and enforce the discipline of taking it down.
 
-1. Read the incident ticket(s) via search_tickets for confirmed facts only: what's impacted,
-   who's affected, current status, next-update time.
+1. Read the incident ticket(s) for confirmed facts only: what's impacted, who's affected,
+   current status, next-update time.
 
 2. Draft banner copy to defensive-writing rules, compressed for a banner:
    - One or two sentences, ~200 characters — a banner is a headline, not a bulletin.
@@ -32,10 +36,10 @@ the outage-notification standard and enforce the discipline of taking it down.
 3. Set the expiry plan at creation time — a banner without a removal plan is a future lie:
    every banner gets a review-by time (default: the next-update time, never more than a few
    hours out). Record it on the incident ticket: "BANNER LIVE: '<text>' — review/remove by
-   <time>." Offer schedule_ticket to book the review so removal has an owner.
+   <time>." Offer to schedule the review so removal has an owner.
 
 4. Publishing: Thread's banner is configured in the Messenger/workspace admin settings —
-   there is NO MCP tool that sets it. Output the exact copy plus scope (all clients vs.
+   there is no way for this skill to set it. Output the exact copy plus scope (all clients vs.
    affected clients, where the tenant supports targeting) for the admin to paste, and say
    precisely where it goes.
 

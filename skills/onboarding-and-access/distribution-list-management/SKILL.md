@@ -4,11 +4,15 @@ description: Add or remove distribution-list members with owner approval and a d
 category: Onboarding & Access
 tools: [search_tickets, search_contacts, search_clients, search_knowledge_base, search_itglue, add_ticket_note, send_approval, log_time_entry]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Distribution List Management
 
 **When to use:** "Add <user> to the sales distribution list" / "remove <user> from announcements — they moved teams" / "who approves changes to the leadership DL?" — or a DL change inside a broader onboarding/offboarding ticket.
+
+**Run it:** on one ticket — approval-gated, so a human confirms membership changes.
 
 ## Prompt
 
@@ -17,14 +21,14 @@ Handle this DL membership change so every add and remove has an approver and a
 rationale on record.
 
 1. Identify the exact list (clients often have similarly named DLs — confirm the
-   address, not just the display name), the member to add/remove (search_contacts),
+   address, not just the display name), the member to add/remove (look up the contact),
    and the stated reason.
 
-2. Find the list owner or the client's documented approval rule (search_knowledge_base
-   / search_itglue). Get owner approval before changing membership (send_approval or
-   the client's channel). Exceptions: removals that are part of an authorized
-   offboarding, and adds covered by a documented role profile (new sales hire → sales
-   DL) — cite the covering policy instead.
+2. Find the list owner or the client's documented approval rule (check the knowledge
+   base and their IT documentation in IT Glue). Get owner approval before changing
+   membership (send an approval request, or use the client's channel). Exceptions:
+   removals that are part of an authorized offboarding, and adds covered by a documented
+   role profile (new sales hire → sales DL) — cite the covering policy instead.
 
 3. Sanity-check the change: adding an external address to an internal list, or anyone
    to a broad-reach list (all-staff, leadership, client-facing), gets flagged to the
@@ -34,7 +38,7 @@ rationale on record.
    side, run an AD Connect delta sync, and verify before reporting done.
 
 5. Post a plain-text note: list address, member added/removed, approver, and the
-   documented rationale. Log time (log_time_entry) and confirm to me.
+   documented rationale. Log time and confirm to me.
 
 Guardrails: no membership change without owner approval or a citable standing policy.
 External addresses and broad-reach lists always get an explicit approver callout —

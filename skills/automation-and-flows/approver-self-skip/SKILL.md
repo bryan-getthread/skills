@@ -4,11 +4,15 @@ description: Before firing an approval, check whether the ticket submitter IS th
 category: Automation & Flows
 tools: [search_contacts, send_approval, update_ticket, add_ticket_note, list_ticket_statuses]
 connectors: []
+scope: single
+flow: yes
 ---
 
 # Approver Self-Skip
 
-**When to use:** A flow reaches its send-approval step and the desk wants self-submitted requests from approvers to pass straight through; the client's office manager (the designated approver) files a request and shouldn't have to approve their own ticket; any approval-gated intake where approvers are also frequent requesters. A deterministic pre-check that wraps new-ticket-approval-gate / change-approval-sender.
+**When to use:** A flow reaches its send-approval step and the desk wants self-submitted requests from approvers to pass straight through; the client's office manager (the designated approver) files a request and shouldn't have to approve their own ticket; any approval-gated intake where approvers are also frequent requesters. A deterministic pre-check that wraps new-ticket-approval-gate / change-approval-sender. Runs at the flow's send-approval step — never on a timer.
+
+**Run it:** on one ticket · or as a Flow (triggered at the approval step, on ticket create or status change into the approval stage).
 
 ## Prompt
 
@@ -20,12 +24,12 @@ is the default.
 
 Your entire reply is posted verbatim as the internal note — plain text, no narration, no
 markdown. Exactly three outcomes: (a) exact match -> skip, advance status, audit note; (b) no
-match -> send_approval as configured, one-line note; (c) unresolved -> no send, no status
+match -> send the approval as configured, one-line note; (c) unresolved -> no send, no status
 change, note "Approver unresolved for <client>; approval not sent; needs human." Never
 advance status without the audit note; never send AND skip.
 
-1. Resolve the ticket's submitter contact and the client's designated approver(s) via
-   search_contacts: contacts for this client carrying the desk's approver contact type/label.
+1. Resolve the ticket's submitter contact and the client's designated approver(s) by looking
+   up the contacts for this client carrying the desk's approver contact type/label.
 
 2. Compare identities FROM THE CONTACT RECORDS ONLY: the submitter is the approver iff their
    contact record matches an approver contact (same contact ID, or same verified email on the
@@ -33,16 +37,15 @@ advance status without the audit note; never send AND skip.
    NOT count. If the submitter arrived via an unverified channel (plain email with no matched
    contact), always send the approval.
 
-3. Match -> skip send_approval. Advance the ticket out of the approval-waiting status via
-   update_ticket (use list_ticket_statuses to resolve the desk's configured post-approval
-   status) and post a plain-text audit note via add_ticket_note: "Approval auto-skipped:
-   submitter <contact> is the designated approver for <client> (contact-type match). No
-   approval request sent." Always leave this note — a silently advanced ticket looks like a
-   missed gate in QA.
+3. Match -> skip the approval. Advance the ticket out of the approval-waiting status (resolve
+   the desk's configured post-approval status first) and leave a plain-text audit note:
+   "Approval auto-skipped: submitter <contact> is the designated approver for <client>
+   (contact-type match). No approval request sent." Always leave this note — a silently
+   advanced ticket looks like a missed gate in QA.
 
-4. No match, or cannot resolve -> send the approval normally via send_approval to the
-   designated approver. If search_contacts cannot resolve the approver contact type for this
-   client, do not guess — send to nobody, post a note that the approver is unresolved, and
+4. No match, or cannot resolve -> send the approval normally to the
+   designated approver. If you cannot resolve the approver contact type for this
+   client, do not guess — send to nobody, leave a note that the approver is unresolved, and
    stop.
 
 The skip is deterministic, not judgment-based: exact contact match -> skip; anything else ->

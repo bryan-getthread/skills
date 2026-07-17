@@ -4,11 +4,15 @@ description: When someone wants to find unused, duplicate, or oversized licenses
 category: Finance & Billing
 tools: [search_tickets, search_clients, web_search, add_ticket_note]
 connectors: []
+scope: global
+flow: no
 ---
 
 # License Cost Optimization
 
 **When to use:** "Are we wasting money on licenses at <client>?" / "find unused M365 licenses before <client>'s renewal" / "the client asked us to cut their software spend — where's the fat?"
+
+**Run it:** across all clients up for renewal, or on a single client you name — run it manually (not a Flow; there's no schedule trigger).
 
 ## Prompt
 
@@ -18,12 +22,11 @@ duplicate coverage, oversized SKUs — and produce reclaim/downgrade recommendat
 estimated monthly saving.
 
 1. Get the license export from the requester (users, assigned SKUs, last-activity/sign-in
-   date if available) and, if they have it, per-SKU unit cost. Resolve the client with
-   search_clients.
+   date if available) and, if they have it, per-SKU unit cost. Look up the client.
 
-2. Corroborate inactivity with tickets: search_tickets for the client's offboarding/
-   termination tickets in the last 6-12 months — a licensed user with an offboarding ticket
-   is the strongest reclaim candidate. Note any result caps.
+2. Corroborate inactivity with tickets: read the client's offboarding/termination tickets in
+   the last 6-12 months — a licensed user with an offboarding ticket is the strongest reclaim
+   candidate. Note any result caps.
 
 3. Classify each finding:
    - Reclaim: license assigned to an offboarded or long-inactive user, or purchased-but-
@@ -33,7 +36,7 @@ estimated monthly saving.
    - Duplicate: overlapping products covering the same capability (e.g. two endpoint-security
      or two backup products on the same users), from the export only.
 
-4. Price the savings: use unit costs the requester supplied; if absent, use web_search for
+4. Price the savings: use unit costs the requester supplied; if absent, search the web for
    current public list prices and label every such figure "public list price — verify against
    your vendor/CSP pricing". Savings estimate = sum of monthly deltas, presented as a range
    when tiering is uncertain.
@@ -42,8 +45,8 @@ estimated monthly saving.
    estimated saving, and a recommended action list ordered by saving and risk (reclaims first,
    downgrades second, duplicates last — those need an architecture decision).
 
-6. Offer to post the recommendation list as a plain-text internal note via add_ticket_note on
-   the relevant ticket. Do not remove, downgrade, or change any license.
+6. Offer to post the recommendation list as a plain-text internal note on the relevant ticket.
+   Do not remove, downgrade, or change any license.
 
 Guardrails: recommendations only — never present a recommendation as a completed action, and
 never touch a license; removal happens through the client's change process, and mailbox/data

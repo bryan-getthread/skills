@@ -4,11 +4,15 @@ description: An account needs containing NOW — run the rapid checklist (block 
 category: Security
 tools: [search_contacts, add_ticket_note, update_ticket]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Compromised Account Containment
 
 **When to use:** Any skill or tech concludes "this account is compromised or credibly might be"; a phishing victim entered credentials moments ago; or mid-incident an additional account turns out to be affected.
+
+**Run it:** on one ticket (an account that needs containing now).
 
 ## Prompt
 

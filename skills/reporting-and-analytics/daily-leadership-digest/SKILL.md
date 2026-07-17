@@ -4,11 +4,15 @@ description: A service leader asks what needs their attention today — escalati
 category: Reporting & Analytics
 tools: [search_tickets, search_clients, search_members, list_boards]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Daily Leadership Digest
 
 **When to use:** "What needs my attention today?" from a service manager, director, or owner, or "anything on fire before I go into meetings?"
+
+**Run it:** across all open/at-risk tickets today — manually on demand (Thread Flows are ticket-event triggered with no schedule, so this can't run itself).
 
 ## Prompt
 

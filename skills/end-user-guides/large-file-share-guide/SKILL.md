@@ -4,11 +4,15 @@ description: Draft reply-ready instructions for an end user to send a file that'
 category: End-User Guides
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, view_openDraft]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # Large File Share Guide
 
 **When to use:** "User's attachment bounced for size — send them how to get the big file across." / "How do I send a 500 MB video to a client?" / "User keeps trying to email large files and they're being blocked."
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -17,12 +21,9 @@ Draft a client-ready instruction block for the specific problem of a file too bi
 attachment bounced or was blocked — routing the user to the client's approved large-file method
 rather than a random consumer transfer site. This is the "too big for email" specialization of safe
 file sharing; keep it focused on the size problem. Verify the method and external-sharing policy
-before you write; when unsure — especially about external — ask. Draft only — present via
-view_openDraft (in-app) or, over external MCP, output labeled "DRAFT — review before sending." Do
-not send.
+before you write; when unsure — especially about external — ask. Draft only — show me the reply as a draft to review first, and don't send it.
 
-1. Verify the client's approved large-file method and external-sharing policy FIRST (search_itglue /
-   search_hudu / search_knowledge_base / search_tickets): usually a OneDrive/SharePoint share link,
+1. Verify the client's approved large-file method and external-sharing policy FIRST by checking the client's documentation and past tickets: usually a OneDrive/SharePoint share link,
    but some clients run a dedicated transfer tool or managed portal — and crucially whether sending
    to people OUTSIDE the company is allowed, restricted, or blocked. Note the mailbox attachment size
    limit if documented. If the method or external policy is unknown, ask the technician ONE question;
@@ -52,5 +53,5 @@ differs per tenant. Never instruct a consumer transfer site or personal cloud as
 the approved path can't do it and the need is real, that's a tech/admin ticket, and the draft says
 so. The audience-setting explanation and the sensitive-data off-ramp appear in every draft. No admin
 steps (tenant sharing settings, attachment-size policy, DLP) in the user block. Localizable;
-version-cautious dialog cues. Docs tools exist only when enabled; fall back to KB and ticket history.
+version-cautious dialog cues. The client's documentation is available only when those integrations are enabled; otherwise rely on the knowledge base and ticket history.
 ```

@@ -4,11 +4,15 @@ description: Summarize the value delivered to a client this period in business t
 category: Account Management
 tools: [search_tickets, search_clients]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Business Value Summary
 
-**When to use:** "What value did we deliver to <client> this quarter?"; "build the value slide for <client>'s renewal/QBR"; or "client asked what they're paying us for — help me answer." Run it manually on demand.
+**When to use:** "What value did we deliver to <client> this quarter?"; "build the value slide for <client>'s renewal/QBR"; or "client asked what they're paying us for — help me answer."
+
+**Run it:** across a client's period of resolved work — a manual brief, not a Flow.
 
 ## Prompt
 
@@ -17,10 +21,9 @@ You are turning a period of resolved tickets into the story a business owner car
 what kept working, what got fixed before it hurt, and what it would have cost them without
 us. Produce a client-facing draft plus internal backup.
 
-1. Confirm the client with search_clients and the period. Default to the last full quarter.
+1. Confirm the client (look it up) and the period. Default to the last full quarter.
 
-2. Pull the period's resolved work with search_tickets. Exclude auto-resolved noise and
-   merged threads.
+2. Pull the period's resolved work. Exclude auto-resolved noise and merged threads.
 
 3. Translate the work into business outcomes, not ticket language. Group resolutions into
    themes ("kept email flowing", "got new hires productive on day one", "recovered files

@@ -4,23 +4,27 @@ description: Pre-PTO handoff prep — which of my tickets need transferring, whi
 category: Personal Productivity
 tools: [search_tickets, search_members, update_ticket, add_ticket_note]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Vacation Handoff Pack
 
 **When to use:** "I'm off next week — prep my handoff" / "what do I need to hand over before vacation?" / "I'm out Thursday–Friday, what needs covering?" — triages every open ticket into transfer / watch / safe and writes the covering tech a per-ticket one-liner so context doesn't leave with you.
 
+**Run it:** across your own open tickets — run it manually (not a Flow; there's no schedule trigger).
+
 ## Prompt
 
 ```
 You are building my pre-PTO handoff. Scope everything to MY own open tickets.
 
-1. Collect: my absence dates, and who is covering — a named tech (search_members) or
+1. Collect: my absence dates, and who is covering — a named tech (look them up) or
    "the queue" if coverage is pooled.
 
-2. Pull all my open tickets with search_tickets and triage each into EXACTLY one
-   bucket. If the result may be capped, say so — a handoff built on a partial list is
-   dangerous, so flag it rather than presenting it as complete.
+2. Read all my open tickets and triage each into EXACTLY one bucket. If the result may
+   be capped, say so — a handoff built on a partial list is dangerous, so flag it
+   rather than presenting it as complete.
    - Transfer: will need action during the absence — active troubleshooting mid-flight,
      client expecting a response, SLA that will breach in-window, scheduled work inside
      the window.
@@ -45,11 +49,11 @@ You are building my pre-PTO handoff. Scope everything to MY own open tickets.
    Nothing has changed yet.
 
 6. On my explicit confirmation ONLY:
-   - Reassign Transfer tickets to the covering tech (update_ticket).
-   - Add an internal handoff note to each transferred/watched ticket carrying its
-     one-liner (add_ticket_note, plain text — no markdown or emojis, it may sync to a
-     PSA) so the context lives on the ticket, not just in chat. Start each note with a
-     recognizable prefix ("HANDOFF <dates>:") so it's findable and cleanable on return.
+   - Reassign Transfer tickets to the covering tech.
+   - Leave an internal handoff note on each transferred/watched ticket carrying its
+     one-liner (plain text — no markdown or emojis, it may sync to a PSA) so the context
+     lives on the ticket, not just in chat. Start each note with a recognizable prefix
+     ("HANDOFF <dates>:") so it's findable and cleanable on return.
 
 7. Output the final pack in a copyable format for the covering tech, ordered by
    urgency, with the absence dates and return date at the top.

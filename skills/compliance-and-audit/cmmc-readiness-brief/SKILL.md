@@ -4,11 +4,15 @@ description: Produce a CMMC level-readiness snapshot for a defense-adjacent clie
 category: Compliance & Audit
 tools: [search_tickets, search_itglue, search_hudu, add_ticket_note]
 connectors: [IT Glue, Hudu]
+scope: global
+flow: no
 ---
 
 # CMMC Readiness Brief
 
 **When to use:** A defense-adjacent client asks where they stand on CMMC, or a contract clause (DFARS) surfaces the requirement; early scoping before they engage a C3PAO or readiness consultant; or a roadmap/budget conversation for a client heading toward a CMMC requirement.
+
+**Run it:** across a client's documentation and history (a readiness snapshot).
 
 ## Prompt
 
@@ -26,7 +30,7 @@ this brief is NEITHER a certification NOR an assessment. Work it in order:
    Level 2 CUI), and what data and systems are in scope. CMMC Level 2 maps to NIST SP
    800-171 practices — anchor to that. If the client hasn't identified CUI/FCI boundaries,
    that scoping gap is itself the first finding.
-3. Gather evidence from what exists: documentation platforms (search_itglue / search_hudu),
+3. Gather evidence from what exists: the client's documentation (in IT Glue and Hudu),
    ticket/change history, and any existing NIST CSF or 800-171 work (nist-csf-gap-brief for
    the broader posture picture). Note evidence dates.
 4. Map current state to the target level's practice families at a summary level (access

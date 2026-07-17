@@ -4,11 +4,15 @@ description: A client conversation or ticket about LastPass in the post-breach e
 category: Vendor Runbooks
 tools: [search_tickets, search_contacts, search_itglue, search_hudu, search_knowledge_base, add_ticket_note, create_ticket, update_ticket]
 connectors: []
+scope: single
+flow: no
 ---
 
 # LastPass Migration
 
 **When to use:** A client asks whether they should move off LastPass or references the LastPass breaches; a migration off LastPass to another password manager is being planned or executed; or post-incident credential-rotation planning is needed for a current or former LastPass tenant.
+
+**Run it:** on the migration or advisory ticket.
 
 ## Prompt
 
@@ -26,7 +30,7 @@ You are running the conversation MSPs keep having: a client is on LastPass, is a
 
 4. Decommission LastPass with evidence per password-manager-rollout: after verified import and rotation underway, remove users/data from LastPass and record it. An abandoned-but-still-populated LastPass tenant is unrotated exposure sitting idle.
 
-5. Document: the client's understanding of the posture (facts communicated, links provided), the destination structure, rotation progress by privilege tier, and decommission evidence. Credentials never appear in tickets, notes, chat, or your output — locations, counts, and rotation status only. Create tickets (create_ticket) per migration phase and per rotation tier.
+5. In the internal note, document: the client's understanding of the posture (facts communicated, links provided), the destination structure, rotation progress by privilege tier, and decommission evidence. Credentials never appear in tickets, notes, chat, or your output — locations, counts, and rotation status only. Open a ticket per migration phase and per rotation tier.
 
 Degradation: without documentation-tool access, the inventory of what lived in LastPass relies on client interviews and the export itself — say so; assume the first-pass inventory is incomplete and rotate broadly.
 ```

@@ -4,11 +4,15 @@ description: A technician asks what is on their plate, what needs replies, what 
 category: Reporting & Analytics
 tools: [search_tickets, search_members]
 connectors: []
+scope: global
+flow: no
 ---
 
 # My Queue Summary
 
 **When to use:** "Give me a summary of my open tickets — what needs replies, anything urgent," "what should I work on today?", "prioritize my queue," or a morning/EOD personal digest ("keep it to 3 lines").
+
+**Run it:** across all of your own open tickets — manually on demand (read-only, and there's no ticket event for a Flow to trigger on).
 
 ## Prompt
 
@@ -16,8 +20,8 @@ connectors: []
 Give an individual technician a prioritized read of their own open tickets — bucketed
 into needs-replies, urgent, and everything else — with one clear next step per ticket.
 
-1. Identify the requesting technician (search_members if needed) and pull their open
-   ASSIGNED tickets with search_tickets. Scope strictly to the requesting tech's own
+1. Identify the requesting technician (look them up by name if needed) and pull their
+   open ASSIGNED tickets. Scope strictly to the requesting tech's own
    tickets — never another member's queue. If the count may exceed the result cap,
    split the search per board or per status and disclose it ("showing the first N by
    priority") rather than presenting the list as complete.

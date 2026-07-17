@@ -4,18 +4,22 @@ description: Een technicus vraagt om een overzicht van zijn of haar open tickets
 category: Localized
 tools: [search_tickets, search_members]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Dagelijkse samenvatting
 
 **Wanneer gebruiken:** een technicus wil de ochtendleesbeurt — alles wat op zijn of haar bord ligt, gesorteerd op wat nú aandacht nodig heeft, in minder dan een minuut te scannen. "Geef me een overzicht van mijn open tickets", "ochtendoverzicht", "korte versie".
 
+**Uitvoeren:** over alle open tickets van het aanvragende teamlid.
+
 ## Prompt
 
 ```
 Maak de dagelijkse samenvatting van de open tickets van het teamlid dat erom vraagt.
 
-1. Haal alle open tickets van het aanvragende teamlid op met search_tickets (search_members om het teamlid te vinden indien nodig). Kan een resultaatlimiet de lijst hebben afgekapt, meld dat meteen ("50 getoond — er kunnen er meer zijn") in plaats van de samenvatting als volledig te presenteren.
+1. Haal alle open tickets van het aanvragende teamlid op (zoek het teamlid indien nodig op). Kan een resultaatlimiet de lijst hebben afgekapt, meld dat meteen ("50 getoond — er kunnen er meer zijn") in plaats van de samenvatting als volledig te presenteren.
 2. Sorteer elk ticket in precies één categorie, in deze prioriteitsvolgorde (een ticket valt in de eerste categorie waarvoor het kwalificeert):
    - Wacht op jouw antwoord — de klant reageerde als laatste en wacht op jou. Sorteer op wachttijd.
    - Urgent / risico — hoge prioriteit, SLA op of nabij overschrijding, of threads met negatief sentiment. Sorteer op ernst.

@@ -4,11 +4,15 @@ description: A client is being onboarded to a new MDR/SOC service — scope the 
 category: Security
 tools: [search_clients, search_contacts, search_tickets, search_ninjaone_devices, connectwise_rmm_search_devices, search_itglue, add_ticket_note, create_ticket, update_ticket]
 connectors: [NinjaOne, ConnectWise RMM, IT Glue]
+scope: single
+flow: no
 ---
 
 # MDR Client Onboarding
 
 **When to use:** A client signed for MDR/SOC monitoring and the service is being stood up; alerts from a newly-enabled monitoring service start arriving and routing/expectations were never documented; or a service review asks "what exactly does the MDR cover for this client?"
+
+**Run it:** on one client's onboarding (a service stand-up).
 
 ## Prompt
 
@@ -19,16 +23,15 @@ visibly isn't), where the alerts land and who works them, who may authorize cont
 fires. Work it in order:
 
 1. Asset scoping — coverage in writing: enumerate what the sensor/agent will cover using
-   the RMM inventory (search_ninjaone_devices / connectwise_rmm_search_devices) and
-   documentation (search_itglue): endpoints, servers, identity tenant, mail, network
-   devices. Produce the coverage list AND the exclusions list (unsupported OS versions,
-   unmanaged/BYOD devices, that one appliance) — the uncovered list is the more important
-   document, because everyone will later assume "the MDR watches everything." Record both
-   with an as-of date.
+   the RMM inventory and the client's documentation: endpoints, servers, identity tenant,
+   mail, network devices. Produce the coverage list AND the exclusions list (unsupported OS
+   versions, unmanaged/BYOD devices, that one appliance) — the uncovered list is the more
+   important document, because everyone will later assume "the MDR watches everything."
+   Record both with an as-of date.
 2. Deployment verification: reconcile deployed-agent count against the in-scope asset
-   count; the gap list becomes deployment tickets (create_ticket). "Purchased" is not
-   "protected" — the onboarding isn't done until the reconciliation says so, with result-cap
-   honesty on any counts.
+   count; the gap list becomes deployment tickets. "Purchased" is not "protected" — the
+   onboarding isn't done until the reconciliation says so, with result-cap honesty on any
+   counts.
 3. Alert routing into the desk: agree and document where MDR alerts land (which
    board/queue), what identifiers the alert body carries for client attribution (tenant ID,
    domain — feed this to the security-alert-response routing step), the severity mapping
@@ -47,9 +50,9 @@ fires. Work it in order:
    (security-noise-tuning discipline: narrow suppressions, at the source, never PSA
    auto-close).
 6. Go-live record: coverage + exclusions, routing test result, severity mapping, authority
-   matrix, baseline expectations, and a 30-day review ticket (create_ticket) to reassess
-   noise levels, coverage gaps, and whether escalations worked. Note the
-   monthly-security-report skill as the ongoing reporting vehicle.
+   matrix, baseline expectations, and a 30-day review ticket to reassess noise levels,
+   coverage gaps, and whether escalations worked. Note the monthly-security-report skill as
+   the ongoing reporting vehicle.
 
 Guardrails — always:
 - The exclusions list is mandatory output — never let "MDR onboarded" imply total coverage;

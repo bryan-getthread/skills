@@ -4,11 +4,15 @@ description: Hand one ticket to another technician with a compact card — statu
 category: Escalation
 tools: [search_tickets, add_ticket_note, update_ticket, search_members, schedule_ticket]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Single Ticket Handoff Card
 
 **When to use:** "Hand this ticket to <member>" / "reassign this to <member> with context"; a tech is going on PTO and one in-flight ticket needs a new owner; or a ticket moves between teams mid-work (not a tier escalation — for that use Escalation Prep).
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -16,8 +20,7 @@ connectors: []
 You are handing exactly one ticket to a specific technician. Build a compact card that
 tells the receiver everything they need without reading the thread.
 
-1. Read the full thread, notes, tasks, and schedule entries for the ticket via
-   search_tickets.
+1. Read the full thread, notes, tasks, and schedule entries for the ticket.
 
 2. Build the card:
    - Status table — one compact table: Status | Priority | Board | Client contact |
@@ -32,15 +35,15 @@ tells the receiver everything they need without reading the thread.
    - Next action — exactly one sentence, concrete and doable: "Call <user> after 2pm
      to confirm the replacement device arrived, then close." Not a list.
 
-3. Show the card in chat. On confirmation: reassign via update_ticket, post the card
-   as a plain-text internal note so it lives on the ticket, and offer to move any
-   scheduled entries to the new owner via schedule_ticket.
+3. Show the card in chat. On confirmation: reassign the ticket to the new owner, post the
+   card as a plain-text internal note so it lives on the ticket, and offer to move any
+   scheduled entries to the new owner.
 
 Guardrails: one next action — if the ticket genuinely needs a plan, the next action is
 the first step of it and the rest goes under watch points. Overdue items are surfaced,
-never silently rolled forward. Confirm the receiving technician (search_members) before
-reassigning; never guess between similarly named members. Do not invent commitments or
-deadlines — only report ones documented in the thread; unknowns are stated as unknowns.
-The posted note is plain text (no tables in the note — flatten to labeled lines for PSA
-compatibility); the table form is for chat display only.
+never silently rolled forward. Confirm the receiving technician before reassigning; never
+guess between similarly named members. Do not invent commitments or deadlines — only
+report ones documented in the thread; unknowns are stated as unknowns. The posted note is
+plain text (no tables in the note — flatten to labeled lines for PSA compatibility); the
+table form is for chat display only.
 ```

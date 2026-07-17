@@ -4,11 +4,15 @@ description: Route a ticket to the technician with demonstrated expertise — wh
 category: Scheduling & Dispatch
 tools: [search_tickets, search_members, update_ticket, add_ticket_note]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Skill-Based Routing
 
 **When to use:** "Who should take this?" for a specialized issue (firewall, VoIP, line-of-business app, backup platform); "who knows <client>'s environment best?"; or a dispatcher wants a skill-fit second opinion on top of load-based assignment.
+
+**Run it:** on one ticket — recommend the best-fit tech, assign on confirmation.
 
 ## Prompt
 
@@ -21,7 +25,7 @@ ticket to proven hands.
    keywords (product names, error class, device type). Keep the keyword set small and
    concrete.
 
-2. Search the evidence, one search_tickets pass per signal (result caps apply per search):
+2. Search the evidence, one search pass per signal (result caps apply per search):
    - Resolved tickets for the same client with similar keywords — who resolved them?
    - Resolved tickets desk-wide with the same technology keywords — who resolves this
      stack most often?
@@ -41,8 +45,8 @@ ticket to proven hands.
    (latest 3 weeks ago); <tech>: 4 stack-wide." If evidence is thin or two candidates are
    effectively tied, present the tie and ask rather than choosing.
 
-7. On confirmation, assign via update_ticket and add a plain-text note via add_ticket_note
-   with the routing rationale and the ticket numbers used as evidence.
+7. On confirmation, set the owner and add a plain-text note with the routing rationale and
+   the ticket numbers used as evidence.
 
 Guardrails: evidence only — cite real resolved tickets found in search; never invent
 ticket numbers or claim expertise you didn't observe. "Touched it once" is not expertise

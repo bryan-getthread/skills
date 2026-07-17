@@ -4,11 +4,15 @@ description: Rewrite rough technician text into a polished, client-ready version
 category: Communication
 tools: []
 connectors: []
+scope: single
+flow: yes
 ---
 
 # Tone Polish Rewrite
 
 **When to use:** "Write this nicely: <rough text>" / "make this sound professional" / "clean this up before I send it" — a message reads harsh, curt, or unclear and the tech wants a friendlier version with the facts untouched.
+
+**Run it:** on one draft · or as a Flow (triggered when a reply draft is added).
 
 ## Prompt
 

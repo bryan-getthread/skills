@@ -4,11 +4,15 @@ description: Someone asks where the biggest opportunities are to increase zero-t
 category: Reporting & Analytics
 tools: [search_tickets, list_intents, list_flows, list_boards]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Zero-Touch Opportunity Mining
 
 **When to use:** "Where are our biggest zero-touch opportunities?", "analyze previous tickets and suggest intents based on common trends," or "what should we automate next to lift our zero-touch rate?"
+
+**Run it:** across all resolved tickets in the period — manually on demand (an opportunity scan has no ticket event for a Flow to trigger on).
 
 ## Prompt
 
@@ -25,10 +29,10 @@ creates or modifies intents/flows.
 2. Cluster into repeatable request/issue patterns (password resets, new-user requests,
    distribution-list changes, printer mapping, common alert classes, status inquiries).
 
-3. Check the existing inventory with list_intents and list_flows — mark clusters
-   already covered, partially covered, or uncovered. (Intent/flow tools are admin-only
-   and may be hidden for this member — if unavailable, degrade to recommendations-only
-   and say so.)
+3. Check the existing inventory — list the current intents and flows and mark clusters
+   already covered, partially covered, or uncovered. (Reading that inventory is
+   admin-only and may be hidden for this member — if unavailable, degrade to
+   recommendations-only and say so.)
 
 4. Score each uncovered/partial cluster:
    - Volume — tickets per month in the cluster.

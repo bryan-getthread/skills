@@ -4,11 +4,15 @@ description: Closed tickets in a date range bucketed by sentiment score, per cli
 category: Reporting & Analytics
 tools: [search_tickets, search_clients, search_members]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Sentiment Closure Report
 
 **When to use:** "Sentiment on everything we closed last month," "which clients / techs had the most negative closes?", "show closure sentiment by week for <client>," or prepping a QBR or coaching conversation with evidence, not vibes.
+
+**Run it:** across all closed tickets in the range — manually on demand (Thread Flows are ticket-event triggered with no schedule, so this can't run itself).
 
 ## Prompt
 
@@ -23,10 +27,9 @@ schedule/cron, so this is not a scheduled skill; run it on request or from an ex
 scheduler.
 
 1. Scope the population: closed tickets within the requested date range. Apply any
-   client/tech filter asked for, resolving names with search_clients / search_members
-   first.
+   client/tech filter asked for, looking up the client or tech names first.
 
-2. Pull the tickets with search_tickets and read each ticket's sentiment score. Bucket
+2. Pull the tickets and read each ticket's sentiment score. Bucket
    them — Negative / Neutral / Positive (or the desk's score bands) — and count per
    bucket. Never invent a sentiment value or a message.
 

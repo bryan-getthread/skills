@@ -4,11 +4,15 @@ description: A service manager wants the weekly service-desk report — team vol
 category: Reporting & Analytics
 tools: [search_tickets, search_members, list_boards, list_ticket_statuses]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Weekly Ops Report
 
 **When to use:** "Run the weekly ops report" / "how did the desk do last week?" — a recurring Monday-morning summary for a lead or director, or "compare last week to the week before, anything off?"
+
+**Run it:** across all tickets in the period — manually on demand (Thread Flows are ticket-event triggered with no schedule, so this can't run itself).
 
 ## Prompt
 
@@ -21,8 +25,8 @@ This runs MANUALLY on demand — Thread Flows are ticket-event triggered with no
 schedule/cron, so this is not an unattended/scheduled skill; run it on request or from
 an external scheduler that invokes Super Magic.
 
-1. Confirm the period (default: last full week) and the boards in scope via
-   list_boards. Exclude junk/NOC and internal-noise boards up front.
+1. Confirm the period (default: last full week) and the boards in scope.
+   Exclude junk/NOC and internal-noise boards up front.
 
 2. FAST STATS PASS — run split searches per signal per board (opened, closed, still
    open, aged past threshold, negative sentiment) rather than one giant query. Record

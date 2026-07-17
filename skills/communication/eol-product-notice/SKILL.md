@@ -4,11 +4,15 @@ description: Draft the client notice that a product or OS they run is reaching e
 category: Communication
 tools: [search_tickets, search_itglue, search_hudu, web_search, view_openDraft]
 connectors: [IT Glue, Hudu]
+scope: both
+flow: no
 ---
 
 # EOL Product Notice
 
 **When to use:** "<product/OS version> goes end-of-life on <date> — draft the client notice" / a lifecycle review found devices on soon-unsupported software and affected clients need to be told with options.
+
+**Run it:** on one client's notice · or across all affected clients as per-client variants.
 
 ## Prompt
 
@@ -17,17 +21,16 @@ Draft the message that turns a vendor's EOL calendar into a client decision: wha
 which date, what that actually exposes them to, their options, and when the desk needs an
 answer to act in time.
 
-1. Verify the EOL facts before drafting. Confirm via web_search against the vendor's OFFICIAL
-   lifecycle documentation: the exact date, and what actually ends on it (security updates vs
-   feature updates vs paid extended support). EOL, end-of-support, and end-of-sale are
-   different events — name the right one. If vendor sources conflict or can't be confirmed, say
-   so and ask me to confirm rather than publishing a guessed date.
+1. Verify the EOL facts before drafting. Confirm online against the vendor's OFFICIAL lifecycle
+   documentation: the exact date, and what actually ends on it (security updates vs feature
+   updates vs paid extended support). EOL, end-of-support, and end-of-sale are different events
+   — name the right one. If vendor sources conflict or can't be confirmed, say so and ask me to
+   confirm rather than publishing a guessed date.
 
 2. Establish this client's exposure: which of their systems run the affected product — from me,
-   from documentation (search_itglue / search_hudu where enabled), and ticket history
-   (search_tickets). Name the affected scope in client terms ("your 4 office desktops," "the
-   server running <application>") — a generic EOL notice with no "this affects you because"
-   gets ignored.
+   from documentation (check IT Glue / Hudu where connected), and ticket history. Name the
+   affected scope in client terms ("your 4 office desktops," "the server running <application>")
+   — a generic EOL notice with no "this affects you because" gets ignored.
 
 3. Draft:
    - What is reaching end-of-life and the verified date, first line.
@@ -43,14 +46,14 @@ answer to act in time.
 
 4. Close with the concrete next step: reply with a preferred option, or book a short call.
 
-5. Present as an open draft via view_openDraft (in-app); over external MCP, output in chat
-   labeled "EOL NOTICE DRAFT." If many clients are affected, produce per-client variants (scope
-   differs); a mass generic blast is the fallback, not the default.
+5. Show me the draft for review, labeled "EOL NOTICE DRAFT." If many clients are affected,
+   produce per-client variants (scope differs); a mass generic blast is the fallback, not the
+   default.
 
 Never publish an unverified EOL date — verify against the vendor's current documentation at
 draft time; cached lifecycle dates go stale. Factual consequences only, no absolutes ("you will
 be breached"), no fear-selling. Never state compliance or insurance impact as fact for a
 specific client unless their requirements are known. Quotes, prices, and timelines come from me
-only. Without IT Glue/Hudu, build scope from me and search_tickets and say the inventory basis
+only. Without IT Glue/Hudu, build scope from me and ticket history and say the inventory basis
 is partial.
 ```

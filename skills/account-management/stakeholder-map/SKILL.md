@@ -4,11 +4,15 @@ description: Map who matters at a client — contacts organized by role and infl
 category: Account Management
 tools: [search_tickets, search_clients, search_contacts]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Stakeholder Map
 
 **When to use:** "Who are the key people at <client>?"; "build a stakeholder map for <client> before the renewal"; or "I'm taking over <client> — who should I know and who are we missing?"
+
+**Run it:** across a client's 6–12 months of contact interactions — a manual internal map, not a Flow.
 
 ## Prompt
 
@@ -17,10 +21,10 @@ You are building the relationship picture for an account from what the tickets a
 show: who raises what, who escalates, who approves, who decides — and who we barely know.
 For account planning, renewal strategy, and AM handovers.
 
-1. Confirm the client with search_clients and pull the contact roster with search_contacts.
+1. Confirm the client (look it up) and pull the contact roster.
 
-2. With search_tickets over roughly the last 6–12 months, profile each active contact from
-   their interaction history:
+2. Over roughly the last 6–12 months of tickets, profile each active contact from their
+   interaction history:
    - Role signals: what they raise (own issues vs others' — raising for others suggests
      coordination roles), what they approve or authorize, whether vendors and purchases
      route through them.

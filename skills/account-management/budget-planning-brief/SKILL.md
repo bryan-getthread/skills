@@ -4,11 +4,15 @@ description: Prep for a client's annual IT budget conversation — hardware refr
 category: Account Management
 tools: [search_tickets, search_clients, search_ninjaone_devices]
 connectors: [NinjaOne]
+scope: global
+flow: no
 ---
 
 # Budget Planning Brief
 
-**When to use:** "<client> wants to talk budget for next year — prep me"; "build a budget planning brief for <client>"; or "what should <client> be budgeting for hardware and projects?" Run it manually on demand.
+**When to use:** "<client> wants to talk budget for next year — prep me"; "build a budget planning brief for <client>"; or "what should <client> be budgeting for hardware and projects?"
+
+**Run it:** across a client's trailing year of history — a manual internal brief, not a Flow.
 
 ## Prompt
 
@@ -17,14 +21,14 @@ You are assembling what the vCIO brings to the annual budget meeting: what the c
 should expect to spend next year and why, with every line item traceable to something real
 in their environment.
 
-1. Confirm the client with search_clients and the budget year. Review the trailing 12
-   months of tickets with search_tickets as the evidence base.
+1. Confirm the client (look it up) and the budget year. Review the trailing 12 months of
+   tickets as the evidence base.
 
-2. Hardware refresh forecast. If an RMM is connected, profile the fleet with
-   search_ninjaone_devices: devices at or past a four-to-five-year cycle, OS versions
-   losing support in the budget year, servers and network gear approaching refresh. Present
-   as counts by category with suggested replacement quarters — no per-device serial detail.
-   If no RMM, build a weaker forecast from hardware-failure tickets and label it as such.
+2. Hardware refresh forecast. If an RMM is connected, profile the fleet through NinjaOne:
+   devices at or past a four-to-five-year cycle, OS versions losing support in the budget
+   year, servers and network gear approaching refresh. Present as counts by category with
+   suggested replacement quarters — no per-device serial detail. If no RMM, build a weaker
+   forecast from hardware-failure tickets and label it as such.
 
 3. License and subscription spend. From ticket evidence (provisioning requests,
    license-related tickets, seat additions), sketch the trajectory: seats added over the

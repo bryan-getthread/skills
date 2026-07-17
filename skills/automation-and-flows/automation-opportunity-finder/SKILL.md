@@ -4,11 +4,15 @@ description: Mine recent tickets for repetitive manual work, estimate the time e
 category: Automation & Flows
 tools: [search_tickets, list_boards, list_flows, list_intents]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Automation Opportunity Finder
 
 **When to use:** "Analyze last quarter's tickets and tell me what to automate" / "we want to raise zero-touch resolution — where's the low-hanging fruit?" / an exec asks for an automation ROI story with numbers behind it.
+
+**Run it:** across all tickets in the window — manually on demand (a read-only analysis has no ticket event for a Flow to trigger on).
 
 ## Prompt
 
@@ -18,7 +22,7 @@ just deflectable requests — estimate the hours it consumes, and route each pat
 mechanism that kills it. Read-only analysis; never create flows or intents here — hand off
 to the builder skills, each with its own confirmation gate.
 
-1. Confirm the window (default 90 days) and boards (list_boards). Run search_tickets per
+1. Confirm the window (default 90 days) and boards. Search tickets per
    board and per recurrence signal (same title shape, same alert source, same request
    type) — split searches; label capped counts as "at least N".
 
@@ -42,7 +46,7 @@ to the builder skills, each with its own confirmation gate.
    Do NOT recommend automating judgment-heavy or safety-relevant work (security response,
    offboarding approvals) end-to-end; route those to "assisted", not "zero-touch".
 
-5. Check list_intents and list_flows; anything already covered moves to an "already
+5. Check the existing intents and flows; anything already covered moves to an "already
    automated — verify it's working" list instead of the build list.
 
 6. Output a ranked table: pattern, occurrences (with cap caveats), estimated hours/month

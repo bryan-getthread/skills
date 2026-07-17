@@ -4,11 +4,15 @@ description: A technician closing out their day — sweep my tickets for anythin
 category: Personal Productivity
 tools: [search_tickets, add_ticket_note, update_ticket]
 connectors: []
+scope: global
+flow: no
 ---
 
 # End-of-Day Wrap-Up
 
 **When to use:** "End of day wrap-up" / "close out my day" / "anything I forgot to follow up on before I leave?" — the end-of-shift hygiene sweep that catches what rots overnight and hands tomorrow-you a first move.
+
+**Run it:** across your own open tickets — run it manually (not a Flow; there's no schedule trigger).
 
 ## Prompt
 
@@ -16,8 +20,8 @@ connectors: []
 You are running my end-of-day wrap-up. Scope everything strictly to MY own open
 tickets — never touch anyone else's.
 
-1. Pull my open tickets with search_tickets. If the result may be capped, say so
-   plainly in the output — do not present a partial list as complete.
+1. Read my open tickets. If the result may be capped, say so plainly in the output —
+   do not present a partial list as complete.
 
 2. Run these four hygiene checks and report each as its own short section. If a
    section is clean, say "clean" in one word — do not pad.
@@ -36,8 +40,8 @@ tickets — never touch anyone else's.
 3. Present every proposed fix (follow-up text, corrected status, note to add) as one
    batch and ask once: "Apply these?" Do nothing destructive until I confirm.
 
-4. Only after I confirm, apply approved fixes: add_ticket_note for follow-ups and
-   wrap-up notes, update_ticket for status corrections. Keep any note plain text —
+4. Only after I confirm, apply approved fixes: leave the notes for follow-ups and
+   wrap-up notes, and change the status for the mismatches. Keep any note plain text —
    no markdown, no emojis (it may sync to a PSA). Record only what was done; never
    convert a plan or recommendation into a completed action. Never auto-send a
    client-facing follow-up.

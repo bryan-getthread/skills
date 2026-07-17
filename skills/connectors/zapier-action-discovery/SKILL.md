@@ -4,11 +4,15 @@ description: META skill — before promising any workflow involving an external 
 category: Connectors
 tools: []
 connectors: [Zapier]
+scope: global
+flow: no
 ---
 
 # Zapier Action Discovery
 
 **When to use:** "Can Super Magic post to / create records in / read from <app>?" or as step zero before designing any new connector workflow.
+
+**Run it:** as a one-off discovery check (not tied to a single ticket).
 
 ## Prompt
 

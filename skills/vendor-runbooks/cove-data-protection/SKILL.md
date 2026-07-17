@@ -4,11 +4,15 @@ description: An N-able Cove Data Protection backup ticket arrived — classify t
 category: Vendor Runbooks
 tools: [search_tickets, search_clients, search_contacts, search_itglue, add_ticket_note, update_ticket]
 connectors: []
+scope: single
+flow: yes
 ---
 
 # Cove Data Protection Alerts
 
 **When to use:** A Cove backup failure, "backup did not run", or session-error alert lands as a ticket; someone asks whether a device or data set is actually recoverable from Cove; or a retention/archive question or storage/LocalSpeedVault issue needs a decision.
+
+**Run it:** on the alert ticket · or as a Flow (triggered when a matching Cove backup alert ticket is created).
 
 ## Prompt
 
@@ -24,13 +28,13 @@ You are triaging an N-able Cove Data Protection (formerly N-able Backup) alert. 
 
 2. Route to the correct client per backup-failure-triage; Cove alerts often arrive on a shared backup-monitoring mailbox. Low routing confidence → no reassignment, flag for a human.
 
-3. Recurrence check via search_tickets (same device, same failure class, 30–90 days). One failure with a successful session after it is noise; repeated same-class failures are a problem ticket, never a one-off close.
+3. Recurrence check by searching prior tickets (same device, same failure class, 30–90 days). One failure with a successful session after it is noise; repeated same-class failures are a problem ticket, never a one-off close.
 
 4. Verify recoverability — do not assert it. Cove's Recovery Testing (automated restore-to-standby/verification, where the client has it configured) is the evidence that a restore actually works; without a passed recovery test, the strongest honest claim is the last successful session date per data source. Never tell a client "your data is safe" or that a restore will succeed — report the last known good session and whether recovery testing is passing; restore verification is a human task.
 
 5. Archive vs standard sessions — keep them straight: Cove archiving sessions retain point-in-time copies on a separate schedule/retention from continuous sessions. A restore "as of <date>" is bounded by archive schedule and retention — confirm a covering restore point exists before promising a historical restore point. Retention/archive changes are billing- and compliance-relevant — route commercial changes to account management.
 
-6. Decide the path: handle-here for offline-at-schedule, obvious transient session interruptions, pending-reboot writer errors; escalate to N-able support for repeated same-class failures after local remediation, integrity/corruption errors, or failures spanning many clients at once (possible storage-node/product-side incident — check N-able's status page first). Document the failure classification, evidence, recurrence verdict, last known good session per source, and the recommendation.
+6. Decide the path: handle-here for offline-at-schedule, obvious transient session interruptions, pending-reboot writer errors; escalate to N-able support for repeated same-class failures after local remediation, integrity/corruption errors, or failures spanning many clients at once (possible storage-node/product-side incident — check N-able's status page first). In the internal note, document the failure classification, evidence, recurrence verdict, last known good session per source, and the recommendation, and set the priority. Running as a Flow, apply the classification and note directly and flag ambiguous or fleet-wide cases for a human.
 
-Do not clear or reset backup alerts during triage — the alert is the evidence trail. Degradation: without documentation access (search_itglue), the client's Cove data-source scope and retention design may be unknown — say so rather than assuming full coverage.
+Do not clear or reset backup alerts during triage — the alert is the evidence trail. Degradation: without documentation access, the client's Cove data-source scope and retention design may be unknown — say so rather than assuming full coverage.
 ```

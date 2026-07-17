@@ -4,11 +4,15 @@ description: The base client-email standard other communication skills build on 
 category: Communication
 tools: []
 connectors: []
+scope: both
+flow: no
 ---
 
 # Email Baseline Standard
 
 **When to use:** Whenever another communication skill says "per the Email Baseline Standard," or when someone asks "what's our email standard?" or wants an email drafted that no specialized skill covers.
+
+**Run it:** on one ticket · or across any client email the desk sends.
 
 ## Prompt
 

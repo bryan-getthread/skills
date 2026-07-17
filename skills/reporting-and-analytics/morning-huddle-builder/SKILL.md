@@ -4,11 +4,15 @@ description: Build the daily standup or morning huddle message — yesterday's P
 category: Reporting & Analytics
 tools: [search_tickets, search_members, list_boards]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Morning Huddle Builder
 
 **When to use:** "Build this morning's huddle" / "prep the daily standup" — a dispatcher or lead running the 8am sync who wants the queue read pre-digested.
+
+**Run it:** across all tickets from yesterday and overnight — manually on demand (Thread Flows are ticket-event triggered with no schedule, so this can't run itself).
 
 ## Prompt
 

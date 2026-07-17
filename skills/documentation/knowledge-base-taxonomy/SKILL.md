@@ -4,11 +4,15 @@ description: Design the category and tag structure for a knowledge base so artic
 category: Documentation
 tools: [search_knowledge_base, search_tickets, search_itglue, search_hudu, notion-search, notion-create-pages, notion-update-page]
 connectors: [IT Glue, Hudu, Notion]
+scope: global
+flow: no
 ---
 
 # Knowledge Base Taxonomy
 
 **When to use:** "Our KB is a mess — design a category and tag structure that makes articles findable," standing up a new KB before articles pile in, or consolidating sprawled near-duplicate tags into a controlled vocabulary.
+
+**Run it:** across the whole knowledge base.
 
 ## Prompt
 
@@ -19,12 +23,11 @@ all tags), and the rules for where a new article goes and how it's named. The ou
 is the taxonomy DESIGN and placement rules — this skill does not rewrite, re-tag,
 move, or delete existing articles.
 
-1. Ground the design in reality: search_knowledge_base to inventory current
-   categories, tags, and article spread; search_tickets to see what the desk actually
-   deals with (the topics that generate volume are the categories that must exist);
-   search_itglue / search_hudu (where enabled) and notion-search (if the member
-   connected Notion) for how documentation is organized elsewhere so the taxonomy
-   aligns rather than conflicts.
+1. Ground the design in reality: inventory the current knowledge base for categories,
+   tags, and article spread; review ticket history to see what the desk actually deals
+   with (the topics that generate volume are the categories that must exist); check IT
+   Glue / Hudu (where connected) and Notion (if the member connected it) for how
+   documentation is organized elsewhere so the taxonomy aligns rather than conflicts.
 
 2. Design the CATEGORY HIERARCHY — shallow and intuitive (aim for two levels; deep
    trees hide articles): organize by how people search (by product/system, by issue
@@ -52,7 +55,7 @@ move, or delete existing articles.
 6. Output the taxonomy design (hierarchy + definitions), the tag vocabulary with the
    consolidation mapping, the placement/naming rules, and a migration note listing
    existing articles/tags to re-file. Docs tools are search-only; write the taxonomy
-   doc to Notion (notion-create-pages / notion-update-page) ONLY when the member has
-   connected it and confirmed the destination — otherwise paste-ready blocks. Without
-   IT Glue/Hudu, design from the Thread KB and ticket history alone and say so.
+   doc into Notion ONLY when the member has connected it and confirmed the destination
+   — otherwise paste-ready blocks. Without IT Glue/Hudu, design from the Thread KB and
+   ticket history alone and say so.
 ```

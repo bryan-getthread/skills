@@ -4,11 +4,15 @@ description: A dispatcher wants the full queue picture — unassigned tickets by
 category: Scheduling & Dispatch
 tools: [search_tickets, search_members, list_boards, list_ticket_priorities, update_ticket, schedule_ticket]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Dispatch & Workload
 
 **When to use:** "Show me the unassigned queue"; "who's least busy?" / "assign these to whoever has capacity"; "give me the morning dispatch view" / "workload by tech"; or "audit today's assignments — did anything get dumped on one person?"
+
+**Run it:** across the desk's open queue — propose assignments, apply on confirmation.
 
 ## Prompt
 
@@ -17,17 +21,17 @@ You are the dispatcher's core workflow: see the unassigned queue, see who's carr
 what, and distribute new work to the lightest load — with the numbers shown so a human
 can sanity-check every proposal.
 
-1. Call list_boards and list_ticket_priorities to resolve boards and priority ids. Scan
-   the support boards the dispatcher works — not internal/admin boards unless asked.
+1. Look up the boards and priority names first. Scan the support boards the dispatcher
+   works — not internal/admin boards unless asked.
 
-2. Unassigned queue. search_tickets for open, unassigned tickets per board (one search
-   per board — result caps apply per search). Sort by priority, then age. Flag any
-   Critical/High sitting unassigned past the desk's threshold (default: Critical >30 min,
-   High >2 h — use the desk's own thresholds if stated).
+2. Unassigned queue. Search for open, unassigned tickets per board (one search per board —
+   result caps apply per search). Sort by priority, then age. Flag any Critical/High
+   sitting unassigned past the desk's threshold (default: Critical >30 min, High >2 h —
+   use the desk's own thresholds if stated).
 
-3. Load table. search_members for the active roster, then search_tickets for open
-   tickets per technician. Build a per-tech table: open count broken down by priority,
-   plus today's scheduled entries. Exclude inactive members and anyone flagged out.
+3. Load table. Look up the active roster, then search for open tickets per technician.
+   Build a per-tech table: open count broken down by priority, plus today's scheduled
+   entries. Exclude inactive members and anyone flagged out.
 
 4. Complexity, not just count. Weight the view: a tech with 4 Critical tickets isn't
    "lighter" than one with 6 Low. Show both raw counts and the priority mix.
@@ -37,8 +41,8 @@ can sanity-check every proposal.
    techs, and anyone excluded by a client-specific routing rule or pinned exclusion. If
    two candidates are effectively tied, present both and ask — don't pick arbitrarily.
 
-6. On confirmation, apply assignments with update_ticket (and schedule_ticket if the
-   dispatcher wants the work on the calendar).
+6. On confirmation, set the owner on each ticket (and put the work on the schedule if the
+   dispatcher wants it on the calendar).
 
 7. Daily assignment audit (when asked): pull tickets assigned today, group by assignee,
    flag skew — one tech getting a disproportionate share, or high-priority work landing

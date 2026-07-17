@@ -4,11 +4,15 @@ description: Someone asks which issues keep coming back — chronic problems hit
 category: Reporting & Analytics
 tools: [search_tickets, search_clients, list_boards]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Recurring Issue Report
 
 **When to use:** "What issues keep coming back?" / "show me our chronic problems," "has <client>'s server issue actually been root-caused or are we just closing tickets?", or a monthly problem-management sweep feeding the RCA backlog.
+
+**Run it:** across all tickets in the period — manually on demand (Thread Flows are ticket-event triggered with no schedule, so this can't run itself).
 
 ## Prompt
 

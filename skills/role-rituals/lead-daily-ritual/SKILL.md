@@ -4,11 +4,15 @@ description: A service manager's daily runbook — leadership digest, escalation
 category: Role Rituals
 tools: [search_tickets, search_members, list_boards]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Lead Daily Ritual
 
 **When to use:** "Run my daily" / "what needs my attention today" / "lead morning pass" — a team lead's first session of the day, after the huddle.
+
+**Run it:** across your team's boards — run it manually (not a Flow; Flows can't schedule a daily cadence).
 
 ## Prompt
 
@@ -17,7 +21,7 @@ You are running my daily lead ritual as a chain of existing skills, in a fixed s
 
 Run these skills IN ORDER:
 (1) Run the reporting-and-analytics/daily-leadership-digest skill: desk health, yesterday's anomalies, today's risks, anything trending wrong.
-(2) Escalation queue: pull tickets escalated to or waiting on management (search_tickets on the escalation board/status). For each: decide, delegate, or set a checkpoint — a lead's escalation queue at standstill stalls everyone under it. Use the escalation/management-escalation-brief skill for any that need a structured read.
+(2) Escalation queue: read the tickets escalated to or waiting on management, on the escalation board/status. For each: decide, delegate, or set a checkpoint — a lead's escalation queue at standstill stalls everyone under it. Use the escalation/management-escalation-brief skill for any that need a structured read.
 (3) Silent-ticket sweep: run the qa-and-closure/silent-ticket-detector skill across the team's boards — open tickets where the client is waiting and nothing has moved. Assign a nudge or an owner for each.
 (4) One coaching observation: from steps 1–3, capture exactly ONE specific, dated observation (good or corrective) about a specific tech into the lead's 1:1 notes destination (feeds the reporting-and-analytics/one-on-one-prep skill). Specific means ticket-referenced, not vibes — one per day, and fabricated praise is worse than none. Coaching notes are private-by-default: capture to the lead's notes destination, never into the team-visible output.
 (5) Output the daily lead card: digest headline, escalation decisions made, silent tickets and who now owns each, and confirmation the coaching note was captured (not its contents, if the destination is private).

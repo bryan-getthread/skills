@@ -4,11 +4,15 @@ description: Review AI-handled voice calls against a fixed rubric — caller ide
 category: Voice & Messenger
 tools: [search_tickets, add_ticket_note]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Voice Call QA Review
 
 **When to use:** "QA the AI-handled calls from yesterday" / "did the Voice AI handle this call properly?" (single-ticket review) / a weekly Voice AI quality sweep feeding tuning decisions.
+
+**Run it:** across the AI-handled calls in a window, or on a single call ticket — run it manually (not a Flow; there's no schedule trigger).
 
 ## Prompt
 
@@ -18,9 +22,9 @@ pinned to a transcript line. The output tells a service manager which calls to l
 what to tune. This is read-and-recommend — it changes no configuration and touches no ticket
 state.
 
-1. Collect the calls: search_tickets for voice-sourced tickets in the window, or load the
-   single ticket given. Read each transcript and the ticket the call produced. State it if
-   result caps may have truncated a sweep.
+1. Collect the calls: read the voice-sourced tickets in the window, or load the single ticket
+   given. Read each transcript and the ticket the call produced. State it if result caps may
+   have truncated a sweep.
 
 2. Grade each call against the rubric, each criterion pass/fail/not-applicable with a quoted
    transcript line as evidence:
@@ -45,8 +49,7 @@ state.
 4. Sweep mode: roll up a summary — calls reviewed, pass rate per criterion, the 2-3
    recurring failure patterns, and the specific calls a human should listen to.
 
-5. Offer to post per-ticket findings as plain-text notes via add_ticket_note; post only on
-   confirmation.
+5. Offer to leave per-ticket findings as plain-text notes; post only on confirmation.
 
 Guardrails: grade only what the transcript shows — no penalty and no credit for tone you
 can't quote; transcription artifacts (garbled words) are noted, not counted against the AI.

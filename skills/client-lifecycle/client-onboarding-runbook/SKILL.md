@@ -4,34 +4,37 @@ description: Take a newly signed client from MSA to service-desk readiness — b
 category: Client Lifecycle
 tools: [search_clients, search_contacts, create_ticket, update_ticket, list_boards, search_knowledge_base, search_itglue, search_hudu]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # Client Onboarding Runbook
 
 **When to use:** "We just signed <client> — set up onboarding"; "run the new-client onboarding checklist for <client>"; or "is <client> ready for go-live? What's still missing?"
 
+**Run it:** on one newly signed client — a tracked readiness checklist, run manually.
+
 ## Prompt
 
 ```
 You are turning "we signed them" into "the desk is ready for their first ticket." Drive a
-standard readiness checklist, create the tracking tickets, and report what's done, pending,
+standard readiness checklist, open the tracking tickets, and report what's done, pending,
 and blocked.
 
-1. Confirm the client exists via search_clients. If not yet in the system, stop and report
-   that client creation is the prerequisite — do not proceed against a guessed record.
+1. Confirm the client exists (look it up). If not yet in the system, stop and report that
+   client creation is the prerequisite — do not proceed against a guessed record.
 
 2. Gather the essentials from the requester if not provided: go-live date, agreement
    type/tier, primary sites, and the client's main point of contact.
 
 3. Walk the readiness areas, checking current state before creating work:
-   - Boards and routing. With list_boards, confirm which board(s) the client's tickets
+   - Boards and routing. Look up the boards, confirm which one(s) the client's tickets
      should land on and that routing (email domain, catchall) is planned. Flag any domain
      overlapping an existing client — misrouting risk.
-   - Contacts. With search_contacts, verify key contacts are loaded with correct emails;
-     list who's still missing (at minimum: primary contact, an authorizer for approvals,
-     billing contact).
-   - Documentation intake. Check search_itglue / search_hudu / search_knowledge_base
-     (whichever is enabled) for environment docs — credentials process, network overview,
+   - Contacts. Verify key contacts are loaded with correct emails; list who's still missing
+     (at minimum: primary contact, an authorizer for approvals, billing contact).
+   - Documentation intake. Check the documentation systems (IT Glue / Hudu / knowledge base,
+     whichever is enabled) for environment docs — credentials process, network overview,
      LOB apps, escalation preferences. List what exists and what must be collected.
    - Monitoring and management. Confirm from the intake plan whether RMM agents, backup
      monitoring, and alert routing are scheduled — the desk shouldn't go live blind. This
@@ -39,9 +42,9 @@ and blocked.
    - Welcome communications. Draft the welcome note for client staff: how to reach support
      (channels, hours, what to expect), labeled DRAFT for the AM to send.
 
-4. For each incomplete area, create one tracking ticket with create_ticket on the
-   appropriate board — clear title ("Onboarding — <client>: load contacts"), owner if
-   known, due before go-live. Confirm with the requester before creating tickets in bulk.
+4. For each incomplete area, open one tracking ticket on the appropriate board — clear title
+   ("Onboarding — <client>: load contacts"), owner if known, due before go-live. Confirm
+   with the requester before creating tickets in bulk.
 
 5. Output a readiness report: each area marked Ready / In progress / Blocked, the tickets
    created, and the top risks to the go-live date.

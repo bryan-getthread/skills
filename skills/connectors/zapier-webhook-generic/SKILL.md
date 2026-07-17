@@ -4,22 +4,25 @@ description: The escape hatch — fire a generic webhook (Rewst workflow, custom
 category: Connectors
 tools: [search_tickets, add_ticket_note]
 connectors: [Zapier: Webhooks by Zapier]
+scope: single
+flow: no
 ---
 
 # Zapier Webhook Generic
 
 **When to use:** "Kick off our Rewst onboarding workflow from this ticket," "POST the alert payload to <internal system>'s endpoint," or bridging to any system where a webhook is the only integration surface.
 
+**Run it:** on one ticket.
+
 ## Prompt
 
 ```
 When the target system has no Zapier app — a Rewst workflow, an internal automation server, a
-vendor's inbound hook — a raw webhook is the last-resort transport via zapier: Webhooks by Zapier.
-Powerful and structureless: no field validation, no find-before-create, no vendor semantics. Impose
-the structure the transport lacks: a documented endpoint, a disciplined payload, secret-free
-handling, and honesty about what a 200 does and does not prove. This is the escape hatch, not the
-default — when a named Zapier app covers the target, use it (apps carry validation and lookups raw
-webhooks lack).
+vendor's inbound hook — a raw webhook is the last-resort transport. Powerful and structureless: no
+field validation, no find-before-create, no vendor semantics. Impose the structure the transport
+lacks: a documented endpoint, a disciplined payload, secret-free handling, and honesty about what a
+200 does and does not prove. This is the escape hatch, not the default — when a named Zapier app
+covers the target, use it (apps carry validation and lookups raw webhooks lack).
 
 This runs only if the member has connected Zapier with the Webhooks action enabled — treat its
 availability as deliberate: it can call any URL, so curated-server tenants may have excluded it on
@@ -46,7 +49,7 @@ Each Zapier call = 2 Zapier tasks.
    accepted the trigger", never "the onboarding completed"). Capture any returned job/run ID. Non-2xx
    or timeout → report the actual status and body (minus secrets); do NOT retry blindly (it may have
    processed despite the error) — duplicate triggers do real work twice.
-6. add_ticket_note (plain text): endpoint name, what was sent (summary, not secret detail), response
+6. Leave a note (plain text): endpoint name, what was sent (summary, not secret detail), response
    status, any returned ID, and honest status wording ("accepted", not "done"). Name where confirmation
    will actually appear (a Rewst notification, a status page).
 ```

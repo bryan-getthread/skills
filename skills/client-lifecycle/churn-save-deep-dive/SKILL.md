@@ -4,11 +4,15 @@ description: When a client says they want to leave — an unflinching full-histo
 category: Client Lifecycle
 tools: [search_tickets, search_clients, search_contacts]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Churn Save Deep Dive
 
 **When to use:** "<client> gave notice / says they're shopping — analyze what went wrong"; "build me a save plan for <client>"; or "full history review on <client> before the retention call."
+
+**Run it:** on one client's full relationship history — a manual internal analysis, not a Flow.
 
 ## Prompt
 
@@ -17,9 +21,9 @@ The save conversation only works if the MSP walks in knowing the truth. Read the
 relationship — the misses, the patterns, the moments the client stopped believing — and arm
 the AM with an honest account and a credible pitch to stay. Brutally internal.
 
-1. Confirm the client with search_clients and review the FULL relationship history with
-   search_tickets — not just the recent quarter. If searches cap out, work backward from
-   most recent and state which era the analysis fully covers.
+1. Confirm the client (look it up) and review the FULL relationship history — not just the
+   recent quarter. If searches cap out, work backward from most recent and state which era
+   the analysis fully covers.
 
 2. Build the honest what-went-wrong account:
    - Chronic patterns: recurring issues never root-caused, repeated SLA misses, aging

@@ -4,11 +4,15 @@ description: Compile the week's closure-QA failures into a digest with per-techn
 category: QA & Closure
 tools: [search_tickets, search_members]
 connectors: [Zapier: Outlook, Zapier: Microsoft Teams, Zapier: Slack]
+scope: global
+flow: no
 ---
 
 # Weekly QA Digest
 
 **When to use:** Weekly — "build the QA digest" / "summarize this week's QA failures" / "what should I coach on this week?", prepping the team meeting or a one-on-one with quality talking points backed by tickets, or delivering the digest on a schedule to email or a team channel.
+
+**Run it:** across all of the week's QA results (manually or on a schedule).
 
 ## Prompt
 
@@ -17,13 +21,13 @@ Turn a week of individual QA results into coaching material: which closure crite
 for whom, and what one training topic would fix the most misses. Written for a service manager's
 Monday, not for a compliance binder.
 
-1. Gather the week's QA evidence with search_tickets: tickets reopened by QA (QA failure notes),
-   tickets closed clean, and their per-criterion results where the QA gate posted them. Split
-   searches per board and disclose any result caps.
+1. Gather the week's QA evidence: tickets reopened by QA (QA failure notes), tickets closed clean,
+   and their per-criterion results where the QA gate posted them. Split searches per board and
+   disclose any result caps.
 
 2. Aggregate — don't enumerate. Roll failures up to criterion level ("missing customer
-   confirmation: 9 tickets") and per-technician level (resolve names with search_members). Cite two
-   or three representative ticket numbers per pattern, not every instance.
+   confirmation: 9 tickets") and per-technician level (resolve names by looking up members). Cite
+   two or three representative ticket numbers per pattern, not every instance.
 
 3. Identify per-tech patterns: a criterion one tech fails repeatedly, a tech whose pass rate moved
    sharply week over week, and — equally — a tech whose closures were consistently clean (worth a
@@ -38,9 +42,9 @@ Monday, not for a compliance binder.
    vs last week); top 3 failing criteria with counts and example tickets; per-tech section (pattern
    + suggestion, framed as coaching); one "clean closures" positive callout.
 
-6. Deliver: show the digest in chat for review, then on request send it via Zapier: Outlook "Send
-   Email" to the manager or post it with Zapier: Microsoft Teams "Send Channel Message" (or Zapier:
-   Slack "Send Channel Message"). Plain formatting that survives email and chat rendering.
+6. Deliver: show the digest in chat for review, then on request send it via Outlook "Send Email" to
+   the manager or post it with Teams "Send Channel Message" (or Slack "Send Channel Message"). Plain
+   formatting that survives email and chat rendering.
 
 Never send or post without the manager reviewing the digest first — per-tech quality data is
 sensitive. The digest is a coaching document, not a disciplinary record: neutral wording, patterns

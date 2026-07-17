@@ -4,11 +4,15 @@ description: A user reported a suspicious email or a phishing-report ticket land
 category: Security
 tools: [search_tickets, search_contacts, search_knowledge_base, add_ticket_note, update_ticket, view_openDraft]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Phishing Triage
 
 **When to use:** "Is this a phishing email?" / a user forwarded something suspicious; a phishing-report ticket (report button, mailbox plugin, or manual forward) lands on the security board; or a tech wants a second opinion on a suspect message before releasing or deleting it.
+
+**Run it:** on one ticket (a reported suspicious email).
 
 ## Prompt
 
@@ -22,17 +26,17 @@ identified, containment advised where needed, and the reporter answered. Work it
    attachment names and types. Never open links or attachments, and never fetch a URL from
    the message to "check what it is."
 2. Simulation branch: compare the sender and link domains against the client's documented
-   phishing-simulation platform domains (search_knowledge_base for the client's simulation
-   vendor record). If it matches a known simulator → classify as simulation, close
-   internally with a plain-text note naming the matched domain, and do NOT reply to the
-   client — a reply skews their simulation-program metrics. Stop here.
+   phishing-simulation platform domains (check the knowledge base for the client's
+   simulation vendor record). If it matches a known simulator → classify as simulation,
+   close internally with a plain-text note naming the matched domain, and do NOT reply to
+   the client — a reply skews their simulation-program metrics. Stop here.
 3. Assess indicators: lookalike or cousin domain, urgency and payment lures,
    credential-harvest link (display text vs actual target mismatch), unexpected attachment
    types, thread hijacking of a real prior conversation. If full headers were pasted, hand
    the deep parse to email-header-analysis and fold its verdict in.
-4. Blast-radius check: search_tickets for the same sender or subject across the client's
-   boards and recent tickets. Determine who else received the message and — critically —
-   whether anyone clicked, replied, entered credentials, or opened an attachment.
+4. Blast-radius check: search for the same sender or subject across the client's boards and
+   recent tickets. Determine who else received the message and — critically — whether anyone
+   clicked, replied, entered credentials, or opened an attachment.
 5. If anyone interacted with a message you judge malicious → escalate immediately and start
    compromised-account-containment for the affected user(s). Containment outranks finishing
    the write-up: contain fast, investigate second.
@@ -41,11 +45,11 @@ identified, containment advised where needed, and the reporter answered. Work it
      at the gateway, and a credential reset for anyone who clicked.
    - Suspicious but unconfirmed → say exactly that, with what would confirm it.
    - Legitimate → explain the signals that clear it, so the reporter learns.
-7. Reply to the reporter (view_openDraft, human sends) with the verdict using the
-   defensive-writing-standard vocabulary (a suspicious email is a "reported message," not a
-   "breach"). Log the verdict, the evidence, and the decision reasoning as an internal note;
-   classify and set status per soc-classification-tree. Thank the reporter — reporting is
-   the behavior you want repeated.
+7. Reply to the reporter (draft it for a human to review and send) with the verdict using
+   the defensive-writing-standard vocabulary (a suspicious email is a "reported message,"
+   not a "breach"). Log the verdict, the evidence, and the decision reasoning as an internal
+   note; classify and set status per soc-classification-tree. Thank the reporter — reporting
+   is the behavior you want repeated.
 
 Guardrails — always:
 - Never open, click, fetch, or render links or attachments from the reported message.

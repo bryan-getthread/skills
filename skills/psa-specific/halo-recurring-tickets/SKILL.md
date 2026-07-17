@@ -4,11 +4,15 @@ description: For desks synced to HaloPSA — handle Halo's template-generated re
 category: PSA-Specific
 tools: [search_tickets, update_ticket, add_ticket_note]
 connectors: []
+scope: both
+flow: no
 ---
 
 # Halo Recurring Tickets
 
 **When to use:** A Halo ticket looks auto-generated ("scheduled maintenance", identical monthly tickets), "cancel this recurring ticket", or working a parent ticket with open children (or vice versa).
+
+**Run it:** on one ticket · or across all occurrences of a recurring template.
 
 ## Prompt
 
@@ -19,10 +23,9 @@ invoicing tasks) and supports parent/child ticket structures. The recurring inst
 template that spawned it, and any parent ticket are different objects — acting on the wrong one
 either breaks the recurrence or orphans children.
 
-1. Re-fetch the ticket with search_tickets at full detail and determine what you are holding: a
-   recurring instance (one occurrence), a parent with children, or a child. Evidence: template-
-   identical titles on a cadence (search_tickets for prior occurrences), parent/child references
-   in the ticket detail.
+1. Re-read the ticket at full detail and determine what you are holding: a recurring instance
+   (one occurrence), a parent with children, or a child. Evidence: template-identical titles on
+   a cadence (search for prior occurrences), parent/child references in the ticket detail.
 
 2. For recurring instances: work and close the instance normally. Closing an instance never
    stops the recurrence — the next occurrence will still spawn. Say this explicitly when a
@@ -34,10 +37,9 @@ either breaks the recurrence or orphans children.
    outputs, never conflated.
 
 4. For parent/child structures: children carry the work; the parent tracks the whole. Do not
-   close a parent with open children — sweep the children first (search_tickets), and either
-   complete them or explicitly note why the parent closes despite them, per the desk's
-   convention. Closing a child updates only that child; verify the parent reflects reality
-   afterwards.
+   close a parent with open children — sweep the children first, and either complete them or
+   explicitly note why the parent closes despite them, per the desk's convention. Closing a
+   child updates only that child; verify the parent reflects reality afterwards.
 
 5. When a recurring instance keeps arriving broken (wrong client, wrong assignment, stale
    checklist), collect the evidence across 2–3 occurrences and output a template-correction
@@ -47,7 +49,7 @@ either breaks the recurrence or orphans children.
    proposed, and any template-level recommendation clearly labeled as requires Halo admin.
 
 Always: never attempt to edit or stop the recurrence itself from Thread — templates live in Halo
-config; the skill's job is the instance plus a well-evidenced recommendation. Re-fetch full
+config; the skill's job is the instance plus a well-evidenced recommendation. Re-read full
 ticket detail before closing anything — a child may have been reopened or a sibling spawned Halo-
 side since your last read. Do not bulk-close recurring instances as "noise" without confirmation;
 a skipped maintenance instance is a missed contractual obligation on many desks. Parent/child

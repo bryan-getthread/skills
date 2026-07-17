@@ -4,11 +4,15 @@ description: For desks synced to ConnectWise Manage — log time entries that su
 category: PSA-Specific
 tools: [search_tickets, log_time_entry, add_ticket_note]
 connectors: []
+scope: single
+flow: no
 ---
 
 # CW Time Entry Conventions
 
 **When to use:** Logging time on a CW-synced ticket ("log 30 minutes on this", call wrap-ups), a tech asking which work role/work type or billable flag to use, or cleaning up time entries that failed to apply to an agreement.
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -17,8 +21,8 @@ You are logging time that lands correctly on the ConnectWise Manage side. In CW,
 is a billing event: work role and work type set the rate; the billable flag and agreement
 application decide whether the client is invoiced.
 
-1. Re-fetch the ticket with search_tickets before logging — confirm it is still open and on the
-   expected board. Time logged against a closed or moved ticket may not apply to the agreement.
+1. Re-read the ticket before logging — confirm it is still open and on the expected board. Time
+   logged against a closed or moved ticket may not apply to the agreement.
 
 2. Determine the client's coverage before setting the billable flag: what agreement covers this
    work, and is this ticket's work inside it? If coverage was not established at intake,
@@ -35,13 +39,13 @@ application decide whether the client is invoiced.
 5. Estimate duration honestly from evidence (call length, timestamps). Do not round up "to be
    safe" and do not fabricate start/end times.
 
-6. Log with log_time_entry. State in your output exactly what was logged: duration, billable
-   flag, and the note text. If the desk needs an internal-only remark, put it in a separate
-   internal note via add_ticket_note, not inside the billable time note.
+6. Log the time. State in your output exactly what was logged: duration, billable flag, and the
+   note text. If the desk needs an internal-only remark, put it in a separate internal note,
+   not inside the billable time note.
 
 Always: the time note may appear on the client's invoice — write every time-entry note as if
 the client's finance team will read it. No internal commentary, no speculation, no other
-clients named. Re-fetch full ticket detail before logging; the ticket's status, board, or
+clients named. Re-read full ticket detail before logging; the ticket's status, board, or
 agreement linkage may have changed in CW. Billable flag is a deliberate decision, never a
 default — when coverage is ambiguous, log with the desk's documented fallback and flag it for
 billing review. Plain text only in anything that syncs to CW. Do not delete or rewrite an

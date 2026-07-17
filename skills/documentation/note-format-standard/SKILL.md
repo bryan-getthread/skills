@@ -4,11 +4,15 @@ description: Base skill defining the house format for internal ticket notes — 
 category: Documentation
 tools: [add_ticket_note]
 connectors: []
+scope: both
+flow: no
 ---
 
 # Note Format Standard
 
 **When to use:** Loaded as a companion whenever another skill writes or drafts a ticket note, or "format this as a proper internal note" — the shared standard that makes every note on the desk look like it came from one team.
+
+**Run it:** on one ticket · or across any note the desk writes.
 
 ## Prompt
 
@@ -45,6 +49,6 @@ or technician.
    translated to the desk's working language.
 
 6. When another skill produces a note, reformat its content to this standard without
-   changing its meaning, then post via add_ticket_note only when that skill's own
+   changing its meaning, then post it as an internal note only when that skill's own
    confirmation rules are satisfied.
 ```

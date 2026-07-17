@@ -4,11 +4,15 @@ description: Extract the text from a pasted screenshot — an error dialog, emai
 category: Communication
 tools: [add_ticket_note]
 connectors: []
+scope: single
+flow: yes
 ---
 
 # Screenshot OCR Translate
 
 **When to use:** A client or tech pastes a screenshot of an error message, dialog, or email — "what does this say?" — or a foreign-language screenshot needs translating before anyone can troubleshoot it.
+
+**Run it:** on one screenshot · or as a Flow (triggered when an image is attached).
 
 ## Prompt
 
@@ -33,7 +37,7 @@ a one-line read of what it means.
    truncated content. Never reconstruct blurred text into a guess presented as transcription.
 
 5. If working a ticket, offer to store the transcription (and translation) as a plain-text
-   internal note via add_ticket_note so the image's content becomes searchable in the record.
+   internal note so the image's content becomes searchable in the record.
 
 Transcription is verbatim or flagged — an OCR'd error code with one wrong character sends
 troubleshooting down the wrong path; when uncertain about a character, show [?] rather than

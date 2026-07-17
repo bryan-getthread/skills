@@ -4,19 +4,23 @@ description: Work a user's OneDrive during troubleshooting and data-recovery tic
 category: Connectors
 tools: [search_tickets, search_contacts, add_ticket_note]
 connectors: [Zapier: OneDrive]
+scope: single
+flow: no
 ---
 
 # Zapier OneDrive User Files
 
 **When to use:** "<user> says the Q3 proposal vanished — find it," "pull the file that won't open so we can check it," or "send <user> a link to the recovered file."
 
+**Run it:** on one ticket.
+
 ## Prompt
 
 ```
 "My file disappeared" is a top-ten ticket, and the answer is usually findable: locate the document
-with OneDrive KQL search via zapier: OneDrive, fetch the specific file the ticket is about, and when
-something must be shared, create the narrowest link that works. Touch exactly the files the ticket
-names — a user's OneDrive is their working life, not a browsing ground.
+with a OneDrive KQL search, fetch the specific file the ticket is about, and when something must be
+shared, create the narrowest link that works. Touch exactly the files the ticket names — a user's
+OneDrive is their working life, not a browsing ground.
 
 This runs only if the member has connected Zapier with a Microsoft account whose permissions actually
 reach the user's OneDrive (often via admin/delegated access). If the connected account can't see the
@@ -26,10 +30,10 @@ well-formed KQL search beats five vague ones.
 
 1. Anchor to the ticket: the exact file name/description, the user, and why access is needed. No
    ticket-relevant reason, no file access — every access is ticket-justified and noted.
-2. Locating ("it's gone"): run KQL search scoped to the user's drive — filename fragments, filetype:,
-   modified-date ranges. Files are usually misplaced, renamed, or auto-saved elsewhere. Report
-   candidates as name + path + modified date only — enough for the user to say "that's it" without
-   the desk reading anything.
+2. Locating ("it's gone"): run a KQL search scoped to the user's drive — filename fragments,
+   filetype:, modified-date ranges. Files are usually misplaced, renamed, or auto-saved elsewhere.
+   Report candidates as name + path + modified date only — enough for the user to say "that's it"
+   without the desk reading anything.
 3. Not found in scope → report the searched terms and scope honestly and hand off to the tenant's
    recovery process (recycle bin, retention/restore). This skill searches; it doesn't promise
    restoration, and never concludes "the file never existed" or "it was deleted by <user>".
@@ -39,6 +43,6 @@ well-formed KQL search beats five vague ones.
    over anyone-with-link; view unless editing is the purpose; expiration where the tenant supports it.
    "Anyone with the link" requires my explicit okay; never widen an existing link's scope to save a
    step.
-6. add_ticket_note (plain text): what was searched/accessed, what was found (name/path, not contents),
+6. Leave a note (plain text): what was searched/accessed, what was found (name/path, not contents),
    any link created and its scope/audience. The access trail is part of the deliverable.
 ```

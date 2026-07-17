@@ -4,11 +4,15 @@ description: Review a client's identity hygiene — MFA coverage, privileged acc
 category: Security
 tools: [liongard_identity, search_tickets, add_ticket_note]
 connectors: [Liongard]
+scope: global
+flow: no
 ---
 
 # Identity MFA Health Check
 
 **When to use:** "Check <client>'s MFA coverage" / "audit their identity hygiene"; prep for a posture review, QBR, or insurance questionnaire; or after an identity incident, to find the next weakest account.
+
+**Run it:** across a client's identity accounts (an identity-hygiene review).
 
 ## Prompt
 
@@ -18,23 +22,23 @@ lacks MFA, which privileged accounts are exposed, and which accounts should no l
 ranked by how badly each finding can hurt. Report and recommend only; never disable,
 remove, or modify an account from this skill. Work it in order:
 
-1. Pull the client's identity data via liongard_identity: per-account MFA enrollment,
-   privileged role assignments, last sign-in activity, and account enabled/disabled state.
-   Date the pull.
+1. Pull the client's identity data from Liongard: per-account MFA enrollment, privileged
+   role assignments, last sign-in activity, and account enabled/disabled state. Date the
+   pull.
 2. Build the finding classes, ranked worst-first: privileged accounts without MFA
    (critical, always first); enabled privileged accounts that are stale (no sign-in in
    60–90 days — dormant power is attacker fuel); enabled user accounts without MFA; stale
    enabled user accounts; service or shared accounts with interactive sign-in ability.
-3. Cross-check every stale account against offboarding history: search_tickets for an
-   offboarding or departure ticket matching the account. A stale account WITH an
-   offboarding ticket is an incomplete offboarding (process gap); a stale account with NO
-   ticket is an unknown — flag it for the client to identify before anyone touches it.
+3. Cross-check every stale account against offboarding history: search for an offboarding or
+   departure ticket matching the account. A stale account WITH an offboarding ticket is an
+   incomplete offboarding (process gap); a stale account with NO ticket is an unknown —
+   flag it for the client to identify before anyone touches it.
 4. Verify "stale" isn't seasonal before recommending removal: contractors, seasonal staff,
    and break-glass accounts legitimately sit idle. Mark those "verify with client" rather
    than "disable."
 5. Output the ranked findings table (finding class, account count, named accounts,
    evidence, recommended action) plus the two or three highest-impact recommendations up
-   top. Post as a plain-text note on request.
+   top. Leave it as a plain-text note on request.
 
 Guardrails — always:
 - Report and recommend only — never disable, remove, or modify an account; changes go

@@ -4,11 +4,15 @@ description: A SentinelOne Ranger network-discovery finding landed — read the 
 category: Vendor Runbooks
 tools: [search_tickets, search_clients, search_ninjaone_devices, get_ninjaone_device, get_ninjaone_device_link, add_ticket_note, update_ticket]
 connectors: [NinjaOne]
+scope: single
+flow: no
 ---
 
 # SentinelOne Ranger
 
 **When to use:** A Ranger finding reports a new/unmanaged/rogue device on a client's network; a coverage-gap question arises ("which endpoints have no S1 agent?"); or a tech asks how to read a Ranger discovery or whether a discovered device is a threat.
+
+**Run it:** on the finding ticket.
 
 ## Prompt
 
@@ -17,7 +21,7 @@ You are triaging a SentinelOne Ranger finding — the network-discovery / device
 
 1. Parse the Ranger finding: discovered device's IP/MAC, hostname if resolved, OS/fingerprint guess, the network/subnet and the S1 agent that observed it, first-seen time, and whether Ranger classifies it managed/unmanaged/unknown. Copy Ranger's exact wording. Route to the client per security-alert-response using the observing site/tenant; low confidence → flag for a human.
 
-2. Identify before alarming — most "rogue" devices are mundane. Cross-reference the RMM inventory (search_ninjaone_devices by hostname/MAC/IP; get_ninjaone_device for a match) and documentation to answer: is this a known asset that simply lacks an S1 agent (coverage gap), a known non-endpoint device that can't run S1 (printer, switch, IoT, phone), or a genuinely unrecognized device? The MAC OUI (vendor prefix) is a strong first clue to device type.
+2. Identify before alarming — most "rogue" devices are mundane. Cross-reference the RMM inventory (look up the device in the RMM by hostname/MAC/IP; read its details for a match) and documentation to answer: is this a known asset that simply lacks an S1 agent (coverage gap), a known non-endpoint device that can't run S1 (printer, switch, IoT, phone), or a genuinely unrecognized device? The MAC OUI (vendor prefix) is a strong first clue to device type.
 
 3. Classify the finding into the right lane — don't collapse a coverage gap and an unknown device into one:
    - Known asset, no S1 agent → EDR coverage gap: an install/deployment task (technician action), not an incident. Note it for coverage remediation.
@@ -26,9 +30,9 @@ You are triaging a SentinelOne Ranger finding — the network-discovery / device
 
 4. Do not take blind network action: Ranger can, with configuration, help block/quarantine unknown devices at the network layer — but blocking an unidentified device that turns out to be a critical printer or medical/OT device causes its own outage. Identify first; any network-level containment is a deliberate, documented, technician-executed decision.
 
-5. Hand off: agent installs, network-block decisions, and switch/DHCP investigation are technician actions — provide get_ninjaone_device_link for a matched managed device, and a clear handoff for the rest. Direct and record.
+5. Hand off: agent installs, network-block decisions, and switch/DHCP investigation are technician actions — hand the tech a deep link into the device in the RMM for a matched managed device, and a clear handoff for the rest. Direct and record.
 
-6. Document the identification result, the lane, coverage-gap items, and any containment decision with its owner. Client-facing wording per defensive-writing-standard.
+6. In the internal note, document the identification result, the lane, coverage-gap items, and any containment decision with its owner. Client-facing wording per defensive-writing-standard.
 
-Degradation: without RMM (search_ninjaone_devices) or documentation, identification is limited to IP/MAC/OUI — say so and lean on technician-gathered network evidence. When in doubt, do nothing irreversible and escalate.
+Degradation: without RMM lookup or documentation, identification is limited to IP/MAC/OUI — say so and lean on technician-gathered network evidence. When in doubt, do nothing irreversible and escalate.
 ```

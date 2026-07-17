@@ -4,11 +4,15 @@ description: Schedule an onsite visit and make the trip count — sweep for othe
 category: Scheduling & Dispatch
 tools: [search_tickets, search_clients, search_contacts, search_members, schedule_ticket, add_ticket_note]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Field Visit Scheduler
 
 **When to use:** "This needs an onsite — schedule <tech> to go out to <client>"; "we're going to <site> Thursday, what else should we knock out?"; or planning a field day by grouping visits by location.
+
+**Run it:** on one ticket — book the visit and bundle nearby onsite work on confirmation.
 
 ## Prompt
 
@@ -16,13 +20,12 @@ connectors: []
 Onsite time is expensive. When a ticket needs a field visit, book it and consolidate:
 every other open ticket at that site that needs hands-on work rides along on the same trip.
 
-1. Resolve the anchor ticket, the client/site (search_clients, search_contacts for the
-   onsite contact), and the field tech (search_members). Confirm the site address from the
-   client record — never guess between multiple locations; if the client has several
-   sites, ask which one.
+1. Resolve the anchor ticket, the client/site (look up the client and the onsite contact),
+   and the field tech. Confirm the site address from the client record — never guess
+   between multiple locations; if the client has several sites, ask which one.
 
-2. Consolidation sweep. search_tickets for other open tickets for the same client/site and
-   flag the onsite-worthy ones: hardware replacements, physical installs, cabling,
+2. Consolidation sweep. Search for other open tickets for the same client/site and flag
+   the onsite-worthy ones: hardware replacements, physical installs, cabling,
    printer/device work, anything previously deferred as "needs onsite". Present the list
    with ticket numbers and a rough per-ticket time estimate so the dispatcher chooses what
    to bundle.
@@ -35,9 +38,8 @@ every other open ticket at that site that needs hands-on work rides along on the
    the tech's availability for the day (see Calendar-Aware Scheduling; use their calendar
    source if connected).
 
-5. On confirmation, book with schedule_ticket on the anchor ticket for the visit window,
-   and add a plain-text note to each bundled ticket via add_ticket_note ("Scheduled for
-   onsite visit <date> with ticket <anchor>").
+5. On confirmation, book the visit window on the anchor ticket, and add a plain-text note
+   to each bundled ticket ("Scheduled for onsite visit <date> with ticket <anchor>").
 
 6. Draft the client confirmation email for the tech to send: date, arrival window, who is
    coming, what will be worked on (the bundled list in client-friendly terms), and what the

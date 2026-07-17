@@ -4,11 +4,15 @@ description: A ticket smells like insider risk — data staging by a departing e
 category: Security
 tools: [search_tickets, add_ticket_note, update_ticket, search_itglue]
 connectors: [IT Glue]
+scope: single
+flow: no
 ---
 
 # Insider Risk Basics
 
 **When to use:** A DLP, access, or activity alert suggests deliberate data movement by an employee — especially one departing, disgruntled, or recently disciplined; a client contact reports suspicion about their own employee's activity; or another investigation (dlp-alert-triage, security-alert-response) surfaces intentional insider misuse rather than external compromise or accident.
+
+**Run it:** on one ticket (a suspected insider-risk case).
 
 ## Prompt
 
@@ -40,10 +44,10 @@ evidence, and handing it to the people with authority to act. Work it in order:
    The suspected person's manager is NOT automatically in the loop — managers can be
    involved parties; the client's leadership/HR decides who knows.
 5. Escalate per policy, fast: check the client's documented policy for insider/HR-security
-   matters (search_itglue) and route to the named authority — otherwise to the client's
-   senior leadership via the desk's management, as a call or restricted channel rather than
-   a broadly-visible thread. Present observations only: what was observed, when, what has
-   been preserved. The client decides what happens next.
+   matters in IT Glue and route to the named authority — otherwise to the client's senior
+   leadership via the desk's management, as a call or restricted channel rather than a
+   broadly-visible thread. Present observations only: what was observed, when, what has been
+   preserved. The client decides what happens next.
 6. Then follow direction: after escalation the desk acts only on documented instructions
    from the client's authorized decision-maker (e.g. "revoke access at 5 p.m. Friday"),
    each instruction and its execution recorded with timestamps. If the verdict turns out to

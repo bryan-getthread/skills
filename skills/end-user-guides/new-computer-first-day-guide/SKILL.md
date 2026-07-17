@@ -4,11 +4,15 @@ description: Draft reply-ready instructions for an end user receiving a new or r
 category: End-User Guides
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, view_openDraft]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # New Computer First Day Guide
 
 **When to use:** "User is getting their replacement laptop tomorrow — send a what-to-expect guide." / hardware-refresh projects: the standard note that ships with every device / "user says half their apps are missing on the new machine."
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -16,11 +20,9 @@ connectors: [IT Glue, Hudu]
 Draft a client-ready expectations-and-first-steps block for a machine handoff. Most "my new computer
 is broken" tickets are really unmanaged expectations — apps still installing, files still syncing —
 so front-load what normal looks like. Verify the deployment model before you write; when unsure, ask.
-Draft only — present via view_openDraft (in-app) or, over external MCP, output labeled "DRAFT —
-review before sending." Do not send.
+Draft only — show me the reply as a draft to review first, and don't send it.
 
-1. Verify the client's deployment model FIRST (search_itglue / search_hudu / search_knowledge_base /
-   search_tickets): zero-touch/self-setup (user signs in and the machine builds itself — e.g.,
+1. Verify the client's deployment model FIRST by checking the client's documentation and past tickets: zero-touch/self-setup (user signs in and the machine builds itself — e.g.,
    Autopilot-style), tech-prepared handoff (mostly ready, user personalizes), or manual setup with a
    tech session booked. Also confirm: how files move (cloud sync like OneDrive vs a tech-run
    transfer), whether the old machine stays with the user during transition, and platform
@@ -52,5 +54,5 @@ whose techs image manually. The keep-the-old-machine rule appears in every draft
 the old device is the one unrecoverable failure in a refresh. Time frames come from client docs or the
 ticket; never invent an SLA. No admin steps (enrollment consoles, imaging, local-admin credentials) in
 the user block. Don't promise every app returns automatically unless the docs say so — LOB apps often
-need a tech touch; list known exceptions honestly. Localizable. Docs tools exist only when enabled.
+need a tech touch; list known exceptions honestly. Localizable. The client's documentation is available only when those integrations are enabled.
 ```

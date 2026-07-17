@@ -4,27 +4,31 @@ description: Restart a crashed or stopped Windows service through the RMM — al
 category: Devices & Infrastructure
 tools: [search_ninjaone_devices, get_ninjaone_device, list_ninjaone_windows_services, control_ninjaone_windows_service, add_ticket_note]
 connectors: [NinjaOne]
+scope: single
+flow: yes
 ---
 
 # Service Restart Runbook
 
 **When to use:** A stopped-service alert fires (spooler, agent services, app services) or "restart the <service> on <device>".
 
+**Run it:** on one device/service ticket · or as a Flow triggered when a stopped-service alert lands on the ticket.
+
 ## Prompt
 
 ```
-Restart a stopped Windows service via control_ninjaone_windows_service with full discipline: verify it is actually stopped, check it is safe to touch, restart, verify it stayed up, write it down. Requires NinjaOne; if absent, say the skill cannot run.
+Restart a stopped Windows service through the RMM with full discipline: verify it is actually stopped, check it is safe to touch, restart, verify it stayed up, write it down. This needs the RMM connected; if absent, say the skill cannot run.
 
-1. Resolve organization then device via search_ninjaone_devices; rank by org match then last-contact; verify device class in get_ninjaone_device details — do not trust node_class. Note whether the device is a server and whether users are active on it.
-2. Verify current state with list_ninjaone_windows_services: the named service must actually be stopped or hung. If it is running, report that and stop — restarting a healthy service is an outage.
+1. Resolve organization then device in the RMM; rank by org match then last-contact; verify device class in the details — don't trust a class filter. Note whether the device is a server and whether users are active on it.
+2. Verify current state by reading the device's Windows services: the named service must actually be stopped or hung. If it is running, report that and stop — restarting a healthy service is an outage.
 3. Check the service against the safety tiers:
    - Safe allowlist (restart with normal confirmation; unattended-eligible): Print Spooler, Windows Update, BITS, Windows Time, DHCP Client, DNS Client, workstation-level agent/monitoring services, and application services the tenant has explicitly allowlisted.
    - Domain-critical / never unattended, strong confirmation attended: Active Directory Domain Services, DNS Server, DHCP Server, database engines (SQL Server and kin), Exchange services, hypervisor/VM services, cluster services, backup engines, certificate services.
    - Unknown services: treat as critical until identified.
-4. Check get_ninjaone_device activities/state for another tech already working the device — a stopped service may be intentionally stopped mid-maintenance. If maintenance mode is active, do nothing.
-5. Attended path: confirm with the requester if the device is a server, users are active, or the service is outside the safe allowlist. Then control_ninjaone_windows_service to start/restart.
-6. Verify after: re-pull list_ninjaone_windows_services and confirm the service is running. If it stops again immediately, do NOT loop restarts — a crash-looping service is a root-cause problem; escalate with the evidence.
-7. Post a plain-text note via add_ticket_note (no markdown/emojis): device, service, state found, action taken, state after, any recurrence observed. Report the same in your reply.
+4. Check the device's recent activity/state for another tech already working the device — a stopped service may be intentionally stopped mid-maintenance. If maintenance mode is active, do nothing.
+5. Attended path: confirm with the requester if the device is a server, users are active, or the service is outside the safe allowlist. Then start/restart the service through the RMM.
+6. Verify after: re-read the device's Windows services and confirm the service is running. If it stops again immediately, do NOT loop restarts — a crash-looping service is a root-cause problem; escalate with the evidence.
+7. Leave a plain-text note (no markdown/emojis): device, service, state found, action taken, state after, any recurrence observed. Report the same in your reply.
 
 Guardrails: never restart domain-critical services unattended, and attended only with explicit human confirmation that names the blast radius. One restart attempt per session — a service that will not stay up gets escalated, not hammered. A service stopped on purpose (maintenance, tech activity, disabled startup type) is not a fault; check startup type and context before acting. Verify state before AND after; the note is mandatory — no silent service control.
 

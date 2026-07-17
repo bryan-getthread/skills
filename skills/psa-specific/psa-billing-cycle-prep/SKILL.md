@@ -4,11 +4,15 @@ description: Month-end billing readiness sweep for any PSA-synced desk — find 
 category: PSA-Specific
 tools: [search_tickets, list_boards, list_ticket_statuses, search_members, search_clients]
 connectors: []
+scope: global
+flow: no
 ---
 
 # PSA Billing Cycle Prep
 
 **When to use:** "Are we ready for month-end billing?" / "run a billing readiness check before I hand off to finance", the last few days of a billing period, or after a busy stretch when time entries and closures may be lagging.
+
+**Run it:** across all worked tickets on the boards in scope for the billing period (run manually near month-end).
 
 ## Prompt
 
@@ -25,15 +29,15 @@ skill; this one finds the readiness gaps that would corrupt those numbers.
    whether all clients or a subset. If no period is given, default to the current calendar month
    and say so.
 
-2. Unposted / missing time. Search the period's worked tickets with search_tickets (one search
-   per board or per client so result caps hit per-slice, not globally) and flag tickets that show
-   activity or closure but carry no time entries, or entries that appear unposted. Do not assert
-   an entry is unposted if Thread cannot see posting state — report it as "no visible time /
-   posting state unconfirmed in Thread" and point finance to the PSA.
+2. Unposted / missing time. Search the period's worked tickets (one search per board or per
+   client so result caps hit per-slice, not globally) and flag tickets that show activity or
+   closure but carry no time entries, or entries that appear unposted. Do not assert an entry is
+   unposted if Thread cannot see posting state — report it as "no visible time / posting state
+   unconfirmed in Thread" and point finance to the PSA.
 
 3. Done-but-open. Find tickets effectively complete but not in a billing-ready state — resolved-
    but-not-closed, or sitting in a stale in-progress status past their activity. Verify status
-   names against list_ticket_statuses per board (statuses are per-board). The point is to force
+   names against each board's live status list (statuses are per-board). The point is to force
    the decision before the run.
 
 4. Agreement / billing anomalies. Surface tickets whose agreement, contract, or billing
@@ -42,8 +46,8 @@ skill; this one finds the readiness gaps that would corrupt those numbers.
    Report these as anomalies to review, not corrections to make.
 
 5. Reconcile against the PSA before trusting a gap. Sync lag makes Thread-side state look wrong
-   when the PSA is already right — re-fetch full detail (search_tickets) on any flagged ticket,
-   and treat the PSA as master. A lag artifact is not a billing gap.
+   when the PSA is already right — re-read full detail on any flagged ticket, and treat the PSA
+   as master. A lag artifact is not a billing gap.
 
 6. Output a plain-text readiness report grouped by gap type: unposted/missing time, done-but-
    open, agreement anomalies — each with ticket references, the client, and the specific gap.

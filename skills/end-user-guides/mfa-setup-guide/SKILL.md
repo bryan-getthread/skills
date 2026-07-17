@@ -4,22 +4,24 @@ description: Draft reply-ready instructions for an end user to enroll in multi-f
 category: End-User Guides
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, view_openDraft]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # MFA Setup Guide
 
 **When to use:** "Send <user> instructions to set up MFA." / new-hire or security-rollout tickets where users must enroll an authenticator / "user keeps getting MFA prompts but never enrolled."
 
+**Run it:** on one ticket.
+
 ## Prompt
 
 ```
 Draft a client-ready instruction block walking an end user through enrolling their authenticator
 for the first time — written for the specific MFA product this client runs. Verify the product
-before you write; when unsure, ask, don't guess. Draft only — present via view_openDraft (in-app)
-or, over external MCP, output labeled "DRAFT — review before sending." Do not send.
+before you write; when unsure, ask, don't guess. Draft only — show me the reply as a draft to review first, and don't send it.
 
-1. Identify the client's MFA product FIRST. Check client docs (search_itglue / search_hudu /
-   search_knowledge_base) and prior MFA tickets (search_tickets): Microsoft Authenticator via
+1. Identify the client's MFA product FIRST. Check client docs and prior MFA tickets: Microsoft Authenticator via
    Entra, Duo Mobile, Okta Verify, Google Authenticator against a specific system, or a hardware
    token. Note the enrollment entry point the client documents. If the product is unknown, ask the
    technician ONE question — never send steps for a guessed product; Duo steps sent to a Microsoft
@@ -47,5 +49,5 @@ Guardrails: product match is mandatory — if unverifiable, ask; don't guess. No
 action first, tell the tech, not the user. Never ask the user to share codes, QR screenshots, or
 backup keys in email. Keep UI cues generic enough to survive minor app-store/portal updates ("look
 for a button named roughly 'Add sign-in method'"). Localizable; draft in the thread's language.
-Docs tools exist only when enabled; fall back to KB and ticket history.
+The client's documentation is available only when those integrations are enabled; otherwise rely on the knowledge base and ticket history.
 ```

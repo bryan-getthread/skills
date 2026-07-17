@@ -4,11 +4,15 @@ description: Offboard departing MSP staff — client-credential rotation first (
 category: MSP Business Operations
 tools: [search_tickets, search_members, search_clients, search_knowledge_base, search_itglue, search_hudu, create_ticket, update_ticket, add_ticket_note, send_approval, log_time_entry]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # Internal IT Offboarding
 
 **When to use:** "Offboard <user> — last day is Friday." / "Terminate <user>'s access effective now." / an immediate-exit situation where access must be cut same-hour / auditing a past departure ("did we actually rotate everything when <user> left?") / building the internal offboarding checklist itself.
+
+**Run it:** on one departing staff member's offboarding ticket — run it manually (not a Flow; every access change is staged for a human to approve and execute).
 
 ## Prompt
 
@@ -34,11 +38,11 @@ approvals, never auto-executed.
    - RMM/remote-access reach: which client sites their console account or agent access
      covered.
    - VPN profiles, client-issued accounts, and any client that gave them a personal login.
-   Pull the map from the documentation platform (search_itglue / search_hudu /
-   search_knowledge_base) and their ticket history (search_tickets, and search_clients to
-   confirm which clients they worked heavily). Post the inventory as a rotation checklist on
-   the offboarding ticket and track each item to done. Shared credentials are rotated, not
-   just "removed" — removal doesn't help if they memorized the password.
+   Pull the map from the documentation platform (IT Glue / Hudu / the knowledge base) and
+   their ticket history (read their tickets, and confirm which clients they worked heavily).
+   Post the inventory as a rotation checklist on the offboarding ticket and track each item to
+   done. Shared credentials are rotated, not just "removed" — removal doesn't help if they
+   memorized the password.
 
 3. Internal account cutover, in strict order discipline: identity sign-in blocked and sessions
    revoked first, then MFA methods cleared, then mailbox handled (delegate to manager before
@@ -49,19 +53,19 @@ approvals, never auto-executed.
    remote-access licenses reclaimed. Note each reclaimed seat — this is real money at renewal.
 
 5. Work handover:
-   - Reassign their open tickets (search_tickets for open work owned by the leaver;
-     update_ticket to the covering tech or the dispatch queue) with a one-line context note
-     per ticket where the thread doesn't speak for itself.
+   - Reassign their open tickets (find the open work owned by the leaver; move each to the
+     covering tech or the dispatch queue) with a one-line context note per ticket where the
+     thread doesn't speak for itself.
    - Identify clients where the leaver was the named or de-facto primary contact, and draft
      the client-facing transition note: warm, brief, forward-looking — "your primary engineer
      is now <user>; nothing else about your service changes." Never state the reason for
      departure; never editorialize. These are DRAFTS for a human (manager or account manager)
      to approve and send — do not send them yourself.
 
-6. Close with an audit note on the ticket (add_ticket_note, plain text — no markdown/emojis
-   for PSA sync): rotation checklist complete, accounts disabled with timestamps, seats
-   reclaimed, tickets reassigned, clients notified. This note is what a future "did we rotate
-   everything?" audit reads. Log your time with log_time_entry.
+6. Close with an audit note on the ticket (plain text — no markdown/emojis for PSA sync):
+   rotation checklist complete, accounts disabled with timestamps, seats reclaimed, tickets
+   reassigned, clients notified. This note is what a future "did we rotate everything?" audit
+   reads. Log your time.
 
 Guardrails, always:
 - Show me the plan before executing anything; confirm before any deprovisioning or write.

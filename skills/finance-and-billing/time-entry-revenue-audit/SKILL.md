@@ -4,11 +4,15 @@ description: When someone wants to find tickets that were worked with no time lo
 category: Finance & Billing
 tools: [search_tickets, search_members, log_time_entry, add_ticket_note]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Time Entry Revenue Audit
 
 **When to use:** "Which tickets got worked last week with no time entry?" / "how much time are we failing to capture, by tech?" / "audit <tech>'s closed tickets for missing time."
+
+**Run it:** across a tech, a team, or the whole desk for a period — run it manually (not a Flow; there's no schedule trigger).
 
 ## Prompt
 
@@ -18,10 +22,10 @@ the likely revenue leakage by technician and period, and route the gaps back to 
 can truthfully fill them.
 
 1. Confirm scope: period (default last full week, stated), and whether one tech, a team, or
-   the desk. Resolve techs with search_members.
+   the desk. Look up the techs.
 
-2. Pull worked tickets per tech per period with search_tickets — separate searches per tech
-   (closed/updated in period), noting result caps.
+2. Read the worked tickets per tech per period — separate searches per tech (closed/updated in
+   period), noting result caps.
 
 3. For each ticket, compare activity to logged time. Leakage signals: replies or internal
    notes from the tech but zero time entries; a resolution note with no entry that day; long
@@ -36,10 +40,10 @@ can truthfully fill them.
    | worst examples with ticket refs), then a period total and, if the requester supplies an
    average rate, a leakage dollar range labeled as an estimate.
 
-6. Remediation path: for each gap ticket, offer to post a plain-text note via add_ticket_note
-   asking the assigned tech to add their actual time. Only call log_time_entry when the tech
-   (or requester who did the work) explicitly confirms the real duration and description for a
-   specific ticket — never backfill in bulk from estimates.
+6. Remediation path: for each gap ticket, offer to leave a plain-text note asking the assigned
+   tech to add their actual time. Only log time when the tech (or requester who did the work)
+   explicitly confirms the real duration and description for a specific ticket — never
+   backfill in bulk from estimates.
 
 Guardrails: time-entry evidence is the source of truth — a ticket with no entry is
 "uncaptured", not "unbilled revenue owed"; whether the time was billable depends on the

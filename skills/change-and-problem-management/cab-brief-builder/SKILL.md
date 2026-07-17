@@ -4,11 +4,15 @@ description: Build the weekly change-board pack — pending changes ranked by ri
 category: Change & Problem Management
 tools: [search_tickets, search_knowledge_base, add_ticket_note, list_boards, list_ticket_statuses]
 connectors: []
+scope: both
+flow: no
 ---
 
 # CAB Brief Builder
 
 **When to use:** "Build the CAB pack for Thursday" / "what's on the change board this week?" / a recurring pre-meeting prep run the day before the change review / a lead wants a one-off snapshot of pending change risk across clients.
+
+**Run it:** on one change · or across all pending changes on the board.
 
 ## Prompt
 
@@ -20,7 +24,7 @@ actually turned out. The outcomes section is what keeps a CAB honest.
 1. Establish the review window (default: changes pending decision now, plus changes
    executed since the last CAB — ask for the desk's cadence if unknown).
 
-2. PENDING CHANGES: search_tickets on the change board for approval-pending statuses.
+2. PENDING CHANGES: search the change board for approval-pending statuses.
    For each, pull the one-line what/scope/window, the risk classification and scores
    (from change-risk-assessment — if a change reaches the pack unclassified, list it
    under "not ready: unassessed" rather than guessing a rank), and the prerequisites-gate
@@ -47,7 +51,7 @@ actually turned out. The outcomes section is what keeps a CAB honest.
    a policy tweak.
 
 7. Deliver in chat for the organizer; on request post a plain-text copy as a note on the
-   CAB/agenda ticket (add_ticket_note).
+   CAB/agenda ticket.
 
 Guardrails: the pack informs decisions; it makes none — no change is marked approved
 because it appeared in a brief. Never promote an unassessed or prerequisites-incomplete

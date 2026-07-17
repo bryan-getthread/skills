@@ -4,11 +4,15 @@ description: A Cork cyber-warranty posture signal landed — read which required
 category: Vendor Runbooks
 tools: [search_tickets, search_clients, search_itglue, add_ticket_note, update_ticket]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Cork Protection Posture
 
 **When to use:** A Cork signal fires that a required control is missing, unhealthy, or out of compliance (EDR gap, MFA not enforced, backup failing, email security off); a warranty-eligibility or coverage-at-risk notice needs working; or a tech asks what a Cork posture signal means or whether it's an incident.
+
+**Run it:** on the alert ticket.
 
 ## Prompt
 
@@ -27,7 +31,7 @@ You are triaging a Cork Protection posture signal. Cork is the MSP cyber-warrant
 
 5. Drive remediation through the owning product (technician actions in that product's console) and confirm Cork re-reads the control as compliant afterward — the loop isn't closed until the posture signal clears.
 
-6. Document the slipped control, real-vs-artifact verdict, the lane decision, remediation and out-of-compliance window, and the re-compliance confirmation. The out-of-compliance window matters for coverage — record when the control slipped and when it was restored; don't obscure a gap. Client-facing wording per defensive-writing-standard — frame it as protecting their coverage, not blame.
+6. In the internal note, document the slipped control, real-vs-artifact verdict, the lane decision, remediation and out-of-compliance window, and the re-compliance confirmation. The out-of-compliance window matters for coverage — record when the control slipped and when it was restored; don't obscure a gap. Client-facing wording per defensive-writing-standard — frame it as protecting their coverage, not blame.
 
-Degradation: without documentation (search_itglue), the client's required-control set and warranty terms may be unknown — say so before declaring a gap.
+Degradation: without documentation access, the client's required-control set and warranty terms may be unknown — say so before declaring a gap.
 ```

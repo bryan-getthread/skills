@@ -4,11 +4,15 @@ description: Draft a client-safe root-cause summary for a resolved issue — wha
 category: Communication
 tools: [search_tickets, search_knowledge_base, view_openDraft]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Client RCA Summary
 
 **When to use:** "The client wants to know why this happened — draft an RCA" / "write a root-cause summary for this resolved ticket" — a single incident is resolved and the client asks for an explanation short of a formal outage letter.
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -17,9 +21,8 @@ Draft a concise, client-facing root-cause summary: what happened, the impact, th
 cause, and the concrete steps that reduce recurrence — written so every sentence holds up if
 the email is forwarded to the client's leadership or their insurer.
 
-1. Read the full ticket history with search_tickets — timeline, actions taken, resolution —
-   before writing. Every claim must trace to the record. Check search_knowledge_base if a
-   known-error article is relevant.
+1. Read the full ticket history — timeline, actions taken, resolution — before writing. Every
+   claim must trace to the record. Check the knowledge base if a known-error article is relevant.
 
 2. Structure:
    - What happened — a plain, factual description of the issue and when it occurred.
@@ -36,8 +39,7 @@ the email is forwarded to the client's leadership or their insurer.
    "breach" or "compromise"; never assign blame to a vendor, the client, or a prior tech unless
    it is confirmed and appropriate to share.
 
-5. Present the draft via view_openDraft (in-app); over external MCP, output in chat labeled
-   "DRAFT — review before sending." Do NOT send.
+5. Show me the draft for review, labeled "DRAFT — review before sending." Do NOT send.
 
 Defensive by default — write assuming a lawyer will read it: no admission of fault, no
 speculation stated as fact, no naming a third party's failure that isn't confirmed. Cause

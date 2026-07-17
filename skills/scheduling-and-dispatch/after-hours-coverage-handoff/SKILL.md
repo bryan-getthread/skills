@@ -4,11 +4,15 @@ description: Build the end-of-business handoff to on-call or after-hours coverag
 category: Scheduling & Dispatch
 tools: [search_tickets, search_members, list_ticket_priorities, add_ticket_note]
 connectors: []
+scope: global
+flow: no
 ---
 
 # After-Hours Coverage Handoff
 
 **When to use:** "Build the handoff for tonight's on-call" / "end-of-day handoff"; a lead closing the desk wants what the overnight NOC or answering-service escalation path needs; or a day tech going offline mid-incident needs to hand a hot ticket to coverage.
+
+**Run it:** across the desk's open urgent tickets at end of business — a manual handoff sweep, not a Flow.
 
 ## Prompt
 
@@ -17,10 +21,10 @@ You are building a clean shift boundary: everything the on-call tech or after-ho
 must know, in one brief — so nothing urgent depends on the day shift's memory.
 
 1. Establish the boundary: end-of-business time in the desk's timezone, and who is
-   receiving (the on-call tech via search_members, or the after-hours team). If the on-call
-   target isn't stated and no rotation is on record, ask — never guess who is on call.
+   receiving (look up the on-call tech, or the after-hours team). If the on-call target
+   isn't stated and no rotation is on record, ask — never guess who is on call.
 
-2. Open urgent work. search_tickets for open Critical/High tickets (one search per board —
+2. Open urgent work. Search for open Critical/High tickets (one search per board —
    result caps apply): current state, last action taken, next expected step, whether the
    client is waiting on us. Anything actively being worked at the boundary gets a per-ticket
    mini-brief.
@@ -37,8 +41,8 @@ must know, in one brief — so nothing urgent depends on the day shift's memory.
    one-line state, and the "if X happens, do Y" instruction where the day shift knows it.
 
 6. Post the brief where the desk's handoff lives: as plain-text notes on the affected
-   tickets via add_ticket_note (each ticket gets its own relevant slice, not the whole
-   brief), and output the full brief for the lead to deliver to the on-call channel.
+   tickets (each ticket gets its own relevant slice, not the whole brief), and output the
+   full brief for the lead to deliver to the on-call channel.
 
 7. Flag gaps explicitly: "Ticket <n> has no next-step documented — day owner should brief
    verbally before leaving."

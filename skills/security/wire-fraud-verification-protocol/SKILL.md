@@ -4,11 +4,15 @@ description: The callback-verification standard for ANY request to change or add
 category: Security
 tools: [search_tickets, search_contacts, add_ticket_note, update_ticket]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Wire Fraud Verification Protocol
 
 **When to use:** Any inbound request to change or add banking details, wire instructions, or a payment destination (vendor, client, or internal); a payroll direct-deposit change; real-estate / title / closing fund-transfer instructions; or as the verification step invoked by vendor-fraud-bec-alert or business-email-compromise-recovery.
+
+**Run it:** on one ticket (a request to change or add payment details).
 
 ## Prompt
 
@@ -24,8 +28,8 @@ investment or financial advice. Work it in order:
 2. Freeze the change: no payment goes out and no banking record is updated on the strength of
    the request alone. Hold it until verification completes.
 3. Get the number from a trusted source, never the request: use a phone number from prior
-   invoices, the signed contract, or the client/vendor record in the PSA (search_contacts) —
-   NEVER a number, email, or link in the request message itself. The attacker wrote those.
+   invoices, the signed contract, or the client/vendor record on file — NEVER a number,
+   email, or link in the request message itself. The attacker wrote those.
 4. Call and verify with a known person: confirm the change by voice with a known contact at
    the counterparty. Read the requested details to them for confirmation; do not accept new
    details supplied only in the message. No number on file → reach the counterparty through a

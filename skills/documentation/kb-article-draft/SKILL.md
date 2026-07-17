@@ -4,11 +4,15 @@ description: Turn a resolved ticket into a reusable knowledge-base article draft
 category: Documentation
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # KB Article Draft
 
 **When to use:** "Turn this ticket into a KB article" / "write this up so the team can fix it next time" — after a resolution worth reusing, a recurring issue solved properly for the first time, or a senior-only fix that should be captured.
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -17,15 +21,15 @@ Convert the fix that actually worked on a ticket into a clean, reusable KB artic
 DRAFT. The output is always a draft for human review — never publish, file, or write
 it into any documentation platform yourself.
 
-1. Read the full ticket thread with search_tickets: notes, time entries, final
-   resolution. Identify the fix that ACTUALLY resolved the issue — not the first
-   thing tried. If the resolution is ambiguous or the ticket closed without a
-   confirmed fix, say so and stop — do not write an article around a guess.
+1. Read the full ticket thread: notes, time entries, final resolution. Identify the
+   fix that ACTUALLY resolved the issue — not the first thing tried. If the resolution
+   is ambiguous or the ticket closed without a confirmed fix, say so and stop — do not
+   write an article around a guess.
 
-2. Check search_knowledge_base (and search_itglue / search_hudu where those
-   connectors are enabled) for an existing article on the same issue. If one exists,
-   propose an update to it instead of a duplicate. If neither IT Glue nor Hudu is
-   enabled, check only the Thread KB and note the narrower duplicate check.
+2. Check the knowledge base (and IT Glue / Hudu where those connectors are enabled)
+   for an existing article on the same issue. If one exists, propose an update to it
+   instead of a duplicate. If neither IT Glue nor Hudu is enabled, check only the
+   Thread KB and note the narrower duplicate check.
 
 3. Draft the article in this structure:
    - Title — symptom-first, searchable (what a tech would type when hitting this).

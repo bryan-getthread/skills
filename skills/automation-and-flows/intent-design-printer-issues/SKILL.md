@@ -4,19 +4,23 @@ description: Build the printer-problems intent — the top three self-help fixes
 category: Automation & Flows
 tools: [list_intents, get_intent, create_intent, update_intent, set_variation_arguments, set_variation_replies, update_variation, search_tickets, search_knowledge_base]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Printer Issues Intent Design
 
 **When to use:** "Build an intent for printer problems" / "printer tickets are constant and always the same three fixes" / Intent Mining ranked printing as a high-volume, high-automatability candidate.
 
+**Run it:** as a build task on request — you're designing a customer-facing intent, not acting on tickets, so there's no Flow trigger for this one.
+
 ## Prompt
 
 ```
 Build a printer intent that walks the user through the three fixes that resolve most printer
 tickets, and — when they fail — creates a ticket with the diagnostics already captured so the
-tech skips the twenty questions. Intent tools are admin-only; if absent, output the complete
-written spec for an admin to apply.
+tech skips the twenty questions. Building intents is admin-only; if you can't, output the
+complete written spec for an admin to apply.
 
 Design the intent to this spec:
 - Trigger phrases (adapt to real ticket language): "printer not working", "can't print",
@@ -44,14 +48,14 @@ Design the intent to this spec:
   the tickets still created.
 
 Steps:
-1. list_intents — check for an existing printer intent; prefer updating.
-2. search_tickets for recent printer tickets; confirm the top three fixes for THIS desk from
+1. List the existing intents — check for an existing printer intent; prefer updating.
+2. Search recent printer tickets; confirm the top three fixes for THIS desk from
    resolution notes — replace any rung the data says rarely works.
-3. search_knowledge_base for existing printer self-help articles; link rather than restate.
+3. Search the knowledge base for existing printer self-help articles; link rather than restate.
 4. Draft the full spec (triggers, arguments, the 3-rung ladder with stop conditions, the
    diagnostics block for the ticket, variations) plus a test plan (5 should-match, 3–5 should-
    not: hardware-request and new-user-setup near-misses). Show before any write.
-5. On explicit confirmation: create_intent then the variation tools.
+5. On explicit confirmation: create the intent, then set its variations.
 6. Report what was created, restate the test plan, recommend activation after tests pass. Do
    NOT activate.
 

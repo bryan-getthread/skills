@@ -4,11 +4,15 @@ description: An alert fired for an unexpected user or admin account creation in 
 category: Security
 tools: [search_tickets, search_members, search_contacts, add_ticket_note, update_ticket]
 connectors: []
+scope: single
+flow: no
 ---
 
 # New User Created Alert
 
 **When to use:** A "new user created" or "user added to admin role" alert lands as a ticket; an unfamiliar account surfaces during another investigation; or a client asks "who created this account?"
+
+**Run it:** on one ticket (a new-account or admin-grant alert).
 
 ## Prompt
 
@@ -20,10 +24,10 @@ hard only when nothing claims the account. Work it in order:
 1. Extract the created account's facts: display name, UPN, assigned roles and licenses, the
    creating account, and the creation timestamp. Flag immediately if any administrative role
    was granted at creation — that raises the tier before any other checking.
-2. Authorized-change cross-check BEFORE alarm: search_tickets at the client for onboarding,
+2. Authorized-change cross-check BEFORE alarm: search the client's tickets for onboarding,
    new-hire, or change tickets in a window around the creation date whose subject or contact
    matches the new account's name. Also check whether the creating account belongs to the
-   MSP's own technicians (search_members) doing legitimate provisioning.
+   MSP's own technicians doing legitimate provisioning.
 3. Match found → benign path: document the authorizing ticket reference, who performed the
    creation, and the match reasoning in a plain-text note; move to pre-closure per
    soc-classification-tree.

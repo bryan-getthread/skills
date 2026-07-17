@@ -4,11 +4,15 @@ description: An alert fired for a suspicious inbox rule created on a user's mail
 category: Security
 tools: [search_tickets, search_contacts, add_ticket_note, update_ticket]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Inbox Rule Alert Runbook
 
 **When to use:** A "suspicious inbox rule created" or "new forwarding rule" alert lands as a ticket; mailbox-rule anomalies surface during another investigation; or a user reports mail "disappearing" or replies they never see.
+
+**Run it:** on one ticket (a suspicious inbox-rule alert).
 
 ## Prompt
 
@@ -25,8 +29,8 @@ sweep (rules, forwarding, delegates). Work it in order:
    character; actions that hide mail (move to RSS Feeds, Deleted Items, Archive, or
    mark-as-read); conditions keyed on words like invoice, payment, password, security, or
    helpdesk; auto-forwarding to an external address; creation from an unfamiliar IP or
-   during a sign-in anomaly window. search_tickets for concurrent alerts on the same
-   account — an inbox rule plus a sign-in anomaly is takeover until proven otherwise.
+   during a sign-in anomaly window. Search for concurrent alerts on the same account — an
+   inbox rule plus a sign-in anomaly is takeover until proven otherwise.
 3. Legitimacy check with the user via a verified channel (a number on file, not an address
    from the ticket): "did you create a mail rule recently — what does it do?" Let them
    describe it; do not read the rule to them first.

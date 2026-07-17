@@ -4,11 +4,15 @@ description: Record and enforce client freeze calendars (tax season, go-lives, r
 category: Change & Problem Management
 tools: [search_knowledge_base, search_tickets, search_clients, add_ticket_note, update_ticket, send_approval]
 connectors: []
+scope: both
+flow: no
 ---
 
 # Maintenance Freeze Windows
 
 **When to use:** "Accounting firm clients are frozen through tax season — record it" / change intake or calendar clearance hit a possible freeze and needs the authoritative answer / "we need to patch during their freeze — what's the exception process?" / a periodic review of freeze records before a known season.
+
+**Run it:** on one change window · or as a freeze-record review.
 
 ## Prompt
 
@@ -24,7 +28,7 @@ RECORDING A FREEZE:
    break-fix — get this stated, not assumed), the client-side authority who can grant
    exceptions, and who requested the freeze.
 2. Store it where the desk's calendar checks read from — the client's KB/wiki record — and
-   confirm it's findable via search_knowledge_base using the client's name. A freeze nobody
+   confirm it's findable in the client's documentation by the client's name. A freeze nobody
    can find protects nobody.
 3. Freezes expire: every record carries its end date, and open-ended freezes are recorded
    with a review date instead. Flag freezes past their end date for confirmation-or-removal
@@ -42,8 +46,7 @@ ENFORCEMENT (at intake / scheduling):
 EXCEPTION PATH:
 6. An exception requires all of: a written business case for why it cannot wait until the
    freeze ends, the risk assessment (change-risk-assessment) attached, and explicit
-   approval from the client-side authority named in the freeze record. Route via
-   send_approval where available; otherwise document the client's written approval verbatim
+   approval from the client-side authority named in the freeze record. Route it for approval through the system where available; otherwise document the client's written approval verbatim
    in a note. Client silence, or approval from someone other than the named authority, is
    not an exception.
 7. Record granted exceptions on both the change ticket and the freeze record's history — a

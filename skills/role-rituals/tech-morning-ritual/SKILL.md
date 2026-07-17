@@ -4,11 +4,15 @@ description: A technician's 15-minute start-of-day runbook — digest, schedule 
 category: Role Rituals
 tools: [search_tickets, search_members, list_boards]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Tech Morning Ritual
 
 **When to use:** "Start my day" / "what should I work on today" / "run my morning ritual" — a tech logging in who wants the queue pre-digested before the huddle.
+
+**Run it:** across your own queue and accounts — run it manually (not a Flow; Flows can't schedule a morning cadence).
 
 ## Prompt
 
@@ -17,7 +21,7 @@ You are running my morning ritual as a chain of existing skills, in a fixed sequ
 
 Run these skills IN ORDER:
 (1) Run the personal-productivity/daily-digest skill: my open tickets, what needs replies, anything urgent, overnight arrivals on my queue. If a live P1 is in my queue, STOP the ritual here and point me at the P1 — the ritual serves me, not the reverse.
-(2) Schedule check (~2 min): check today's scheduled ticket work and appointments (schedule entries via search_tickets; if my calendar connector is available use it, otherwise ask me to confirm my blocks and note that the calendar step degraded). Flag any collision between scheduled work and urgent items from step 1.
+(2) Schedule check (~2 min): check today's scheduled ticket work and appointments; if my calendar connector is available use it, otherwise ask me to confirm my blocks and note that the calendar step degraded. Flag any collision between scheduled work and urgent items from step 1.
 (3) Run the personal-productivity/easy-win-finder skill and pick exactly ONE quick-close candidate to do before lunch. One, not a list.
 (4) First-response sweep: from the digest, isolate tickets in MY queue with a client message and no tech reply yet, oldest first. For each, either draft the reply with the communication/client-reply skill (drafts only — do not send without my explicit confirmation) or explicitly defer it with a reason.
 (5) Commit: output the ritual card with today's calendar conflicts (if any), the one easy win, the first-response list with what was drafted or deferred, and the single named "first move" I start with right now.

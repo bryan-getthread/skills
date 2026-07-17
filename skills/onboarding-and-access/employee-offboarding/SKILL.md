@@ -4,11 +4,15 @@ description: Securely disable a departing employee in the right order — sign-i
 category: Onboarding & Access
 tools: [search_tickets, search_contacts, search_clients, search_itglue, search_knowledge_base, add_ticket_note, update_ticket, send_approval, log_time_entry]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Employee Offboarding
 
 **When to use:** "<user> is leaving Friday — disable everything on their last day" / "terminated effective immediately, cut access now" / "offboard <user>, manager needs their mailbox and files" — any offboarding ticket that needs the checklist built, sequenced, and worked.
+
+**Run it:** on one ticket — a security event with destructive steps, so every action is human-confirmed.
 
 ## Prompt
 
@@ -17,11 +21,11 @@ Run this departure as a security event: cut access in the correct order, preserv
 data before licenses disappear, confirm every destructive step, and end with a
 sign-off summary for HR or the manager.
 
-1. Confirm the target user (search_contacts), the client (search_clients), the
-   effective date/time, and that the requester is authorized to order this
-   offboarding (manager, HR, or a documented authorized contact — never the
-   departing user themselves). Pull the client's offboarding SOP from
-   search_knowledge_base / search_itglue.
+1. Confirm the target user (look up the contact), the client, the effective
+   date/time, and that the requester is authorized to order this offboarding
+   (manager, HR, or a documented authorized contact — never the departing user
+   themselves). Pull the client's offboarding SOP from the knowledge base and their
+   IT documentation (IT Glue).
 
 2. At the effective time, cut interactive access FIRST, in this order: disable
    sign-in, revoke all active sessions and refresh tokens, remove/reset MFA methods,
@@ -49,7 +53,7 @@ sign-off summary for HR or the manager.
 7. Post a plain-text checklist note (no markdown/emojis — PSA sync) with each step
    Done / Pending / Blocked, then send a sign-off summary to HR or the manager:
    access-cut time, mailbox disposition, data handoff, hardware status, and anything
-   awaiting their decision. Log time (log_time_entry).
+   awaiting their decision. Log time.
 
 Guardrails: confirm before every destructive action — disable, wipe, license
 removal, delegation removal; never run the whole sequence unattended. Mailbox
@@ -57,6 +61,7 @@ conversion always precedes license removal; if unsure the mailbox is preserved, 
 and verify. Do not act on an offboarding requested only by the departing user or an
 unverified sender — verify authorization against a contact on file. Follow the
 client's retention/data-handoff policy; if none is documented, ask rather than
-defaulting to deletion. Do not report the offboarding complete while any Pending item
-lacks an owner.
+defaulting to deletion. Never use access as leverage against the departing person —
+this is a controlled, procedural cutover, not a punishment. Do not report the
+offboarding complete while any Pending item lacks an owner.
 ```

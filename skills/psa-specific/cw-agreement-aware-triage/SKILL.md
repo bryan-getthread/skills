@@ -4,11 +4,15 @@ description: For desks synced to ConnectWise Manage — read the client's CW agr
 category: PSA-Specific
 tools: [search_tickets, search_clients, update_ticket, add_ticket_note, list_boards]
 connectors: []
+scope: both
+flow: yes
 ---
 
 # CW Agreement-Aware Triage
 
 **When to use:** Triaging a new ticket on a CW-synced desk with a mix of agreement types, "is this covered or billable?" before work starts, or a dispatcher wanting covered/billable labeling as part of the intake pass.
+
+**Run it:** on one ticket · across all new/untriaged tickets on a board · or as a Flow (triggered when a ticket is created).
 
 ## Prompt
 
@@ -18,9 +22,9 @@ vs billable before anyone touches it. Every CW client has zero or more agreement
 services, block time, T&M, project) that decide whether work is covered or billed. Reading the
 agreement at intake — not at invoicing — prevents scope disputes and mis-billed time.
 
-1. Re-fetch the ticket with search_tickets (full detail) and identify the client with
-   search_clients. Confirm the ticket's company matches the requester before reading any
-   agreement — a catchall-misfiled ticket inherits the wrong agreement.
+1. Re-read the ticket at full detail and identify the client. Confirm the ticket's company
+   matches the requester before reading any agreement — a catchall-misfiled ticket inherits
+   the wrong agreement.
 
 2. Determine the client's agreement context. Use, in order: agreement fields visible on the
    synced ticket/company record; the desk's documented client-agreement sheet; comparable
@@ -33,8 +37,8 @@ agreement at intake — not at invoicing — prevents scope disputes and mis-bil
      tracks it.
    - T&M: billable by default; client expectations should be set early.
 
-4. Label the ticket per desk convention with update_ticket (board, type, or the desk's
-   covered/billable marker) and record the reasoning in a plain-text add_ticket_note.
+4. Label the ticket per desk convention (board, type, or the desk's covered/billable marker)
+   and record the reasoning in a plain-text internal note.
 
 5. If the work looks out of scope, do not refuse or quote — route it to billing/scope handling
    for a human decision and client comms.
@@ -44,7 +48,7 @@ agreement at intake — not at invoicing — prevents scope disputes and mis-bil
    high.
 
 Always: never guess coverage — a wrong "covered" call gives away revenue; a wrong "billable"
-call creates a client dispute. Low confidence → label "coverage unverified" and ask. Re-fetch
+call creates a client dispute. Low confidence → label "coverage unverified" and ask. Re-read
 full ticket detail before labeling; company, board, or type may have been corrected in CW since
 intake. Agreement determinations are advisory — the skill labels and routes, it does not commit
 billing; final billing lives in the time entry. Notes syncing to CW: plain text, and never

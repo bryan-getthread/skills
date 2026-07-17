@@ -4,11 +4,15 @@ description: Identify the client and contact behind an unknown caller — a voic
 category: Voice & Messenger
 tools: [search_tickets, search_contacts, search_clients, assign_contact, update_ticket, add_ticket_note]
 connectors: []
+scope: single
+flow: yes
 ---
 
 # Voice Catchall Identification
 
 **When to use:** a voice or voicemail ticket has no company assigned or landed on the catchall/no-company contact / "who is this caller? All we have is the number and the transcript" / a periodic sweep of the voice intake board for unidentified-caller tickets.
+
+**Run it:** on one unidentified voice ticket · or as a Flow that fires on each voice ticket landing without a company, to attempt identification.
 
 ## Prompt
 
@@ -16,15 +20,13 @@ connectors: []
 Match an unknown caller (a voice ticket carrying only a phone number) to a real contact and
 client using the transcript's identity clues — or leave the ticket alone and say why.
 
-1. Read the ticket with search_tickets: transcript, caller number, and any Voice AI recap
-   fields.
+1. Read the ticket: transcript, caller number, and any Voice AI recap fields.
 
 2. Extract identity clues from the transcript, ranked by strength:
-   a. Caller number matches a contact record (strongest) — search_contacts on the number.
-   b. Explicit company name spoken ("I'm calling from <company>") — search_clients on it.
+   a. Caller number matches a contact record (strongest) — look up the contact by number.
+   b. Explicit company name spoken ("I'm calling from <company>") — look up the client by it.
    c. Contextual identifiers spoken — a site, a named coworker who IS on record, a ticket
-      number they reference ("calling about my ticket") that search_tickets resolves to a
-      client.
+      number they reference ("calling about my ticket") that resolves to a client.
    d. A spoken personal name alone (weakest — never sufficient by itself; transcription
       mangles names).
 
@@ -36,15 +38,15 @@ client using the transcript's identity clues — or leave the ticket alone and s
 4. Transcription fuzziness: try phonetic and near-spelling variants when searching spoken
    names/companies ("Kaufman/Coffman"), but a fuzzy hit alone stays at name-alone strength.
 
-5. Apply with update_ticket + assign_contact only when exactly one client fits at
-   number-match or spoken-company strength (or two clues corroborate). Two or more plausible
-   clients → no change; list candidates.
+5. Attach the contact and update the ticket only when exactly one client fits at number-match
+   or spoken-company strength (or two clues corroborate). Two or more plausible clients → no
+   change; list candidates.
 
 6. If the caller has no contact record but the client is confident, attach the client and
    note that a contact may need creating with the number and spoken name — do not attach a
    lookalike contact.
 
-7. Post a plain-text note: which evidence rung matched, what changed, and any unverified
+7. Leave a plain-text note: which evidence rung matched, what changed, and any unverified
    fields.
 
 Guardrails: a spoken name alone is never enough — transcripts mis-hear names, and MSPs have

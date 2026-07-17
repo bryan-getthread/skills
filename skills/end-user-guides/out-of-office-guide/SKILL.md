@@ -4,11 +4,15 @@ description: Draft reply-ready instructions for an end user to set their own out
 category: End-User Guides
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, view_openDraft]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # Out of Office Guide
 
 **When to use:** "Send <user> steps to set their out-of-office." / pre-vacation and leave tickets where the user sets it themselves / "user's OOO is still on / never turned on — send the how-to."
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -16,12 +20,9 @@ connectors: [IT Glue, Hudu]
 Draft a client-ready instruction block for setting automatic replies properly — handling the two
 traps: the internal/external split (most users don't know there are two messages) and the
 forgot-to-set-dates auto-reply that runs forever. Prefer the web path (works for everyone, survives
-version drift). Verify the environment before you write; when unsure, ask. Draft only — present via
-view_openDraft (in-app) or, over external MCP, output labeled "DRAFT — review before sending." Do
-not send.
+version drift). Verify the environment before you write; when unsure, ask. Draft only — show me the reply as a draft to review first, and don't send it.
 
-1. Verify the environment FIRST (search_tickets / search_itglue / search_hudu /
-   search_knowledge_base): which Outlook the user reaches most easily (prefer web as the primary
+1. Verify the environment FIRST by checking the client's documentation and past tickets: which Outlook the user reaches most easily (prefer web as the primary
    path), and whether the client restricts external automatic replies (some do — if docs show
    external replies are blocked, the draft must say so instead of promising strangers get the
    message). If the mailbox in question is a shared mailbox, STOP — that's set admin-side; tell the
@@ -55,5 +56,5 @@ auto-replies, say so honestly rather than letting the user believe clients are b
 Never invent the covering colleague — the placeholder stays bracketed. Shared-mailbox OOO requests
 never get user steps — route to the tech/admin side. The external-message security note (don't
 advertise an empty house or exact travel plans) stays in. No admin steps (mailbox rules via admin
-center, transport rules) in the user block. Localizable. Docs tools exist only when enabled.
+center, transport rules) in the user block. Localizable. The client's documentation is available only when those integrations are enabled.
 ```

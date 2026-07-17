@@ -4,11 +4,15 @@ description: Designing a new board/queue on a PSA-synced desk — a checklist fo
 category: PSA-Specific
 tools: [list_boards, list_ticket_statuses, list_ticket_priorities, list_flows, create_flow]
 connectors: []
+scope: global
+flow: no
 ---
 
 # PSA New Board Setup
 
 **When to use:** "We're adding a new board/queue — help me design it", planning a VIP / project / after-hours / new-client-tier board before creating it in the PSA, or reviewing a proposed board layout for gaps before it goes live.
+
+**Run it:** across the whole desk as a design task (run manually before the board is created in the PSA).
 
 ## Prompt
 
@@ -35,10 +39,10 @@ Thread).
    overlapping — reuse the desk's existing taxonomy where it fits rather than inventing parallel
    values. Every added value is future cleanup debt.
 
-4. SLA mapping. Map each priority (list_ticket_priorities) to the board's response/resolution
-   targets, and confirm which statuses pause the clock (from step 2). State the business
-   hours/calendar the SLA runs against. An SLA with no defined pause states or calendar will
-   misfire.
+4. SLA mapping. Map each priority (from the tenant's priority list) to the board's
+   response/resolution targets, and confirm which statuses pause the clock (from step 2). State
+   the business hours/calendar the SLA runs against. An SLA with no defined pause states or
+   calendar will misfire.
 
 5. Agreement & billing implications. Note how tickets on this board bill — default agreement,
    whether work is billable, and how it feeds month-end. A board whose billing attributes are
@@ -46,15 +50,15 @@ Thread).
 
 6. Thread View implications. Specify the Views the desk needs for this board (queue view, waiting-
    on-customer, breaching-SLA) so the board is workable in Thread the day it appears. Views are
-   built in-app; this step defines which Views, not the API to create them.
+   built in-app; this step defines which Views, not how to create them.
 
 7. Flow implications. Determine what should fire on this board and whether Flows can express it.
    Flows are ticket-event triggered against conditions (board, status, priority, type, etc.) —
    they are NOT scheduled and CANNOT trigger on ticket age / time-in-status / elapsed time. So
    "route incoming to this board", "set priority on entry", or "run a skill when status enters X"
    are valid Flow designs; "escalate after N hours idle" is not (that's a manual sweep). Check
-   existing Flows with list_flows for overlap before proposing new ones; only create_flow after
-   the design is confirmed.
+   existing Flows for overlap before proposing new ones; only create a Flow after the design is
+   confirmed.
 
 8. Output a plain-text board design spec organized by the sections above, with a clear split
    between PSA-side actions (create the board, statuses, types, SLAs — human work in the PSA, the
@@ -67,7 +71,7 @@ PSA is master — the board is authored in the PSA and syncs to Thread. Don't ov
 only propose Flow behavior that fits real conditions and actions (no scheduled/age-based triggers;
 a flow's native actions are limited, so email/ticket-create/time-log only happen when a flow calls
 Run Skill / New Super Magic Agent); state the limit rather than designing a Flow that can't exist.
-Validate every referenced status/priority against list_ticket_statuses / list_ticket_priorities for
-the actual board once it exists. Keep the type taxonomy minimal — flag when a proposed value
-duplicates an existing one. Plain-text spec; no markdown/emojis in anything destined for a PSA note.
+Validate every referenced status/priority against the board's live status/priority lists once it
+exists. Keep the type taxonomy minimal — flag when a proposed value duplicates an existing one.
+Plain-text spec; no markdown/emojis in anything destined for a PSA note.
 ```

@@ -4,11 +4,15 @@ description: For desks synced to ConnectWise Manage — classify tickets with CW
 category: PSA-Specific
 tools: [search_tickets, list_boards, update_ticket, add_ticket_note]
 connectors: []
+scope: both
+flow: yes
 ---
 
 # CW Type / Subtype / Item Classification
 
 **When to use:** Classifying a new ticket on a CW-synced board ("set the type/subtype", "categorize this"), a closure QA gate requiring Type/Subtype/Item, or auditing recently closed tickets for missing or defaulted classification.
+
+**Run it:** on one ticket · across all recently closed tickets on a board · or as a Flow (triggered when a ticket is created).
 
 ## Prompt
 
@@ -17,13 +21,13 @@ You are applying ConnectWise Manage's three-level, board-scoped taxonomy: Type �
 Item. Only combinations configured on the board are valid; an invalid combo either fails the
 sync or silently drops.
 
-1. Re-fetch the ticket with search_tickets and read the full thread — classify from the body of
-   the request, never the title alone.
+1. Re-read the ticket and its full thread — classify from the body of the request, never the
+   title alone.
 
 2. Establish the valid value set. Thread does not expose CW's setup tables directly, so derive
    it from evidence, in order of preference: the desk's documented taxonomy sheet; values
-   observed on recently closed tickets on the same board via search_tickets; or ask the
-   reviewer. Never guess a value you have not seen.
+   observed on recently closed tickets on the same board; or ask the reviewer. Never guess a
+   value you have not seen.
 
 3. Pick Type first, then Subtype, then Item — each level narrows the previous one. Do not pick
    an Item you have not seen paired with that Subtype: CW combos are configured pairwise, and
@@ -36,11 +40,10 @@ sync or silently drops.
    wrong classification poisons CW reporting and agreement routing; an empty one is at least
    visible.
 
-6. Propose Type/Subtype/Item with a one-line justification; apply with update_ticket only after
-   confirmation.
+6. Propose Type/Subtype/Item with a one-line justification; apply only after confirmation.
 
 Always: never invent values — only use Type/Subtype/Item values evidenced from the board's own
-tickets or the desk's documented list; CW rejects or mangles unknown values on sync. Re-fetch
+tickets or the desk's documented list; CW rejects or mangles unknown values on sync. Re-read
 full ticket detail before writing — the ticket may have been classified, moved, or closed in CW
 since you last saw it. Taxonomy is board-scoped: values valid on one CW board are not valid on
 another; re-derive when the ticket moves boards. Do not default to a catch-all value ("General

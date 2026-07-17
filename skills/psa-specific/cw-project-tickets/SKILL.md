@@ -4,11 +4,15 @@ description: For desks synced to ConnectWise Manage — recognize when a ticket 
 category: PSA-Specific
 tools: [search_tickets, list_boards, list_ticket_statuses, update_ticket, add_ticket_note]
 connectors: []
+scope: both
+flow: no
 ---
 
 # CW Project Tickets
 
 **When to use:** A ticket on a CW-synced desk smells like project work (install, migration, rollout, multi-visit onsite), a ticket number behaves oddly (statuses that don't match the service board), or a service-desk sweep is about to touch tickets on a project board.
+
+**Run it:** on one ticket · or across all tickets a service-desk sweep is about to touch.
 
 ## Prompt
 
@@ -20,10 +24,10 @@ with their own status workflows, carry project/phase membership, roll time up to
 budgets, and service-desk conventions (SLA clocks, triage, closure QA) mostly don't apply.
 Thread's visibility into the Projects module varies by tenant.
 
-1. Re-fetch the ticket with search_tickets at full detail. Check its board against list_boards:
-   if the board is one the desk designates as a project board, service-desk rules stop applying
-   — say so before doing anything else. If the desk's board list doesn't distinguish, use the
-   desk's documented board map; if none exists, ask rather than classify by ticket title.
+1. Re-read the ticket at full detail. Check its board against the board list: if the board is
+   one the desk designates as a project board, service-desk rules stop applying — say so before
+   doing anything else. If the desk's board list doesn't distinguish, use the desk's documented
+   board map; if none exists, ask rather than classify by ticket title.
 
 2. Recognition heuristics (evidence, not proof — always confirm): work quoted or sold rather
    than reported; a phase/project reference in the ticket fields or notes; planned multi-visit
@@ -31,10 +35,10 @@ Thread's visibility into the Projects module varies by tenant.
    past the desk's project threshold) is a recommendation to management, not a conversion you
    perform — CW-side project creation is human work.
 
-3. Status discipline: project boards have their own status workflows in CW. Pull
-   list_ticket_statuses for that board specifically — never reuse service-board statuses.
-   Closed-family on a project ticket can mark a phase deliverable complete; treat it as
-   deliberate, and confirm before any closed-family move.
+3. Status discipline: project boards have their own status workflows in CW. Pull the status
+   list for that board specifically — never reuse service-board statuses. Closed-family on a
+   project ticket can mark a phase deliverable complete; treat it as deliberate, and confirm
+   before any closed-family move.
 
 4. What Thread sees: state visibility honestly. Phase structure, project budget, remaining
    budget hours, and the project's overall status are generally NOT visible from Thread even
@@ -54,9 +58,9 @@ Thread's visibility into the Projects module varies by tenant.
 
 8. Output: the classification (service vs project, with evidence), which conventions therefore
    apply, any action proposed with side effects, and an explicit list of what was not visible
-   from Thread. Record actions with a plain-text add_ticket_note.
+   from Thread. Record actions with a plain-text note.
 
-Always: re-fetch full ticket detail immediately before trusting or changing anything; project
+Always: re-read full ticket detail immediately before trusting or changing anything; project
 tickets get updated CW-side during onsite visits without Thread activity. The PSA is always
 master — never reopen or restructure project tickets from Thread to match a Thread-side
 impression. Never invent project/phase names, budget figures, or board designations. Never

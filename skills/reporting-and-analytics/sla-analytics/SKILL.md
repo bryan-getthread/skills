@@ -4,11 +4,15 @@ description: Someone asks how the desk is doing against SLA — first-response a
 category: Reporting & Analytics
 tools: [search_tickets, list_boards, list_ticket_priorities, list_ticket_statuses]
 connectors: []
+scope: global
+flow: no
 ---
 
 # SLA Analytics
 
 **When to use:** "How did we do against SLA last month?" / "what's our first-response time?", "show me every SLA breach this week and why," or investigating whether a specific board, client, or priority tier is slipping.
+
+**Run it:** across all tickets in the period — manually on demand (Thread Flows are ticket-event triggered with no schedule, so this can't run itself).
 
 ## Prompt
 
@@ -20,7 +24,7 @@ driver, not just staring at a percentage.
 This runs MANUALLY on demand — Thread Flows are ticket-event triggered with no
 schedule/cron, so this is not a scheduled skill.
 
-1. Confirm the period, boards in scope (list_boards), and the SLA targets per priority.
+1. Confirm the period, the boards in scope, and the SLA targets per priority.
    If targets are not configured or stated, ASK for them — do not assume industry
    defaults silently, and never invent targets.
 

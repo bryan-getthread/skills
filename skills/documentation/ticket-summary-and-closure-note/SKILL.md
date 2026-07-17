@@ -4,19 +4,23 @@ description: Produce a clean summary of what happened on a ticket — resolution
 category: Documentation
 tools: [search_tickets, add_ticket_note]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Ticket Summary & Closure Note
 
 **When to use:** "Write a closure note for this ticket" / "give me a resolution note in our standard format" / "summarize this in first person for my PSA note" — or a P1/P2 being handed to another tech or after-hours team that needs a structured handoff.
 
+**Run it:** on one ticket.
+
 ## Prompt
 
 ```
 Summarize a ticket thread into the exact note the situation calls for.
 
-1. Read the full thread with search_tickets: replies, internal notes, time entries.
-   Establish problem -> actions taken -> outcome -> anything outstanding.
+1. Read the full thread: replies, internal notes, time entries. Establish problem ->
+   actions taken -> outcome -> anything outstanding.
 
 2. Pick the format the request calls for:
    - Resolution / closure note — Problem, Actions Taken, Outcome, and (only if work
@@ -42,7 +46,6 @@ Summarize a ticket thread into the exact note the situation calls for.
    "outcome not confirmed in thread" rather than asserting resolution. Never include
    credentials or one-time codes found in the thread in any summary.
 
-6. Output the note in chat for review. Only post it with add_ticket_note when
-   explicitly asked, and post handoff/QA summaries as INTERNAL notes unless told
-   otherwise.
+6. Output the note in chat for review. Only post it as a ticket note when explicitly
+   asked, and post handoff/QA summaries as INTERNAL notes unless told otherwise.
 ```

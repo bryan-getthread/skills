@@ -4,23 +4,24 @@ description: Draft a reply-ready remote-work setup checklist for an end user —
 category: End-User Guides
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, view_openDraft]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # Working From Home Checklist
 
 **When to use:** "Send <user> a work-from-home setup checklist." / new-remote-arrangement tickets, storm/office-closure days, first-day-remote for a new hire / "user says nothing works from home."
 
+**Run it:** on one ticket.
+
 ## Prompt
 
 ```
 Draft a client-ready sanity checklist for a user setting up (or struggling) at home — ordered so each
 item proves the layer below it, which turns "nothing works from home" into "item 3 fails," a ticket
-the desk can act on. Verify the remote stack before you write; when unsure, ask. Draft only — present
-via view_openDraft (in-app) or, over external MCP, output labeled "DRAFT — review before sending." Do
-not send.
+the desk can act on. Verify the remote stack before you write; when unsure, ask. Draft only — show me the reply as a draft to review first, and don't send it.
 
-1. Verify the client's remote stack FIRST (search_itglue / search_hudu / search_knowledge_base /
-   search_tickets): does remote access go through a VPN (which one), a remote-desktop/virtual-desktop
+1. Verify the client's remote stack FIRST by checking the client's documentation and past tickets: does remote access go through a VPN (which one), a remote-desktop/virtual-desktop
    portal, or straight cloud apps? Is there a softphone/telephony app remote workers need? Any
    client-specific remote-work policies (approved-device rules, hotspot allowance)? If the access
    model is unknown, ask the technician ONE question — the checklist's spine is the access model.
@@ -54,5 +55,5 @@ Dependency order is the product: never alphabetize or reshuffle; each item must 
 beneath. The help-me-when-it's-broken contact channel comes from client docs — never invent a phone
 number or portal URL. Keep it to roughly 7 items; extras (monitor, ergonomics, home printer) only if
 the ticket asked. No admin steps and no home-router configuration beyond "restart it." Localizable.
-Docs tools exist only when enabled.
+The client's documentation is available only when those integrations are enabled.
 ```

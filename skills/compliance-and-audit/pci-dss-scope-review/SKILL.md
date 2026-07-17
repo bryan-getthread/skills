@@ -4,11 +4,15 @@ description: Help a client understand their PCI DSS scope — what counts as the
 category: Compliance & Audit
 tools: [search_tickets, search_itglue, search_hudu, add_ticket_note]
 connectors: [IT Glue, Hudu]
+scope: global
+flow: no
 ---
 
 # PCI DSS Scope Review
 
 **When to use:** A client that takes card payments asks what falls under PCI, or which SAQ might apply; prep before the client completes a Self-Assessment Questionnaire or engages a QSA; or validating a "we outsource all card handling / we don't store cardholder data" claim before it goes into an attestation.
+
+**Run it:** across a client's card-data flows and systems (a scope-awareness review).
 
 ## Prompt
 

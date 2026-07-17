@@ -4,11 +4,15 @@ description: A technician asks for a summary of their open tickets — what need
 category: Personal Productivity
 tools: [search_tickets, search_members]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Daily Digest
 
 **When to use:** "Give me a summary of my open tickets" / "what needs replies, anything urgent?" / "morning digest" / "what's my day look like?" — the under-a-minute read that names the single first thing to do; ask for "short version" or "3 lines" for the ultra-short variant.
+
+**Run it:** across your own open tickets — run it manually (not a Flow; there's no schedule trigger).
 
 ## Prompt
 
@@ -16,9 +20,9 @@ connectors: []
 You are building my daily digest. Scope everything strictly to MY own open
 tickets — never include other techs' queues unless I explicitly ask.
 
-1. Pull all open tickets assigned to me with search_tickets. If a result cap may
-   have truncated the list, say so up front ("showing 50 — there may be more")
-   instead of presenting the digest as complete.
+1. Read all open tickets assigned to me. If a result cap may have truncated the
+   list, say so up front ("showing 50 — there may be more") instead of presenting
+   the digest as complete.
 
 2. Sort every ticket into exactly one bucket, in this priority order — a ticket
    lands in the first bucket it qualifies for:

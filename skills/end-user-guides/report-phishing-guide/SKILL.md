@@ -4,23 +4,24 @@ description: Draft reply-ready instructions telling an end user what to do with 
 category: End-User Guides
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, view_openDraft]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # Report Phishing Guide
 
 **When to use:** "User asked what to do with a suspicious email — send the reporting steps." / after a phishing verdict, the "here's what to do next time" education reply / proactive broadcast material during a phishing campaign.
 
+**Run it:** on one ticket.
+
 ## Prompt
 
 ```
 Draft a client-ready instruction block for the user staring at a suspicious email: report it
 through this client's actual reporting mechanism, don't click anything, don't forward it to
-colleagues "to warn them." Verify the mechanism before you write; when unsure, ask. Draft only —
-present via view_openDraft (in-app) or, over external MCP, output labeled "DRAFT — review before
-sending." Do not send.
+colleagues "to warn them." Verify the mechanism before you write; when unsure, ask. Draft only — show me the reply as a draft to review first, and don't send it.
 
-1. Identify the client's reporting mechanism FIRST (search_itglue / search_hudu /
-   search_knowledge_base / search_tickets): the built-in Outlook Report button, a security-vendor
+1. Identify the client's reporting mechanism FIRST by checking the client's documentation and past tickets: the built-in Outlook Report button, a security-vendor
    add-in button (KnowBe4 Phish Alert, Huntress, Proofpoint, etc. — name whichever docs show), or a
    documented report-to mailbox. Check whether the button exists on both desktop and mobile. If no
    mechanism is documented, ask the technician ONE question — telling a user to press a button they
@@ -52,5 +53,5 @@ doesn't run. This guide never renders a verdict on a specific email — verdicts
 phishing-triage incident flow; if the user attached the suspect email, hand off there first. No
 admin steps (quarantine, mail-flow rules, purge) in the user block. Never include the suspicious
 link or a defanged copy in the outgoing draft. Localizable — the clicked-already off-ramp must
-survive translation with its urgency intact. Docs tools exist only when enabled.
+survive translation with its urgency intact. The client's documentation is available only when those integrations are enabled.
 ```

@@ -4,11 +4,15 @@ description: A TeamViewer remote-access problem landed — troubleshoot host/age
 category: Vendor Runbooks
 tools: [search_tickets, search_clients, search_itglue, add_ticket_note, update_ticket]
 connectors: []
+scope: single
+flow: no
 ---
 
 # TeamViewer Access
 
 **When to use:** An unattended device won't connect in TeamViewer, or sessions drop/time out; sessions are being blocked, time-limited, or nagged — possibly the commercial-use flag; or a tech asks how to read TeamViewer host/assignment status or why a machine is unreachable.
+
+**Run it:** on the access-problem ticket.
 
 ## Prompt
 
@@ -21,13 +25,13 @@ You are troubleshooting a TeamViewer remote-access problem. There is no native S
 
 3. For host-offline, run the reachability ladder per device-offline-runbook: endpoint online, TeamViewer service running, outbound to TeamViewer's network reachable (firewall/proxy/DNS), host version current, and device correctly assigned to the company account.
 
-4. For session/auth issues, check version compatibility, allowlist/blocklist and Conditional Access policy, and account/group permission scope. Use ticket history (search_tickets, same device/account, recent window) for recurrence, documentation (search_itglue) for the account/assignment and policy, and a Liongard inspector if one covers the endpoint (verify last run, note age; degrade if absent).
+4. For session/auth issues, check version compatibility, allowlist/blocklist and Conditional Access policy, and account/group permission scope. Use ticket history (search prior tickets for the same device/account, recent window) for recurrence, the client's documentation for the account/assignment and policy, and a Liongard inspector if one covers the endpoint (verify last run, note age; degrade if absent).
 
 5. Security check: unexpected sessions, unknown assigned devices, or logins from unfamiliar locations are a potential access-compromise — treat per security-alert-response and involve the security path; TeamViewer credentials are a known attacker target. Unexpected sessions or unknown assigned devices → security incident path, not a support ticket.
 
 6. Hand off for action: reinstalling/repairing the Host, fixing assignment/licensing, adjusting allowlist/Conditional-Access, or any on-endpoint work is a technician/account action. Assignment, allowlist, and Conditional-Access changes are security decisions: narrowest scope, named approver, review date — never widen access to "make it work." Write the handoff with the classified cause; direct and record.
 
-7. Document classification (including commercial-use outcome), ladder results, security check, and handoff. Client-facing wording per defensive-writing-standard.
+7. In the internal note, document classification (including commercial-use outcome), ladder results, security check, and handoff. Client-facing wording per defensive-writing-standard.
 
 Degradation: without documentation, the client's TeamViewer account, assignments, and policy may be unknown — say so. When in doubt, do nothing irreversible and escalate.
 ```

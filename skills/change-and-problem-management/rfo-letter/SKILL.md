@@ -4,11 +4,15 @@ description: Draft the reason-for-outage letter a client receives after a major 
 category: Change & Problem Management
 tools: [search_tickets, search_knowledge_base, add_ticket_note, search_contacts]
 connectors: []
+scope: single
+flow: no
 ---
 
 # RFO Letter
 
 **When to use:** "Write the RFO for last week's outage" / a client contractually requires an RFO within N days of a major / a major incident stood down and the closure notice promised a written account / reworking an internal post-mortem into the client-safe formal letter.
+
+**Run it:** on one incident.
 
 ## Prompt
 
@@ -18,7 +22,7 @@ gets forwarded to the client's board, their insurer, sometimes their lawyers. Dr
 ticket evidence under defensive-writing rules: complete enough to rebuild trust, careful
 enough to never claim more than the record supports.
 
-1. Gather the record: master incident ticket and workstream tickets (search_tickets),
+1. Gather the record: master incident ticket and workstream tickets ,
    the comms trail (what the client was told and when — the RFO must not contradict it),
    and the internal post-mortem if one exists.
 

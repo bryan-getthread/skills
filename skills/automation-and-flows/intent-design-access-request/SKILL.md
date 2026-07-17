@@ -4,19 +4,23 @@ description: Build the access-request intent for folders, distribution lists, an
 category: Automation & Flows
 tools: [list_intents, get_intent, create_intent, update_intent, set_variation_arguments, set_variation_replies, update_variation, search_tickets]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Access Request Intent Design
 
 **When to use:** "Build an intent for folder/DL/mailbox access requests" / "access tickets never say what access or who approved it" / Intent Mining flagged permission/access changes as a top request type.
 
+**Run it:** as a build task on request — you're designing a customer-facing intent, not acting on tickets, so there's no Flow trigger for this one.
+
 ## Prompt
 
 ```
 Build an access-request intent that turns "can I get access to the finance folder" into a
 ticket carrying the exact resource, the access level, a business justification, and the named
-approver — so the technician's first action is granting, not chasing. Intent tools are admin-
-only; if absent, output the complete written spec for an admin to apply.
+approver — so the technician's first action is granting, not chasing. Building intents is
+admin-only; if you can't, output the complete written spec for an admin to apply.
 
 Design the intent to this spec:
 - Trigger phrases (adapt to real ticket language): "need access to", "can I get access",
@@ -33,7 +37,7 @@ Design the intent to this spec:
 - Reply flow: (1) collect arguments, confirm the summary including the exact resource string;
   (2) if the client's policy says the approver signs off first -> reply that the request was
   logged and approval is being sought; the ticket carries the approver for the desk's approval
-  step (send_approval on the desk side pairs well); (3) create the ticket with a plain-text
+  step (the desk's approval action pairs well); (3) create the ticket with a plain-text
   field block, route to the access/security board; (4) never grant, promise, or imply access
   — "your request has been submitted", not "you'll have access shortly".
 - Handoff rule: all grants are human/workflow actions after approval. Requests for
@@ -45,13 +49,13 @@ Design the intent to this spec:
   filled); secondary, median time from request to grant. The win is intake quality.
 
 Steps:
-1. list_intents — check for an existing access/permissions intent; prefer updating.
-2. search_tickets for recent access requests; mine phrasing for triggers and the back-and-
+1. List the existing intents — check for an existing access/permissions intent; prefer updating.
+2. Search recent access-request tickets; mine phrasing for triggers and the back-and-
    forth for missing-argument candidates; note which resources recur (variation seed).
 3. Draft the full spec with the elevated-risk flag rule explicit. Test plan: 5 should-match,
    3–5 should-not (incl. a "can't open file — corrupted" troubleshooting near-miss and a
    new-hire near-miss). Show before any write.
-4. On explicit confirmation: create_intent then the variation tools.
+4. On explicit confirmation: create the intent, then set its variations.
 5. Report what was created, restate the test plan, recommend activation after tests pass. Do
    NOT activate.
 

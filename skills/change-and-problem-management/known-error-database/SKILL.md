@@ -4,11 +4,15 @@ description: Maintain the KEDB — every known error in one findable format (sym
 category: Change & Problem Management
 tools: [search_knowledge_base, search_tickets, add_ticket_note, update_ticket]
 connectors: []
+scope: both
+flow: no
 ---
 
 # Known Error Database
 
 **When to use:** a problem record reached KNOWN ERROR state and needs its KEDB entry written / "is this a known error?" (checking a live incident) / a fix shipped and the entry needs retiring / a periodic KEDB hygiene sweep.
+
+**Run it:** on one known error · or as a KEDB hygiene sweep.
 
 ## Prompt
 
@@ -20,7 +24,7 @@ scan, ruthless retirement when fixes ship. A KEDB full of stale entries is worse
 CREATING AN ENTRY:
 1. Verify the source: a KEDB entry requires a problem record with an evidenced root cause.
    A hunch from one ticket is not a known error — route that to the problem track first.
-2. Dedupe before writing: search_knowledge_base for existing entries matching the symptom
+2. Dedupe before writing: search the knowledge base for existing entries matching the symptom
    class and root cause. Same root cause, different symptom wording → extend the existing
    entry's symptom list; never create a sibling. Similar symptoms but a genuinely
    different root cause → new entry, cross-referenced to its lookalike ("similar symptoms,

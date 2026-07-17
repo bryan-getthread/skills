@@ -4,11 +4,15 @@ description: A BEC is confirmed (not just suspected) — a client mailbox was ta
 category: Security
 tools: [search_tickets, search_contacts, add_ticket_note, update_ticket, view_openDraft]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Business Email Compromise Recovery
 
 **When to use:** A mailbox takeover is confirmed and fraudulent mail was sent from it (fake invoices, banking-change requests, redirected payments); account-takeover-runbook containment is done and the recovery/cleanup phase begins; or downstream recipients report a payment request tracing back to the client's own compromised mailbox.
+
+**Run it:** on one ticket (a confirmed mailbox compromise in its recovery phase).
 
 ## Prompt
 
@@ -34,7 +38,7 @@ persistence, and deal with everyone they wrote to. Work it in order:
    the mailbox. Any that involved real funds movement is time-critical — hand to
    wire-fraud-verification-protocol / vendor-fraud-bec-alert (bank first, recall attempt,
    fraud report per jurisdiction). Gift-card and wire lures both count.
-6. Assess downstream victims: use search_tickets and the Sent Items evidence for who the
+6. Assess downstream victims: search related tickets and the Sent Items evidence for who the
    attacker emailed. Each external recipient of a fraudulent request is a potential victim —
    the client may have a duty to warn them. Notifying third parties is a client and
    management decision, not yours; surface the list and recommend, do not send on the
@@ -43,7 +47,7 @@ persistence, and deal with everyone they wrote to. Work it in order:
    definitions, sent-mail samples, and timestamps into the ticket. Recovery cleanup
    destroys forensic artifacts — record them first.
 8. Notify and document: draft the client notification from the soc-client-email-pack
-   (view_openDraft, human sends), classify per soc-classification-tree, and write the
+   (for a human to review and send), classify per soc-classification-tree, and write the
    decision record — what was accessed, what was cleaned, money status, downstream-victim
    list, and what the client must decide.
 

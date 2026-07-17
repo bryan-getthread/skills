@@ -4,11 +4,15 @@ description: Mine a client's ticket history for expansion signals — recurring 
 category: Account Management
 tools: [search_tickets, search_clients]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Expansion Opportunity Scan
 
-**When to use:** "Any upsell opportunities at <client>?"; "what projects should we be proposing to <client> based on their tickets?"; or "scan my accounts for expansion candidates." Run it manually on demand.
+**When to use:** "Any upsell opportunities at <client>?"; "what projects should we be proposing to <client> based on their tickets?"; or "scan my accounts for expansion candidates."
+
+**Run it:** across one client's history or the whole portfolio — a manual internal scan, not a Flow.
 
 ## Prompt
 
@@ -17,11 +21,11 @@ You are finding the revenue hiding in the ticket queue: patterns a project would
 eliminate, and user struggles a training or managed-service offering would address. The
 output is a qualified internal opportunity list, not a pitch.
 
-1. Confirm scope (one client or the portfolio) and window with search_clients. Default to
+1. Confirm scope (one client or the portfolio) and window (look up the client). Default to
    the last 6 months.
 
-2. With search_tickets, hunt two distinct signal families — separate searches per family,
-   per client:
+2. Hunt two distinct signal families in the tickets — separate searches per family, per
+   client:
    - Recurring issues → project/upsell: the same failure mode repeating (aging hardware,
      capacity limits, a flaky line-of-business app, an unmanaged system generating
      incidents). Each recurrence cluster is a candidate for a project, hardware refresh,

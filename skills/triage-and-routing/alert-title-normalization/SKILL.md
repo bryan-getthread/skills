@@ -4,11 +4,15 @@ description: Classify a monitoring or security alert ticket and rewrite its titl
 category: Triage & Routing
 tools: [search_tickets, update_ticket, add_ticket_note]
 connectors: []
+scope: both
+flow: yes
 ---
 
 # Alert Title Normalization
 
 **When to use:** Alert tickets arrive with cryptic or verbose tool-generated subjects — "normalize these alert titles" during a queue cleanup, or a flow on the alert board that should rewrite every new title to the house standard.
+
+**Run it:** on one alert ticket · across all alert tickets on a board · or as a Flow (when a new alert ticket is created).
 
 ## Prompt
 
@@ -17,8 +21,7 @@ Turn a raw tool-generated alert title into a standard, scannable one —
 "<AlertClass> - <client> - <device or user> - <symptom>" — so the queue reads
 consistently regardless of which tool raised the alert.
 
-1. Read the ticket with search_tickets: current title, description, and the raw alert
-   body.
+1. Read the ticket: current title, description, and the raw alert body.
 
 2. Classify the alert into one class from the controlled vocabulary configured for this
    desk (e.g. Backup Failure, Disk Space, Offline Device, AV/EDR Detection, Patch
@@ -37,13 +40,13 @@ consistently regardless of which tool raised the alert.
 5. If the alert body doesn't identify a client or device, do not fabricate placeholders
    in the title — keep the original title and note why.
 
-6. Apply the new title with update_ticket and post a plain-text internal note via
-   add_ticket_note: old title, new title, alert class chosen.
+6. Apply the new title and leave a plain-text internal note: old title, new title, alert
+   class chosen.
 
-Title and the internal note are the only writes — no status, priority, board, or owner
-changes. Notes are plain text — no markdown or emojis.
+The title and the internal note are the only changes — no status, priority, board, or
+owner changes. Notes are plain text — no markdown or emojis.
 
-Unattended (Flows): your entire reply is the internal note, posted verbatim: "TITLE
+Running as a Flow: your entire reply is the internal note, posted verbatim: "TITLE
 NORMALIZED. Old: <old>. New: <new>. Class: <class>." or "TITLE UNCHANGED. Reason: <one
 line>." One title rewrite per ticket, ever: if the current title already matches the
 standard format, stop without writing. When classification is uncertain between two

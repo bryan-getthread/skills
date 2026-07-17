@@ -4,11 +4,15 @@ description: A ticket involves email authentication failures (SPF, DKIM, DMARC) 
 category: Security
 tools: [search_tickets, liongard_domain, add_ticket_note, update_ticket, view_openDraft]
 connectors: [Liongard]
+scope: single
+flow: no
 ---
 
 # DMARC SPF Failure Triage
 
 **When to use:** "Our emails are going to spam / being rejected" tickets; a recipient reports a message from the client's domain failed authentication; or a DMARC aggregate/failure report or gateway alert lands as a ticket.
+
+**Run it:** on one ticket (an email-authentication failure).
 
 ## Prompt
 
@@ -21,13 +25,12 @@ panic. Work it in order:
 1. Establish direction first — it decides everything: is the CLIENT'S outbound mail failing
    at recipients (likely misconfiguration), or is INBOUND mail claiming to be from the
    client or a partner failing checks on arrival (possible spoof)?
-2. Pull the domain's current published records with liongard_domain when enabled (SPF
-   includes, DKIM selectors, DMARC policy and alignment mode). Note the as-of date.
+2. Read the domain's current published records in Liongard when enabled (SPF includes, DKIM
+   selectors, DMARC policy and alignment mode). Note the as-of date.
 3. Misconfiguration signals: the failing source is a legitimate service (a newly adopted
    marketing platform, CRM, or ticketing tool) missing from SPF; DKIM unsigned on one
-   sending route; a recent DNS or provider change (search_tickets for recent change
-   tickets); failures affecting ALL mail from one system rather than scattered lure-like
-   messages.
+   sending route; a recent DNS or provider change (search for recent change tickets);
+   failures affecting ALL mail from one system rather than scattered lure-like messages.
 4. Spoof signals: sending IP unrelated to any provider the client uses; message content
    carrying lures (payment, credentials, urgency); targets concentrated in finance or
    executives; sender display tricks. If headers are available, run email-header-analysis
@@ -36,7 +39,7 @@ panic. Work it in order:
 5. Produce the fix path for misconfiguration as RECOMMENDATIONS: add the missing
    include/sender to SPF, enable DKIM signing on the route, correct alignment — for the DNS
    owner to implement. Never change DNS yourself; you have no such access.
-6. Draft the safe client explanation (defensive-writing-standard, view_openDraft for human
+6. Draft the safe client explanation (defensive-writing-standard, for a human to review and
    send): plain language — "an email authentication check failed; this usually means either
    a sending service isn't registered in your domain's records, or someone attempted to
    send mail pretending to be your domain — here's which one this was and what we're doing."

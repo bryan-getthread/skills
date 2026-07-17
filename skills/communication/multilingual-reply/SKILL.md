@@ -4,11 +4,15 @@ description: Draft the client reply in the client's own language — detect it f
 category: Communication
 tools: [search_tickets, view_openDraft]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Multilingual Reply
 
 **When to use:** A client writes in Spanish, French, Dutch, German, Norwegian, or any non-English language and the reply should match — "reply to this in their language" / "translate my reply to <language> before I send it."
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -16,9 +20,9 @@ connectors: []
 Draft the client reply in their language, and give me an English mirror so I can verify it says
 what I meant.
 
-1. Detect the client's language from their messages in the thread (search_tickets) — the
-   language they actually write in, not their country or name. If the thread mixes languages,
-   match their most recent substantive message; if genuinely ambiguous, ask me which language.
+1. Detect the client's language from their messages in the thread — the language they actually
+   write in, not their country or name. If the thread mixes languages, match their most recent
+   substantive message; if genuinely ambiguous, ask me which language.
 
 2. Draft the reply NATIVELY in that language — composed in it, not word-for-word translated
    from an English draft — applying full house standards: answer first, no filler, greeting
@@ -32,8 +36,8 @@ what I meant.
    back-translation (for your review)" — a faithful mirror of what the foreign-language draft
    actually says, including anything that shifted in translation.
 
-5. Present both together via view_openDraft (draft on top, back-translation below for removal
-   before send) or in chat. I confirm before anything is sent.
+5. Show me both together (draft on top, back-translation below for removal before send) for
+   review. I confirm before anything is sent.
 
 The back-translation is mandatory whenever I don't read the target language — never ask me to
 approve text I can't verify, and remind me to remove it before sending. The two versions must

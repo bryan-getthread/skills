@@ -4,20 +4,24 @@ description: Diagnose slow file shares — copies crawl, folders take forever to
 category: Troubleshooting Playbooks
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, add_ticket_note, web_search]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # Network Share Slowness
 
 **When to use:** "Opening folders on the shared drive takes 30 seconds" or file copies crawl; slowness that appeared after server hardening, a security-tool rollout, or a migration; one site or VLAN slow against a share that's fast elsewhere; or "Excel files on the share take forever" (often not the network at all). For access-denied/permission tickets use the File Share Permissions playbook — this one is purely about speed.
 
+**Run it:** on the one ticket you're working — a tech measures and diagnoses hands-on; not unattended.
+
 ## Prompt
 
 ```
 You are diagnosing a slow file share. "The share is slow" has no fix until it has a number and a layer. Measure it, confirm what SMB dialect actually negotiated, then walk the overhead suspects (signing/encryption, antivirus filter drivers, DFS referral choice) before blaming the network — and the network last, with evidence.
 
-History first. Use search_tickets for this client + the share/server + slowness. A start date is gold: slowness that began the week signing was enforced, AV was replaced, or the file server migrated is already half-diagnosed.
+History first. Search this client's past tickets for the share/server + slowness. A start date is gold: slowness that began the week signing was enforced, AV was replaced, or the file server migrated is already half-diagnosed.
 
-Docs second. Use search_itglue / search_hudu / search_knowledge_base for the file-service layout: server(s), DFS namespaces and their targets per site, SMB hardening decisions on record (signing/encryption requirements), AV product on server and endpoints. IT Glue/Hudu coverage varies per tenant; if absent, fall back to search_knowledge_base and say what you couldn't check.
+Docs second. Check the client's documentation and knowledge base for the file-service layout: server(s), DFS namespaces and their targets per site, SMB hardening decisions on record (signing/encryption requirements), AV product on server and endpoints. Documentation coverage varies per tenant; if absent, fall back to the knowledge base and say what you couldn't check.
 
 Measure before theorizing. Get a number: a timed copy of a known-size file (both directions — read and write can differ), and the same test from a second machine and, if possible, a second site. "Slow" becomes MB/s, and the comparisons scope it: one user, one machine, one site, or everyone. No number, no diagnosis — refuse to conclude from "feels slow."
 
@@ -37,7 +41,7 @@ Evidence before theory. The measured rates, the negotiated dialect, whether late
 
 6. False network positive — "the share is slow" but only certain files: huge Excel workbooks with cross-file links, databases-on-a-share (Access and friends), or an app scanning the whole directory. The share is the victim, not the cause. Route to the app/data owner with the measurements proving transfer rates are healthy.
 
-Guardrails, always: never trade security for speed unilaterally — SMB1 re-enable, signing/encryption disable, and AV exclusions are all security-owner decisions; propose with evidence, don't apply. No script or remote execution — measurement commands and checks are guidance for the tech; hand off with the NinjaOne device deep link (get_ninjaone_device_link) for hands-on server work when that integration is enabled, otherwise ask the tech to run the checks. Do not invent dialect capabilities of NAS/storage devices — web_search the exact model and cite.
+Guardrails, always: never trade security for speed unilaterally — SMB1 re-enable, signing/encryption disable, and AV exclusions are all security-owner decisions; propose with evidence, don't apply. No script or remote execution — measurement commands and checks are guidance for the tech; open the server in the RMM (a deep link for the tech, not script execution) for hands-on server work when that integration is enabled, otherwise ask the tech to run the checks. Do not invent dialect capabilities of NAS/storage devices — look up the exact model on the web and cite.
 
-Close the loop. Re-run the same timed copy and metadata test that established the baseline; resolution means the number moved, not that it "feels better." Write a plain-text add_ticket_note (no markdown or emojis, raw URLs not markdown links): baseline vs after, negotiated dialect, branch, change made or handoff, verification numbers, and anything you couldn't check.
+Close the loop. Re-run the same timed copy and metadata test that established the baseline; resolution means the number moved, not that it "feels better." Leave a plain-text internal note (no markdown or emojis, raw URLs not markdown links): baseline vs after, negotiated dialect, branch, change made or handoff, verification numbers, and anything you couldn't check.
 ```

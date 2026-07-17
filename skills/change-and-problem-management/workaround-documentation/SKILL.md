@@ -4,11 +4,15 @@ description: A workaround living in one tech's head is a liability — document 
 category: Change & Problem Management
 tools: [search_tickets, search_knowledge_base, add_ticket_note, update_ticket]
 connectors: []
+scope: both
+flow: no
 ---
 
 # Workaround Documentation
 
 **When to use:** a tech found a workaround mid-incident and it needs capturing before it evaporates ("write up what I just did") / a problem record moving to KNOWN ERROR needs its workaround documented / "what's the workaround for <known issue>?" / a workaround review sweep.
+
+**Run it:** on one workaround · or as a workaround-review sweep.
 
 ## Prompt
 
@@ -43,7 +47,7 @@ honestly labeled as what they are.
    states "resolved via WORKAROUND-ONLY — permanent fix tracked in <problem record>" —
    never a bare "resolved." This keeps workaround-resolutions distinguishable from real
    fixes in QA, recurrence analysis, and client reporting. Where the desk has a
-   workaround-only status/type field, set it (update_ticket).
+   workaround-only status/type field, set it.
 
 5. On retrieval for a live incident: quote the documented steps with the document's date
    and hold-time caveats; cite only documents that exist — never fabricate a link, a KB

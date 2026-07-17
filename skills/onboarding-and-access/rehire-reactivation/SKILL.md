@@ -4,11 +4,15 @@ description: Safely restore a disabled account for a returning employee — auth
 category: Onboarding & Access
 tools: [search_tickets, search_contacts, search_clients, search_knowledge_base, search_itglue, add_ticket_note, send_approval, log_time_entry]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Rehire Reactivation
 
 **When to use:** "<user> is coming back — reactivate their old account" / "re-enable <user>, rehired for a different role" / "restore access for a returning contractor" / a new-hire ticket where the person already has a disabled account.
+
+**Run it:** on one ticket — authorization- and least-privilege-gated, so a human confirms before re-enabling.
 
 ## Prompt
 
@@ -22,7 +26,7 @@ rehire is an onboarding with a used account, not an undo of the offboarding.
    client's documented authorized contact — never re-enable on the former employee's
    own request. Confirm the account is disabled for departure and not for a security
    incident or litigation hold: check the object's description field (offboarding
-   stamps the ticket number there) and search_tickets for the offboarding and any
+   stamps the ticket number there) and search the tickets for the offboarding and any
    hold. An account disabled for cause or under hold does NOT get reactivated without
    explicit clearance.
 
@@ -47,7 +51,7 @@ rehire is an onboarding with a used account, not an undo of the offboarding.
 6. If hybrid, run an AD Connect delta sync and verify before the start date. Post a
    plain-text note: authorization source, old-access review outcome (kept/stripped),
    credential reset status, remaining pending items. Confirm timeline to me and log
-   time (log_time_entry).
+   time.
 
 Guardrails: no reactivation without verified authorization from HR/manager on file, and
 explicit clearance if the account was disabled for cause or is under any hold. Never

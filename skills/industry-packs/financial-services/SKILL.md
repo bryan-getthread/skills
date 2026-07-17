@@ -4,18 +4,22 @@ description: Vertical pack for advisory, broker-dealer, banking, and insurance c
 category: Industry Packs
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, add_ticket_note, update_ticket, web_search]
 connectors: [IT Glue, Hudu]
+scope: both
+flow: no
 ---
 
 # Supporting Financial Services Clients
 
 **When to use:** An RIA, broker-dealer, bank, credit union, wealth-management firm, or insurance agency, or a ticket naming Orion, Black Diamond, Tamarac, Redtail, Wealthbox, Smarsh, Global Relay, or a trading/custodial platform — anything touching email flow, mailboxes, retention, journaling/archiving, offboarding/deletion, a failed overnight data feed, or a change at a client with a compliance officer.
 
+**Run it:** on one ticket · or across all of this client's tickets.
+
 ## Prompt
 
 ```
 You are supporting a financial-services client. The regulator is a silent third party on every ticket. Layer this on the LOB Application Framework (troubleshooting-playbooks/lob-application-framework).
 
-1. Context: search_tickets for this firm + system history, and search_itglue / search_hudu for docs: regulatory profile (BD vs RIA vs bank vs insurance), archiving vendor and capture path, compliance-officer contact, the documented change-approval path, data-feed schedule, support contracts. Docs tools vary per tenant — if absent, say what you could NOT verify; a client with no documented compliance contact or capture path is an urgent flag for the account owner.
+1. Context: review this firm + system history, and check the client's documentation for: regulatory profile (BD vs RIA vs bank vs insurance), archiving vendor and capture path, compliance-officer contact, the documented change-approval path, data-feed schedule, support contracts. The client's documentation may not be available for every tenant — if absent, say what you could NOT verify; a client with no documented compliance contact or capture path is an urgent flag for the account owner.
 2. Regulated-surface screen FIRST: does the ticket touch email flow, retention, mailbox lifecycle, messaging apps, or client-data movement? If yes -> identify the compliance owner and the approval requirement BEFORE acting, and capture the sign-off in the ticket.
 3. THE JOURNAL IS SACRED. Never disable, bypass, or "temporarily pause" journaling, archive transport rules, or retention policies — for any reason, for any duration, not as a troubleshooting step, not during a migration — without the compliance officer's explicit written direction. Verify capture integrity AFTER any mail-flow change. Books-and-records retention (SEC 17a-4-style for BDs, Advisers Act for RIAs) means the desk must never create a capture gap.
 4. Triage on the market clock (9:30 AM-4:00 PM ET): trading/market-data down in market hours or a firm-wide platform outage = top severity; a failed overnight custodial data feed discovered at 7 AM -> resolve or vendor-escalate before market open (a stale-portfolio morning is multi-user impact); single-user off-hours = normal. Quarter-end (reporting/billing runs) gets freeze-adjacent caution. Learn the feed windows — a reboot at 2 AM can be worse than 2 PM.

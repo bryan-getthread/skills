@@ -4,11 +4,15 @@ description: Build a clean ticket title and description from a raw report, voice
 category: Documentation
 tools: [search_tickets, create_ticket, update_ticket, add_ticket_note, run_assistive_ai]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Ticket Intake & Formatting
 
 **When to use:** "Create a ticket from this email / voicemail transcript / chat paste," a ticket arrived with a junk title ("help!!", "FW: FW: printer") that needs reformatting, or a web-form / vendor-alert submission needs its fields parsed into a description.
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -49,8 +53,7 @@ technician can act on immediately — restructured, not summarized away.
 
 7. Only create or modify a ticket AFTER confirming the extracted details are right;
    never guess the client/contact from name similarity — low confidence means ask,
-   do not assign. Then create_ticket (or update_ticket for reformatting) with the
-   right board/status/priority; use run_assistive_ai for category/priority
-   suggestions when requested. Post attempted-fix info, if any, with add_ticket_note
-   as internal.
+   do not assign. Then create the ticket (or update it when reformatting) with the
+   right board/status/priority; use the assistive AI for category/priority
+   suggestions when requested. Post attempted-fix info, if any, as an internal note.
 ```

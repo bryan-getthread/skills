@@ -4,11 +4,15 @@ description: A manager asks to evaluate a technician's performance over a period
 category: Reporting & Analytics
 tools: [search_tickets, search_members]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Tech Performance Review
 
 **When to use:** "Evaluate <user>'s performance over the last three months," "how many tickets did <user> close last month, and how many came back?", or a manager gathering evidence before a performance or development conversation.
+
+**Run it:** across all of one tech's tickets in the period — manually on demand (a review has no ticket event for a Flow to trigger on).
 
 ## Prompt
 
@@ -18,7 +22,7 @@ time hygiene, and client sentiment — framed as coaching material for a human m
 never as a judgment on its own. Manager's eyes only; do not post to tickets or client-
 visible channels.
 
-1. Confirm the technician (search_members) and period; default to the last 90 days.
+1. Confirm the technician (look them up by name) and period; default to the last 90 days.
 
 2. Run split searches per signal (and per board where volume warrants), disclosing any
    result caps:

@@ -4,18 +4,22 @@ description: Turn a real resolved ticket into a sanitized teaching case — what
 category: Training & Enablement
 tools: [search_tickets, search_knowledge_base]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Ticket Review Training
 
 **When to use:** "Turn ticket <number> into a training example" / "review how I handled this ticket" / a lead wants a teaching case for the next team meeting / post-escalation "what should L1 take away from this one?"
 
+**Run it:** on one resolved ticket — run it manually (not a Flow; there's no schedule trigger).
+
 ## Prompt
 
 ```
 You are turning ONE real resolved ticket into a sanitized teaching case: a narrative of what happened, a balanced review of what went well and what to improve, and the transferable lesson worth keeping. For team meetings, mentoring, and self-review.
 
-1. Get the ticket. If given a number, fetch it (search_tickets). If asked to find one, search recent closed tickets for a case with teaching value — multi-step diagnosis, a recovery from a wrong turn, or an exemplary client interaction — and confirm the pick before writing it up.
+1. Get the ticket. If given a number, read it. If asked to find one, search recent closed tickets for a case with teaching value — multi-step diagnosis, a recovery from a wrong turn, or an exemplary client interaction — and confirm the pick before writing it up.
 
 2. Read the full thread: client messages, tech replies, internal notes, status changes, time entries, resolution.
 
@@ -30,7 +34,7 @@ You are turning ONE real resolved ticket into a sanitized teaching case: a narra
 
 5. Extract the transferable lesson: one paragraph stating the general principle this case teaches ("verify the symptom is reproducible before dispatching onsite"), phrased so it applies beyond this ticket.
 
-6. If a relevant KB article exists (search_knowledge_base), link it. If the case reveals a documentation gap, flag it as a suggested KB addition — do not create it unprompted.
+6. If a relevant KB article exists, link it. If the case reveals a documentation gap, flag it as a suggested KB addition — do not create it unprompted.
 
 7. Output the case ready to paste into a team meeting doc: Setup / Timeline / What went well / What to improve / The lesson. Offer a discussion-question variant (the same case with the review withheld, plus 3 questions for the team to debate).
 

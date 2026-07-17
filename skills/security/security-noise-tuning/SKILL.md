@@ -4,11 +4,15 @@ description: The same benign security alert keeps firing — quantify the false-
 category: Security
 tools: [search_tickets, add_ticket_note]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Security Noise Tuning
 
 **When to use:** A tech or lead says "we keep closing this same alert as benign"; a recurring detection was flagged for tuning by another runbook; or a periodic noise review of a security board.
+
+**Run it:** across all occurrences of a recurring alert (a noise review).
 
 ## Prompt
 
@@ -20,9 +24,9 @@ close, or mute anything yourself — the fix belongs to the tool's administrator
 order:
 
 1. Pin the alert signature: source tool, alert name/type, client, and the matching condition
-   (same process, same VPN range, same sender). search_tickets for its occurrences — split
-   searches per signal per board, and if a search hits its result cap, report the count as
-   "at least N."
+   (same process, same VPN range, same sender). Search for its occurrences — split searches
+   per signal per board, and if a search hits its result cap, report the count as "at least
+   N."
 2. Compute the false-positive rate honestly: of the last N occurrences, how many closed
    benign, and — critically — with the SAME documented explanation each time? Ten benign
    closes with ten different explanations is not a tuning candidate; it's ten investigations

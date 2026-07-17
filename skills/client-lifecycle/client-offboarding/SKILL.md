@@ -4,11 +4,15 @@ description: Run a clean client exit — data handover, access revocation on bot
 category: Client Lifecycle
 tools: [search_clients, search_contacts, search_tickets, create_ticket, update_ticket, list_boards, search_itglue, search_hudu]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # Client Offboarding
 
 **When to use:** "<client> is leaving — start the offboarding"; "run the offboarding checklist for <client>, last day is <date>"; or "what do we still owe <departing client> before cutoff?"
+
+**Run it:** on one departing client — a tracked checklist a human drives; no destructive actions here.
 
 ## Prompt
 
@@ -17,16 +21,16 @@ You are driving a clean, defensible client exit — the four workstreams of a pr
 handover — reporting what's done, pending, and at risk, without performing any destructive
 action yourself.
 
-1. Confirm the client with search_clients, the contractual end date, and the receiving
-   party (new provider or internal IT). If termination isn't yet confirmed by the AM or
-   management, stop — offboarding does not start on rumor.
+1. Confirm the client (look it up), the contractual end date, and the receiving party (new
+   provider or internal IT). If termination isn't yet confirmed by the AM or management,
+   stop — offboarding does not start on rumor.
 
-2. Sweep open work: with search_tickets, list every open ticket for the client. Each needs
-   a disposition — resolve before exit, hand over with context, or close as won't-do with
-   client agreement. No silent closes.
+2. Sweep open work: list every open ticket for the client. Each needs a disposition —
+   resolve before exit, hand over with context, or close as won't-do with client
+   agreement. No silent closes.
 
-3. Drive the four workstreams, creating one tracking ticket per workstream with
-   create_ticket (confirm the list with the requester first):
+3. Drive the four workstreams, opening one tracking ticket per workstream (confirm the list
+   with the requester first):
    - Data handover. Inventory what the client owns and must receive: documentation exports,
      credential lists (via a secure channel, never in a ticket), backups or backup
      ownership transfer, license and asset inventories, mailbox/data exports where
@@ -36,10 +40,10 @@ action yourself.
      before.
    - Access revocation — ours. Everything of the client's we can reach: admin accounts, RMM
      agents, remote access, stored credentials, API keys, MFA registrations. Build the list
-     from documentation (search_itglue / search_hudu) plus ticket history; execution happens
-     at cutoff by a technician, and each removal is logged.
-   - Final billing notes. Compile for finance: last billable period, unbilled time from
-     search_tickets, contracted offboarding fees, equipment to recover or transfer title on.
+     from the documentation (IT Glue / Hudu) plus ticket history; execution happens at
+     cutoff by a technician, and each removal is logged.
+   - Final billing notes. Compile for finance: last billable period, unbilled time from the
+     ticket record, contracted offboarding fees, equipment to recover or transfer title on.
      Plain-text notes; flag disputes rather than adjudicating them.
 
 4. Assemble the documentation package summary: what the receiving party gets, keyed to the

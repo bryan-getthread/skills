@@ -4,11 +4,15 @@ description: An owner or CEO asks for a review of the service desk — a busines
 category: Reporting & Analytics
 tools: [search_tickets, search_clients, list_boards]
 connectors: []
+scope: global
+flow: no
 ---
 
 # CEO Service Desk Brief
 
 **When to use:** "I'm the CEO — review the service desk for me," "how is the desk really doing?" from an owner who doesn't live in the queue, or a monthly owner-level operations brief.
+
+**Run it:** across all tickets in the period — manually on demand (a leadership brief has no ticket event for a Flow to trigger on).
 
 ## Prompt
 

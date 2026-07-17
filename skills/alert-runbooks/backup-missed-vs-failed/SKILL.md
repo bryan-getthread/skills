@@ -4,11 +4,15 @@ description: Distinguish a backup job that never ran (missed) from one that ran 
 category: Alert Runbooks
 tools: [search_tickets, get_ninjaone_device, get_ninjaone_device_activities, list_ninjaone_alerts, liongard_metric, liongard_launchpoint, search_itglue, add_ticket_note, update_ticket]
 connectors: [NinjaOne, Liongard, IT Glue]
+scope: single
+flow: yes
 ---
 
 # Backup Missed vs Failed Alert
 
-**When to use:** A backup alert reads "missed", "did not run", "overdue", or is ambiguous between missed and failed; or a tech asks "did last night's backup for <client> actually run?" Fires on the alert ticket event, so it runs attended or as a Flow.
+**When to use:** A backup alert reads "missed", "did not run", "overdue", or is ambiguous between missed and failed; or a tech asks "did last night's backup for <client> actually run?"
+
+**Run it:** on the alert ticket · or as a Flow that fires on the backup alert ticket event.
 
 ## Prompt
 
@@ -16,7 +20,7 @@ connectors: [NinjaOne, Liongard, IT Glue]
 You are triaging a backup alert. "Backup did not complete" hides two different problems: a job
 that never STARTED (scheduling/availability — device off, service down, window skipped) and a
 job that started and DIED (an error with a taxonomy). Make the missed-vs-failed call first,
-because everything downstream depends on it, and always end with an exposure statement. Post a
+because everything downstream depends on it, and always end with an exposure statement. Leave a
 plain-text note only; change nothing else. Do not clear backup alerts — they are the evidence trail.
 
 1. Parse the alert: device/job name, scheduled window, whether it carries an error code (errors
@@ -25,16 +29,16 @@ plain-text note only; change nothing else. Do not clear backup alerts — they a
 2. Make the call explicit: FAILED = job executed and returned an error → there is an error to
    classify; hand the taxonomy work to a backup-failure triage. MISSED = no execution in the
    window → the diagnosis is why it never started. Do not treat an overdue alert as a failure.
-3. Dedupe/recurrence with search_tickets: same device/job, 30 days. Chronic misses (device off
-   every night, laptop never on the schedule) are a schedule-design problem; chronic failures
-   are a product problem. State which pattern this is.
-4. Verify why a missed job missed: get_ninjaone_device (was the device online during the
-   window?), get_ninjaone_device_activities (asleep, rebooting, mid-patch?), list_ninjaone_alerts
-   (backup service stopped?). A laptop in a bag at 2 a.m. is a schedule problem, not an incident.
-5. Where the backup platform has a Liongard inspector, read job history via liongard_metric
-   (verify the inspector via liongard_launchpoint and state dataprint age) to confirm the last
-   successful run and whether a later run has since succeeded. Cross-check search_itglue for the
-   intended schedule and retention design.
+3. Dedupe/recurrence: search recent tickets for the same device/job, 30 days. Chronic misses
+   (device off every night, laptop never on the schedule) are a schedule-design problem; chronic
+   failures are a product problem. State which pattern this is.
+4. Verify why a missed job missed: look up the device (was it online during the window?), read
+   its recent RMM activity (asleep, rebooting, mid-patch?), and check related RMM alerts (backup
+   service stopped?). A laptop in a bag at 2 a.m. is a schedule problem, not an incident.
+5. Where the backup platform has a Liongard inspector, read job history from the inspector's
+   data (verify the inspector last ran and state its dataprint age) to confirm the last
+   successful run and whether a later run has since succeeded. Cross-check the documentation in
+   IT Glue for the intended schedule and retention design.
 6. Classify: self-healed (a subsequent run of the same job completed) → close citing that run;
    needs-tech (failed jobs → route to backup-failure triage; backup service down; missed window
    on an always-on server); needs-client (device-availability misses on client-controlled
@@ -42,8 +46,8 @@ plain-text note only; change nothing else. Do not clear backup alerts — they a
    maintenance window with a clean run after).
 7. Exposure statement — MANDATORY in every output regardless of class: "Last known good backup
    for <device/job>: <date/time>. Data changed since then is unprotected." If last-known-good
-   cannot be established, say exactly that — it makes the ticket more urgent, not less. Post via
-   add_ticket_note.
+   cannot be established, say exactly that — it makes the ticket more urgent, not less. Leave a
+   plain-text note.
 
 Guardrails: the exposure statement is non-negotiable — no output omits last-known-good or an
 explicit "unknown". Never say data is safe or a restore will work — report job evidence only;

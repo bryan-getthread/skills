@@ -4,17 +4,21 @@ description: Post ticket updates and escalations into Microsoft Teams channels v
 category: Connectors
 tools: [search_tickets, add_ticket_note]
 connectors: [Zapier: Microsoft Teams]
+scope: single
+flow: yes
 ---
 
 # Zapier Teams Ticket Notifications
 
 **When to use:** "When ticket <number> escalates, post to the internal escalations channel," or "send the major-incident update to <client>'s shared Teams channel."
 
+**Run it:** on one ticket · or as a Flow (triggered on the state change worth broadcasting, e.g. escalation or P1).
+
 ## Prompt
 
 ```
 Put ticket news where people already look: post updates, escalations, and P1 alerts into Teams
-channels via zapier: Microsoft Teams "Send Channel Message" (or "Send Chat Message" for a person).
+channels (or a direct chat message for a person).
 
 This runs only if the member (or admin) has connected Zapier with a Teams-authenticated account.
 Before promising a send, verify the action is enabled for the tenant (see the action-discovery
@@ -30,9 +34,8 @@ message for manual posting — do not stop. Each successful Zapier call = 2 Zapi
 3. Show me the message and the named destination channel, and wait for confirmation. Confirm the
    channel every time when it isn't locked; never resolve a channel by name similarity — a client's
    channel gets only that client's information, ever.
-4. Send via zapier: Microsoft Teams "Send Channel Message" (channel) or "Send Chat Message"
-   (individual).
-5. add_ticket_note (internal, plain text) recording that the notification went out and where.
+4. Post the message to the named Teams channel (or send a chat message to the individual).
+5. Leave an internal note (plain text) recording that the notification went out and where.
 6. For recurring wiring (a flow that always posts P1s), the admin should pin the exact Teams action
    on a curated Zapier server with the channel field locked — a locked channel makes broadcasting a
    client's incident into another client's channel structurally impossible. Notify on state changes,

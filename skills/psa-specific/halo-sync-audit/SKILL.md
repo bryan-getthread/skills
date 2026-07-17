@@ -4,11 +4,15 @@ description: For desks synced to HaloPSA — sweep for Thread↔Halo divergence,
 category: PSA-Specific
 tools: [search_tickets, list_boards, list_ticket_statuses, update_ticket, add_ticket_note]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Halo Sync Audit
 
 **When to use:** "Thread says open, Halo says resolved" and you want the blast radius, a periodic Thread↔Halo hygiene sweep (or after an integration outage / Halo upgrade), or before trusting Thread-side reports that depend on Halo-synced status.
+
+**Run it:** across all recently-touched tickets on the teams/boards in scope (run manually or on a cadence).
 
 ## Prompt
 
@@ -19,15 +23,15 @@ can change status, visibility, and assignment in one move — and the status leg
 often observed not carrying over into Thread.
 
 1. Scope: which teams/boards, what window (default: tickets touched in the last 14 days). Pull
-   live lists with list_boards / list_ticket_statuses.
+   the live board and status lists.
 
-2. Sweep with search_tickets, one search per signal per team: (a) the signature pattern — tickets
-   whose last activity is a resolution-shaped note but whose Thread status is still open-family;
-   (b) tickets on hold-type statuses with no stated wait reason (suggesting a Halo action synced
+2. Sweep the tickets, one search per signal per team: (a) the signature pattern — tickets whose
+   last activity is a resolution-shaped note but whose Thread status is still open-family; (b)
+   tickets on hold-type statuses with no stated wait reason (suggesting a Halo action synced
    partially); (c) owner/team mismatches; (d) tickets stale in Thread but with recent Halo-
    originated notes. Disclose result caps — capped sweeps are samples.
 
-3. For each candidate, re-fetch the full ticket detail individually before calling it divergent.
+3. For each candidate, re-read the full ticket detail individually before calling it divergent.
    Sync lag is the null hypothesis; only tickets that still disagree on a fresh full-detail read
    count.
 
@@ -35,17 +39,17 @@ often observed not carrying over into Thread.
    known pattern), assignment drift, team drift. Note age and whether client-visible activity is
    pending.
 
-5. Propose reconciliation with Halo as master: align Thread via update_ticket, each with a plain-
-   text add_ticket_note: "reconciled to PSA state on <date>; Thread showed <X>". Never push
-   Thread state back into Halo during an audit, and never reconcile a ticket carrying an
-   unanswered client message — flag those for a human.
+5. Propose reconciliation with Halo as master: align Thread, each with a plain-text note:
+   "reconciled to PSA state on <date>; Thread showed <X>". Never push Thread state back into Halo
+   during an audit, and never reconcile a ticket carrying an unanswered client message — flag
+   those for a human.
 
 6. Output the report: per-team counts, confirmed divergence list (ticket, field, Thread vs Halo
    value, age), proposed fixes, excluded/uncertain tickets listed separately. Apply only after
    the reviewer confirms; if the same pattern recurs sweep after sweep, recommend the integration
    mapping itself be reviewed (statuses missing from the mapping table are the usual root cause).
 
-Always: sync lag is the null hypothesis — no divergence call without an individual fresh re-fetch
+Always: sync lag is the null hypothesis — no divergence call without an individual fresh re-read
 at full detail. The PSA is always master — Thread moves toward Halo; a believed Halo-side error
 is a manual human fix, not a reconciliation target. Never bulk-apply; the confirmed list is a
 proposal until a human approves it. Result-cap honesty in every count you report. Plain-text

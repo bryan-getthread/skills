@@ -4,11 +4,15 @@ description: Diagnose name-resolution and domain problems — "can't reach <site
 category: Troubleshooting Playbooks
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, add_ticket_note, web_search, liongard_domain]
 connectors: [IT Glue, Hudu, Liongard]
+scope: single
+flow: no
 ---
 
 # DNS & Domain Issues
 
 **When to use:** A user can't reach a site or server by name but others can (or by IP works); internal names resolve wrong or not at all and new DNS changes "aren't taking effect"; the client's public website or mail is suddenly unreachable for everyone; or someone asks "did our domain expire?" (or wants a pre-emptive domain/record hygiene check).
+
+**Run it:** on the one ticket you're working — a tech ladders the resolution hands-on and hands DNS edits to the zone owner; not unattended.
 
 ## Prompt
 
@@ -17,11 +21,11 @@ Resolution failures always live at one of three rungs — the client, the resolv
 
 Work it in this order:
 
-1. History first. Run search_tickets for the name/domain involved — a recent migration, server decommission, or DNS-change ticket is the likely cause of "suddenly broken".
+1. History first. Search past tickets for the name/domain involved — a recent migration, server decommission, or DNS-change ticket is the likely cause of "suddenly broken".
 
-2. Docs second. Run search_itglue / search_hudu / search_knowledge_base for the DNS architecture: internal DNS servers, external DNS host, registrar, split-brain zones (same name inside vs outside), and who may edit each. IT Glue/Hudu/Liongard coverage varies per tenant — note what you could not check.
+2. Docs second. Check the client's documentation and knowledge base for the DNS architecture: internal DNS servers, external DNS host, registrar, split-brain zones (same name inside vs outside), and who may edit each. Documentation and Liongard coverage varies per tenant — note what you could not check.
 
-3. Domain-expiry check early when a whole public domain is dark. If Liongard is enabled for this tenant, query liongard_domain for registration and expiry state; otherwise guide a whois/registrar check via web_search and note the substitution. An expired domain explains everything at once — check it before deep diagnosis. If expired: only the registrant/registrar can act; renewal plus propagation is the honest timeline.
+3. Domain-expiry check early when a whole public domain is dark. If Liongard is enabled for this tenant, check its domain inspector for registration and expiry state; otherwise guide a whois/registrar check on the web and note the substitution. An expired domain explains everything at once — check it before deep diagnosis. If expired: only the registrant/registrar can act; renewal plus propagation is the honest timeline.
 
 4. Get evidence before theorizing. The exact name, the exact failure (NXDOMAIN, wrong address, timeout — they mean different things), from which machine(s), and by IP vs by name. Don't proceed on "DNS is broken".
 
@@ -34,5 +38,5 @@ Work it in this order:
 
 Guardrails to hold throughout: DNS edits are exact-record guidance for whoever owns the zone — you never execute them, and registrar actions (renewal, nameserver changes) can only be done by the registrant: say so. Be honest about propagation — TTL-bound, no instant fixes; schedule the re-check instead of promising immediacy. Never advise pointing clients at random public resolvers as a "fix" for internal-name problems — internal zones only resolve via internal DNS; that swap silently breaks AD. Distinguish blocked (DNS filtering doing its job) from broken — check the filtering layer before declaring a fault, and route category-unblock requests to the policy owner.
 
-Verify and note. Re-resolve from the originally failing vantage point after the fix (and after TTL expiry for record changes). Post a plain-text PSA note (no markdown, no emojis, raw URLs not markdown links): rung identified, evidence (queries and answers), fix or handoff, expiry status if checked, verification.
+Verify and note. Re-resolve from the originally failing vantage point after the fix (and after TTL expiry for record changes). Leave a plain-text internal note (no markdown, no emojis, raw URLs not markdown links): rung identified, evidence (queries and answers), fix or handoff, expiry status if checked, verification.
 ```

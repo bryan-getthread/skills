@@ -4,11 +4,15 @@ description: BASE skill for machine integrations — when an external system cal
 category: Automation & Flows
 tools: []
 connectors: []
+scope: both
+flow: yes
 ---
 
 # JSON API Response Pattern
 
 **When to use:** Building a prompt for an external API/webhook caller ("analyze this ticket and return `{severity, category, summary}`"); reviewing an integration that intermittently fails to parse the agent's replies; or any skill step that says "respond in JSON".
+
+**Run it:** on one ticket · across a set · or as a Flow — it's a base output contract you fold into any machine-consumed prompt.
 
 ## Prompt
 

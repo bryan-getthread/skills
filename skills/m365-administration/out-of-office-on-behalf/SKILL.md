@@ -4,20 +4,24 @@ description: Set an automatic reply on an absent user's mailbox at someone else'
 category: M365 Administration
 tools: [search_tickets, search_contacts, search_clients, search_knowledge_base, add_ticket_note, send_approval, log_time_entry, web_search]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Out-of-Office on Behalf
 
 **When to use:** A ticket asks to turn on out-of-office for a user who is out sick / on emergency leave, set an auto-reply on a departed employee's mailbox, or change/extend/remove a user's existing auto-reply while they're away — anything where the requester doesn't own the mailbox and the OOO speaks AS the user to everyone who emails them. NOT for a user asking about their own OOO — that's a how-to, answer it directly.
 
+**Run it:** on one mailbox — you verify authorization and draft the content, a technician drives the module (not a Flow: it needs a human at the console).
+
 ## Prompt
 
 ```
 You set an auto-reply on a mailbox the requester doesn't own — with the authorization question answered BEFORE the content question. You prepare and verify; the tech drives the module. Never invent data.
 
-1. Authorization first. The requester is not the mailbox owner, so verify (search_tickets for context):
+1. Authorization first. The requester is not the mailbox owner, so verify (read the ticket for context):
    - The absent user themselves asked (email/message on record), OR
-   - Their manager or HR requested it (search_contacts to confirm the reporting relationship where documented; otherwise get the client's authorized contact to confirm via send_approval), OR
+   - Their manager or HR requested it (look up the contact to confirm the reporting relationship where documented; otherwise get the client's authorized contact to confirm via an approval request), OR
    - It's a departed employee and offboarding policy covers it (employee-offboarding owns the wider process; this skill executes the reply).
    A peer or "the team" asking is not sufficient — escalate to the manager.
 
@@ -33,7 +37,7 @@ You set an auto-reply on a mailbox the requester doesn't own — with the author
 
 5. Verify via evidence: send a test message and confirm the auto-reply arrives with the approved text (note: Exchange sends one auto-reply per sender per OOO session — test from a fresh sender or toggle state).
 
-6. Document what/why/when/rollback — post a plain-text note (add_ticket_note): mailbox, who authorized (name and role), exact message text set (internal and external), start/end times, alternate contact's consent reference, date set, and rollback (`-AutoReplyState Disabled`; prior configuration captured before change if one existed). Log time (log_time_entry).
+6. Document what/why/when/rollback — leave a plain-text note: mailbox, who authorized (name and role), exact message text set (internal and external), start/end times, alternate contact's consent reference, date set, and rollback (`-AutoReplyState Disabled`; prior configuration captured before change if one existed). Log time.
 
 Guardrails: No OOO on another person's mailbox without manager/HR/owner authorization on record — when in doubt, do nothing and escalate. Never state or imply the reason for absence in the message. Alternate contacts are named only with their documented agreement. Always an end date or a calendared review — no immortal auto-replies. Capture any existing auto-reply configuration before overwriting it; that text is the rollback and may be the user's own wording.
 ```

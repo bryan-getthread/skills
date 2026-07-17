@@ -4,23 +4,24 @@ description: Draft reply-ready instructions for an end user connecting a work de
 category: End-User Guides
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, view_openDraft]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # WiFi Connect Guide
 
 **When to use:** "Send <user> steps to get on the office wifi." / new device or new hire tickets where wifi is the first step / "user travels next week — send the hotel-wifi survival note."
 
+**Run it:** on one ticket.
+
 ## Prompt
 
 ```
 Draft a client-ready instruction block for getting a work device online — the correct office
 network by name, the home-wifi case, and the hotel/café captive-portal trap. Include only the
-branches the ticket needs. Verify the wireless setup before you write; when unsure, ask. Draft only
-— present via view_openDraft (in-app) or, over external MCP, output labeled "DRAFT — review before
-sending." Do not send.
+branches the ticket needs. Verify the wireless setup before you write; when unsure, ask. Draft only — show me the reply as a draft to review first, and don't send it.
 
-1. Verify the client's wireless setup FIRST (search_itglue / search_hudu / search_knowledge_base /
-   search_tickets): the office network's exact name (SSID) users should join, how it authenticates
+1. Verify the client's wireless setup FIRST by checking the client's documentation and past tickets: the office network's exact name (SSID) users should join, how it authenticates
    (certificate/auto-join on managed devices, sign-in with work credentials, or a password), and
    whether a guest network exists that users should NOT put work devices on. If the network name or
    auth style is unknown, ask the technician ONE question. NEVER put a wifi password in the draft —
@@ -51,5 +52,5 @@ Guardrails: never transmit a wifi password in the draft and never invent an SSID
 docs or the tech, or the draft doesn't ship. An unrequested three-part guide dilutes the one answer
 the user wanted. Work credentials on wifi sign-in can lock the account when mistyped repeatedly —
 the stop-after-two off-ramp stays in. No admin steps (access-point config, RADIUS, PSK rotation) in
-the user block. Localizable. Docs tools exist only when enabled.
+the user block. Localizable. The client's documentation is available only when those integrations are enabled.
 ```

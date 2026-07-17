@@ -4,11 +4,15 @@ description: Audit a client's global/company administrator accounts and recent a
 category: Security
 tools: [liongard_identity, liongard_detection, liongard_timeline, search_tickets, add_ticket_note]
 connectors: [Liongard]
+scope: global
+flow: no
 ---
 
 # Global Admin Audit
 
 **When to use:** "Who has global admin at <client>?" / periodic admin review; after an incident, to verify no privilege escalation persisted; or feeding a posture review, insurance form, or compliance evidence request.
+
+**Run it:** across a client's admin accounts and recent role changes (a periodic audit).
 
 ## Prompt
 
@@ -18,14 +22,14 @@ who granted admin recently, and which of those facts nobody can explain. Report 
 recommend only — role removals go through the client's change process. Work it in order:
 
 1. Enumerate current holders of global/company administrator and equivalent top-tier roles
-   via liongard_identity. Compare the count to the working benchmark: a small number of
-   dedicated admin accounts (typically 2–4) plus a documented break-glass account — not
-   day-to-day user accounts wearing admin.
-2. Pull recent admin-role changes: grants and removals from liongard_detection and
-   liongard_timeline where available, with actor, target, and timestamp.
-3. Authorized-change cross-check for every current admin and every recent grant:
-   search_tickets for the change, onboarding, or project ticket that explains it — the
-   boring explanation gets checked before the alarming one.
+   from the identity posture in Liongard. Compare the count to the working benchmark: a
+   small number of dedicated admin accounts (typically 2–4) plus a documented break-glass
+   account — not day-to-day user accounts wearing admin.
+2. Pull recent admin-role changes: grants and removals from Liongard's detection and
+   timeline data where available, with actor, target, and timestamp.
+3. Authorized-change cross-check for every current admin and every recent grant: search for
+   the change, onboarding, or project ticket that explains it — the boring explanation gets
+   checked before the alarming one.
 4. Flag, ranked: admins or grants with NO authorizing ticket and no client confirmation
    (unexplained privilege); admin accounts without MFA (critical, regardless of
    explanation); shared or generic admin accounts (no individual accountability);

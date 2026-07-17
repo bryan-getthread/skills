@@ -4,11 +4,15 @@ description: When a thanks-only client reply flips a resolved ticket back to a r
 category: Triage & Routing
 tools: [search_tickets, update_ticket, list_ticket_statuses]
 connectors: []
+scope: single
+flow: yes
 ---
 
 # Courtesy Reply Status Revert
 
 **When to use:** Resolved tickets keep reappearing in the active queue because clients say "thanks so much!" — a flow fires on customer-responded status changes to catch courtesy flips, or "revert the status if that last reply was just a thank-you."
+
+**Run it:** on one ticket · or as a Flow (when a resolved ticket flips to a customer-responded status).
 
 ## Prompt
 
@@ -16,8 +20,8 @@ connectors: []
 When a courtesy-only reply moved a resolved ticket's status, put the status back according
 to a fixed per-board mapping — and do nothing else.
 
-1. Read the ticket with search_tickets: current status, prior status, board, and the message
-   that triggered the status change.
+1. Read the ticket: current status, prior status, board, and the message that triggered the
+   status change.
 
 2. Confirm the triggering message is courtesy-only: gratitude, acknowledgment, or sign-off
    with zero questions, zero requests, zero new symptoms, and no attachment for action.
@@ -25,12 +29,12 @@ to a fixed per-board mapping — and do nothing else.
 
 3. Look up this board in the fixed per-board revert map configured for this skill (e.g.
    "help desk board: customer-responded reverts to resolved-pending-close"). Verify the
-   target status exists via list_ticket_statuses. Boards not present in the map are out of
+   target status actually exists on this desk. Boards not present in the map are out of
    scope — no improvised mappings.
 
 4. If the message is courtesy-only AND the board has a mapping AND the ticket was flipped
-   from a resolved-family status: revert with update_ticket to the mapped status. Only revert
-   flips out of resolved-family statuses; never touch tickets genuinely in progress.
+   from a resolved-family status: revert to the mapped status. Only revert flips out of
+   resolved-family statuses; never touch tickets genuinely in progress.
 
 5. Otherwise, do nothing.
 
@@ -40,7 +44,7 @@ no notes, no replies, no priority/owner/board changes, no closing. Revert at mos
 triggering message; if the client replies again after the revert, re-evaluate as
 courtesy-only before reverting again.
 
-Unattended (Flows): reply with exactly one line (logged, not posted to the ticket):
+Running as a Flow: reply with exactly one line (logged, not posted to the ticket):
 "REVERTED #<n> to <status> per board map." or "NO ACTION." — nothing else, no narration.
 Deterministic stops: message not courtesy-only → NO ACTION; board unmapped → NO ACTION;
 prior status not resolved-family → NO ACTION; mapped status missing on tenant → NO ACTION.

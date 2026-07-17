@@ -4,11 +4,15 @@ description: One-minute brief for transferring a live, in-progress call to anoth
 category: Escalation
 tools: [search_tickets, search_contacts, add_ticket_note, run_assistive_ai]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Live Call Transfer Brief
 
 **When to use:** "I need to transfer this call to <member> — brief them"; a call is being escalated mid-conversation to a senior tech or specialist; or a dispatcher is warm-transferring a caller and needs to prep the receiver fast.
+
+**Run it:** on one ticket (a live, in-progress call).
 
 ## Prompt
 
@@ -16,9 +20,8 @@ connectors: []
 The receiving technician has seconds, not minutes — the caller is on hold. Produce a
 brief they can absorb before they pick up.
 
-1. Identify the caller and ticket. Pull the ticket thread via search_tickets and the
-   caller's details via search_contacts; note VIP status and recent history with this
-   issue.
+1. Identify the caller and ticket. Pull the ticket thread and the caller's details; note
+   VIP status and recent history with this issue.
 
 2. Build the brief, hard-capped at a one-minute read, in this order:
    - Caller: <user> at <client>, role, callback number on file.
@@ -26,9 +29,9 @@ brief they can absorb before they pick up.
    - Done on this call: the steps already walked through and their results — so the
      receiver never repeats them.
    - Sentiment alert: flag prominently if the caller is frustrated, has called
-     repeatedly, mentioned management, or the ticket sentiment is negative (use
-     run_assistive_ai for a sentiment read when available). State WHY, e.g. "third
-     call this week on the same issue."
+     repeatedly, mentioned management, or the ticket sentiment is negative (use a
+     sentiment read when available). State WHY, e.g. "third call this week on the same
+     issue."
    - Next step: the single thing the receiver should do first.
 
 3. Write the ready-to-say opening line — a verbatim sentence the receiver can speak as

@@ -4,11 +4,15 @@ description: Someone asked to release a quarantined email — verify the request
 category: Security
 tools: [search_tickets, search_contacts, add_ticket_note, update_ticket]
 connectors: []
+scope: single
+flow: yes
 ---
 
 # Quarantine Release Request
 
 **When to use:** A user asks "can you release this email from quarantine?"; a quarantine-digest reply or release-request ticket lands on the board; or a tech wants a second opinion before releasing a held message.
+
+**Run it:** on one ticket · or as a Flow (triggered on a quarantine-release request ticket).
 
 ## Prompt
 
@@ -19,16 +23,16 @@ before anything gets released. You recommend and record; the technician performs
 in the mail console. Work it in order:
 
 1. Verify the requester: is the request coming from the mailbox owner or a party authorized
-   for that mailbox (search_contacts)? A third party pressing for the release of someone
+   for that mailbox (look up the contact)? A third party pressing for the release of someone
    else's held mail — especially with urgency — is itself a social-engineering marker.
    Confirm through a verified channel if anything feels off.
 2. Read WHY the filter held it: spam/bulk score, phishing verdict, malware verdict,
    spoof/authentication failure, or policy rule. The quarantine reason sets the floor for
    how much scrutiny the release needs.
 3. Assess the message's legitimacy without interacting with its payload (no clicking links,
-   no opening attachments): sender reputation and history with the client (search_tickets
-   for prior correspondence or prior reports of the sender), whether the business context
-   makes the message expected, and whether phishing-triage indicators apply.
+   no opening attachments): sender reputation and history with the client (search for prior
+   correspondence or prior reports of the sender), whether the business context makes the
+   message expected, and whether phishing-triage indicators apply.
 4. Decide by verdict class:
    - Malware verdict → never recommend release. Explain why to the requester; offer to
      obtain the content through a verified channel with the real sender instead.
@@ -53,7 +57,7 @@ Unattended (Flows) variant:
 - Deterministic input from the flow: the release-request ticket id. Quarantine reason not
   readable from the thread → output nothing. Requester does not match the mailbox owner in
   contact records → flag a possible social-engineering marker and route to human review.
-- Permitted writes: add_ticket_note only. No status or priority changes, no client-facing
+- Permitted writes: the internal note only. No status or priority changes, no client-facing
   replies, and never any interaction with the held message's links or attachments.
 
 Guardrails — always:

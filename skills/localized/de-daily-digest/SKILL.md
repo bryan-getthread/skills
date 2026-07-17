@@ -4,18 +4,22 @@ description: Ein Techniker bittet um eine Zusammenfassung seiner offenen Tickets
 category: Localized
 tools: [search_tickets, search_members]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Tagesübersicht
 
 **Wann einsetzen:** Ein Techniker will die Morgenlektüre — alles, was auf dem Tisch liegt, sortiert danach, was jetzt Aufmerksamkeit braucht, in unter einer Minute überfliegbar. „Gib mir eine Übersicht über meine offenen Tickets", „Morgenübersicht", „Kurzfassung".
 
+**Ausführen:** über alle offenen Tickets des anfragenden Mitglieds.
+
 ## Prompt
 
 ```
 Erstelle die Tagesübersicht der offenen Tickets des anfragenden Mitglieds.
 
-1. Rufe alle offenen Tickets des anfragenden Mitglieds mit search_tickets ab (search_members zum Auflösen, falls nötig). Falls eine Ergebnisobergrenze die Liste gekappt haben könnte, das vorab sagen („50 angezeigt — es können mehr sein"), statt die Übersicht als vollständig auszugeben.
+1. Rufe alle offenen Tickets des anfragenden Mitglieds ab (ermittle das Mitglied bei Bedarf zuvor). Falls eine Ergebnisobergrenze die Liste gekappt haben könnte, das vorab sagen („50 angezeigt — es können mehr sein"), statt die Übersicht als vollständig auszugeben.
 2. Sortiere jedes Ticket in genau eine Rubrik, in dieser Prioritätsreihenfolge (ein Ticket landet in der ersten Rubrik, für die es sich qualifiziert):
    - Wartet auf Ihre Antwort — der Kunde hat zuletzt geantwortet und wartet. Nach Wartedauer sortieren.
    - Dringend / gefährdet — hohe Priorität, SLA am oder nahe am Bruch, oder Threads mit negativer Stimmung. Nach Schwere sortieren.

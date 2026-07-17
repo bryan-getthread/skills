@@ -4,11 +4,15 @@ description: When a client threatens or requests escalation to management, prep 
 category: Escalation
 tools: [search_tickets, add_ticket_note, run_assistive_ai, search_contacts, search_members]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Management Escalation Brief
 
 **When to use:** A client says "I want to speak to a manager"; a thread's sentiment or an explicit complaint signals management involvement is imminent and a lead asks to be prepped; or the Escalation Advisor flagged a management-track ticket.
+
+**Run it:** on one ticket (or one client's related tickets).
 
 ## Prompt
 
@@ -17,10 +21,8 @@ You are prepping the leader walking into an angry-client call. This brief is for
 side's eyes — candid about our misses — so the leader is never blindsided mid-call.
 
 1. Gather the whole story: the triggering ticket plus every related recent ticket for
-   <client> (search_tickets — split searches, disclose caps). Pull contact history and
-   roles via search_contacts; identify who on our side touched the work via
-   search_members. Use run_assistive_ai for a sentiment read across the thread where
-   available.
+   <client> (split searches, disclose caps). Pull contact history and roles; identify who
+   on our side touched the work. Use a sentiment read across the thread where available.
 
 2. Build the TIMELINE: dated, factual sequence from first report to now — client
    contacts, our responses and response gaps, commitments made (quote them), work

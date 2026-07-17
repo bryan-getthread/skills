@@ -4,11 +4,15 @@ description: Classify a change request as standard, normal, or emergency by scor
 category: Change & Problem Management
 tools: [search_tickets, search_knowledge_base, add_ticket_note, update_ticket]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Change Risk Assessment
 
 **When to use:** "How risky is this change? / does this need CAB or can we just do it?" / a normalized change request needs classification before approval routing / re-assessing a change whose scope grew / building the risk-ranking column of the CAB brief.
+
+**Run it:** on one change request.
 
 ## Prompt
 
@@ -18,7 +22,7 @@ confidently it can be undone (rollback confidence) — and land it in the right 
 class. The point is proportionality: a DNS TTL tweak and a hypervisor migration should
 not travel the same approval path.
 
-1. Load the change ticket in full (search_tickets): what/scope/when/rollback fields,
+1. Load the change ticket in full: what/scope/when/rollback fields,
    plus any thread discussion that changes the picture.
 
 2. Score BLAST RADIUS (who/what feels it if this goes wrong), citing scope evidence:
@@ -40,7 +44,7 @@ not travel the same approval path.
 
 4. Classify from the two scores:
    - Standard: LOW blast radius + HIGH rollback confidence + matches a documented,
-     pre-approved, repeatable procedure (search_knowledge_base for the standard-change
+     pre-approved, repeatable procedure (check the client's documentation for the standard-change
      list; no match → cannot be standard, regardless of scores).
    - Emergency: only when active or imminent service impact makes waiting for normal
      approval more damaging than acting. The incident justifying it must be named. Route
@@ -49,10 +53,10 @@ not travel the same approval path.
      CAB-level review, and recommend extra mitigations (staged rollout, pre-change
      backup verification, on-call coverage during the window).
 
-5. Post the assessment as a plain-text note (add_ticket_note): the two scores with the
+5. Post the assessment as a plain-text note: the two scores with the
    evidence behind each, the classification, and the recommended approval path plus any
    required mitigations. Update the change ticket's type/priority to match if the desk
-   uses one (update_ticket).
+   uses one.
 
 6. If scores changed because scope grew after a prior assessment, say so explicitly —
    re-classification resets the approval, and the note must make that visible.

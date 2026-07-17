@@ -4,11 +4,15 @@ description: Draft the message for when the desk genuinely failed — specific a
 category: Communication
 tools: [search_tickets, view_openDraft]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Apology With Remedy
 
 **When to use:** "We really dropped the ball on this one — draft the apology with a make-good" — a failure bigger than a slipped date: wrong change applied, data-affecting mistake, repeated misses, a broken commitment after an escalation. For a simple slipped timeline, use Delay Apology instead.
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -17,10 +21,10 @@ Draft the accountability message that actually repairs trust: names the failure 
 offers something real to make it right, and says what changes so it doesn't recur — in the
 confident voice of a professional who owns mistakes, not a supplicant.
 
-1. Establish the facts from the ticket record (search_tickets): what specifically went wrong,
-   when, the client-visible impact, and what's already been done to fix or contain it. The
-   apology must match the record — apologizing for the wrong thing, or for more than happened,
-   both make it worse.
+1. Establish the facts from the ticket record: read the full history to find what specifically
+   went wrong, when, the client-visible impact, and what's already been done to fix or contain
+   it. The apology must match the record — apologizing for the wrong thing, or for more than
+   happened, both make it worse.
 
 2. Confirm the REMEDY with me before drafting — it must be real, approved, and specific: a
    credit of a stated amount, waived hours, priority remediation, a senior review. Never invent
@@ -44,9 +48,8 @@ confident voice of a professional who owns mistakes, not a supplicant.
 5. Tone pass — the hard part: exactly one apology, zero groveling ("we're deeply ashamed,"
    "unforgivable"), zero blame-shifting to vendors or tools. Cut every hedge and every excuse.
 
-6. Present via view_openDraft flagged for account-manager review (in-app); over external MCP,
-   output in chat labeled "APOLOGY DRAFT — AM review required." For significant failures,
-   recommend it come from the AM's or a leader's name.
+6. Show me the draft for account-manager review, labeled "APOLOGY DRAFT — AM review required."
+   Do NOT send. For significant failures, recommend it come from the AM's or a leader's name.
 
 Acknowledge only what the record establishes — never speculate about additional harm, never
 characterize the failure legally ("negligence," "liability," "at fault"), never promise

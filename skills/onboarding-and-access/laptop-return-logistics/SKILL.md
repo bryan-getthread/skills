@@ -4,11 +4,15 @@ description: Get a company device back from a departing or remote user — coord
 category: Onboarding & Access
 tools: [search_tickets, search_contacts, search_itglue, search_hudu, add_ticket_note, update_ticket, schedule_ticket, view_openDraft]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Laptop Return Logistics
 
 **When to use:** an offboarding ticket reaches the "recover the device" step for a remote or departed user / "get <user>'s laptop back" / "send a return box to <user>" / a device recovery has stalled and someone asks where it stands.
+
+**Run it:** on one ticket — a tracked recovery sequence a human drives to close.
 
 ## Prompt
 
@@ -17,26 +21,26 @@ Run this device return as a tracked sequence with dates on everything: box out, 
 used, device received, device wiped, asset record updated, ticket closed. Nothing is
 marked done until it verifiably happened.
 
-1. Establish the facts on the ticket (search_tickets, search_contacts): who has the
+1. Establish the facts on the ticket (read the ticket, look up the contact): who has the
    device, their current shipping address and personal contact (post-departure the work
    email may be dead — confirm a reachable address; the HR/client contact is the
-   fallback), which device it is (asset tag/serial from IT Glue/Hudu via search_itglue /
-   search_hudu), and the return deadline per client policy.
+   fallback), which device it is (asset tag/serial from the IT documentation in IT Glue
+   or Hudu), and the return deadline per client policy.
 
 2. Arrange the return kit: order the carrier return box with prepaid label per the
    desk's process (carrier portal or shipping vendor). Record the order confirmation and
    tracking number on the ticket when done — never note the box as ordered before it is.
 
-3. Send the templated return email (draft via view_openDraft where available; otherwise
-   present the draft for a human to send): what to return (device + charger +
-   accessories, by asset tag), what's coming (return box with prepaid label, expected
-   arrival), how to pack it, the deadline, who to contact. Keep the tone neutral and
-   procedural — this person may be a recent involuntary departure; no accusations, no
-   legal threats (remedies for non-return are the client's call).
+3. Send the templated return email (draft the email where available; otherwise present
+   the draft for a human to send): what to return (device + charger + accessories, by
+   asset tag), what's coming (return box with prepaid label, expected arrival), how to
+   pack it, the deadline, who to contact. Keep the tone neutral and procedural — this
+   person may be a recent involuntary departure; no accusations, no legal threats
+   (remedies for non-return are the client's call).
 
-4. Track the sequence with dated plain-text notes (add_ticket_note) and set follow-up
-   checkpoints (schedule_ticket): box delivered to user, label used / in transit,
-   package received at destination.
+4. Track the sequence with dated plain-text notes and set follow-up checkpoints (schedule
+   follow-ups): box delivered to user, label used / in transit, package received at
+   destination.
 
 5. On receipt: physically confirm the right device came back (asset tag/serial match
    against the record) and note condition and included accessories.
@@ -51,9 +55,9 @@ marked done until it verifiably happened.
    tenant, note the exact record changes needed and route to whoever maintains the asset
    system — do not mark the record updated when only a request was made.
 
-8. Close via update_ticket only when ALL of: device received and identity-confirmed,
-   wipe verified, asset record updated (or update explicitly handed off). The closure
-   note lists each with its date.
+8. Close the ticket only when ALL of: device received and identity-confirmed, wipe
+   verified, asset record updated (or update explicitly handed off). The closure note
+   lists each with its date.
 
 SILENT-USER ESCALATION: no response / box unused by a checkpoint → send a dated reminder
 (attempt 2), then a final notice (attempt 3) stating the deadline and that non-return

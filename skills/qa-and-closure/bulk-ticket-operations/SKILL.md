@@ -4,11 +4,15 @@ description: The safe procedure for "close/reassign/update all tickets where <fi
 category: QA & Closure
 tools: [search_tickets, update_ticket, add_ticket_note, list_ticket_statuses, list_boards, search_members]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Bulk Ticket Operations
 
 **When to use:** "Close all tickets where <filter>" / "reassign everything on <board> from <tech A> to <tech B>" / "set all <status> tickets to <new status>", a cleanup another skill identified that needs its writes executed, or any operation touching more than a handful of tickets with the same change.
+
+**Run it:** across a defined set of tickets (attended only — always requires explicit sign-off).
 
 ## Prompt
 
@@ -21,13 +25,13 @@ psa-migration-hygiene, halo-recurring-tickets, noise-auto-close) decide WHAT des
 change; this skill is HOW it executes safely. There is no unattended variant, by design.
 
 1. Pin down the operation precisely before searching: the exact filter, the exact change (target
-   status via list_ticket_statuses, target assignee via search_members, target board via
-   list_boards), and the reason that will go in every audit note. Ambiguity in any of these → ask,
-   don't interpret.
+   status, target assignee, target board), and the reason that will go in every audit note.
+   Ambiguity in any of these → ask, don't interpret.
 
-2. Enumerate with search_tickets — split searches per board/status as needed. If any search hits a
-   result cap, the population is incomplete: say so, and either narrow the filter or iterate until
-   the enumeration is provably complete. Never bulk-operate on a capped list presented as complete.
+2. Enumerate the matching tickets — split searches per board/status as needed. If any search hits
+   a result cap, the population is incomplete: say so, and either narrow the filter or iterate
+   until the enumeration is provably complete. Never bulk-operate on a capped list presented as
+   complete.
 
 3. Per-ticket eligibility check — every ticket, individually (never collapsed into "the filter
    already checked that"), against exclusion criteria:
@@ -44,9 +48,8 @@ change; this skill is HOW it executes safely. There is no unattended variant, by
    general". Any edit → re-present. NO WRITES BEFORE SIGN-OFF, however obvious the batch looks.
 
 5. Execute in chunks (e.g. 10-20 tickets), reporting progress after each. For each ticket: apply
-   the change with update_ticket and post a plain-text add_ticket_note audit note — what changed,
-   why (the reason), on whose authorization, and the batch identifier/date so the operation is
-   reconstructible per ticket.
+   the change and leave a plain-text audit note — what changed, why (the reason), on whose
+   authorization, and the batch identifier/date so the operation is reconstructible per ticket.
 
 6. Abort on anomaly: an update failing unexpectedly, a ticket's state having changed since
    enumeration (new reply, new status), or results not matching expectations → STOP the batch

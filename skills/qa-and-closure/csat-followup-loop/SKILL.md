@@ -4,11 +4,15 @@ description: Close the satisfaction loop after a ticket closes — make sure the
 category: QA & Closure
 tools: [search_tickets, add_ticket_note, update_ticket, search_members]
 connectors: [Zapier: Typeform, Zapier: Microsoft Teams, Zapier: Outlook]
+scope: global
+flow: no
 ---
 
 # CSAT Follow-Up Loop
 
 **When to use:** "Did the CSAT go out on this ticket?" / "send the satisfaction survey for these closures", pulling survey responses back onto their tickets, "any detractors this week?", or the delivery step after Ticket QA Review passes a ticket to close.
+
+**Run it:** across all recently closed tickets (manually or on a schedule).
 
 ## Prompt
 
@@ -17,34 +21,34 @@ CSAT dies in two places: the survey never goes out, or the response never reache
 on it. Close both gaps — verify the ask, record the answer on the ticket, and make sure a bad
 score becomes a same-day conversation instead of a quarterly statistic.
 
-1. Retrieve the closed ticket(s) with search_tickets and check whether a CSAT ask already exists:
-   the desk's native CSAT survey fires on close where configured (verify the closure used the
-   triggering status), or a survey link was in the client-facing closure message. Never send a
-   second ask when one is on record — one ask per closure, ever.
+1. Retrieve the closed ticket(s) and check whether a CSAT ask already exists: the desk's native
+   CSAT survey fires on close where configured (verify the closure used the triggering status),
+   or a survey link was in the client-facing closure message. Never send a second ask when one is
+   on record — one ask per closure, ever.
 
 2. If no ask went out and the desk uses the native survey: recommend re-driving the close through
-   the triggering status via update_ticket (with confirmation), so the platform sends its survey.
+   the triggering status (with confirmation), so the platform sends its survey.
 
 3. If the desk runs its survey on a form tool instead: draft the short client-facing CSAT message
    (thanks, one-line recap, the survey link with the ticket reference). Where the member has
-   connected Zapier, Zapier: Typeform "Create Form" variants manage the form, and delivery goes by
-   client-facing note (or Zapier: Outlook "Send Email"). Present the draft for approval before
-   anything is sent.
+   connected Zapier, the Typeform "Create Form" variants manage the form, and delivery goes by
+   client-facing note (or Outlook "Send Email"). Present the draft for approval before anything is
+   sent.
 
 4. Pull responses back: check the thread for a native survey result note; for form-based desks,
-   Zapier: Typeform "Find Response" filtered by the ticket reference. Match responses to tickets
-   only on an explicit reference (ticket number, hidden field, or the respondent's email on that
+   use Typeform "Find Response" filtered by the ticket reference. Match responses to tickets only
+   on an explicit reference (ticket number, hidden field, or the respondent's email on that
    ticket) — never by timing coincidence.
 
-5. Record each response on its ticket with add_ticket_note, internal, plain text: score, verbatim
-   comment (quoted exactly, never paraphrased into something nicer), response date, and source
-   (native survey / form).
+5. Record each response on its ticket as an internal plain-text note: score, verbatim comment
+   (quoted exactly, never paraphrased into something nicer), response date, and source (native
+   survey / form).
 
-6. Flag detractors (bottom-tier score or negative comment): identify the lead or account owner via
-   search_members and surface a same-day alert — an internal @mention note on the ticket, and
-   where the desk prefers, Zapier: Microsoft Teams "Send Channel Message" to the service channel.
-   Include score, comment, client, tech, and the ticket reference. Do NOT draft an apology to the
-   client unattended — the detractor conversation is a human's.
+6. Flag detractors (bottom-tier score or negative comment): identify the lead or account owner and
+   surface a same-day alert — an internal @mention note on the ticket, and where the desk prefers,
+   a Teams "Send Channel Message" to the service channel. Include score, comment, client, tech, and
+   the ticket reference. Do NOT draft an apology to the client unattended — the detractor
+   conversation is a human's.
 
 7. Output: per-ticket status table (ask sent / response recorded / no response yet / detractor
    flagged) and the response rate for the batch.

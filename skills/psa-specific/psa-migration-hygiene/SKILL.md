@@ -4,11 +4,15 @@ description: For any desk mid-migration between PSAs (ConnectWise, Autotask, Hal
 category: PSA-Specific
 tools: [search_tickets, list_boards, list_ticket_statuses, update_ticket, add_ticket_note]
 connectors: []
+scope: both
+flow: no
 ---
 
 # PSA Migration Hygiene
 
 **When to use:** The desk is dual-running old and new PSAs and someone asks where a ticket "really" lives, a pre-cutover sweep (what's still open in the old PSA), a post-cutover sweep (what leaked back), or writing/checking the desk's migration-phase rules.
+
+**Run it:** on one ticket · or across all open tickets in a pre-/post-cutover sweep.
 
 ## Prompt
 
@@ -28,10 +32,10 @@ the one rule that survives every migration: exactly one system is master at any 
    pattern: new tickets in the new PSA only; in-flight tickets finish in the system they started
    in; no ticket is worked in both; time is logged where the ticket lives, never both.
 
-3. For any specific ticket: re-fetch full detail with search_tickets, determine which system it
-   belongs to under the phase rules, and if it exists in both, treat the master-side copy as real.
-   Cross-reference the copies with plain-text notes in both directions ("tracked in <system> as
-   <number>; do not work here").
+3. For any specific ticket: re-read its full detail, determine which system it belongs to under
+   the phase rules, and if it exists in both, treat the master-side copy as real. Cross-reference
+   the copies with plain-text notes in both directions ("tracked in <system> as <number>; do not
+   work here").
 
 4. Pre-cutover sweep: search the outgoing system's open tickets (per board/queue, disclosing caps)
    and bucket them: close-before-cutover, migrate-and-finish-in-new, finish-in-old-during-grace-
@@ -48,7 +52,7 @@ the one rule that survives every migration: exactly one system is master at any 
 
 Always: one master per phase, stated in every output — if you cannot name the master for the
 ticket class you are touching, stop and ask. Sync lag applies double: during migration, sync
-directions and lags change per phase — re-fetch full ticket detail before trusting status in
+directions and lags change per phase — re-read full ticket detail before trusting status in
 either system, and say which system your evidence came from. Never work, note, or log time on both
 copies of a dual-existing ticket; one copy is real, the other is a signpost. Never bulk-close old-
 system tickets at cutover without an itemized, confirmed list — "close everything old" deletes open

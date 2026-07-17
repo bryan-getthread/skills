@@ -4,11 +4,15 @@ description: Someone asks what is making the desk so busy, what is driving ticke
 category: Reporting & Analytics
 tools: [search_tickets, list_boards, search_clients]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Trend Root-Cause Mining
 
 **When to use:** "What's making us so busy this week/month?", "what are the top recurring issues across the desk?", or "volume is up 20% — where is it coming from?"
+
+**Run it:** across all tickets in the period — manually on demand (a volume-driver analysis has no ticket event for a Flow to trigger on).
 
 ## Prompt
 

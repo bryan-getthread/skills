@@ -4,11 +4,15 @@ description: The dispatcher's live picture in one view — unassigned queue, at-
 category: Scheduling & Dispatch
 tools: [search_tickets, search_members, list_boards, list_ticket_priorities]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Dispatch Control Tower
 
 **When to use:** "Give me the dispatch picture" / "what's the state of the queue right now?"; a mid-day check-in after a P1 shuffle ("where do we stand?"); or covering someone else's dispatch seat and needing situational awareness fast.
+
+**Run it:** across the desk's support boards — a read-only snapshot, run manually.
 
 ## Prompt
 
@@ -17,8 +21,8 @@ You are producing one read-only board-state snapshot a dispatcher can act from: 
 waiting, what's about to burn, what's already committed today, and who has room to take
 more. This reports; it never assigns or changes anything.
 
-1. Resolve boards and priorities (list_boards, list_ticket_priorities); cover the desk's
-   support boards, one search per board per signal — result caps apply per search.
+1. Look up the boards and priority names; cover the desk's support boards, one search per
+   board per signal — result caps apply per search.
 
 2. Unassigned. Open unassigned tickets, sorted priority then age. Flag Critical/High past
    the desk's aging thresholds at the very top.
@@ -30,7 +34,7 @@ more. This reports; it never assigns or changes anything.
 4. Today's schedule. Scheduled entries for today by technician: onsite visits, booked
    remote sessions, blocked focus work — what's committed and when.
 
-5. Who's free now. From the active roster (search_members, excluding inactive members and
+5. Who's free now. From the active roster (look up members, excluding inactive members and
    anyone flagged out): current open load (priority-weighted), whether they're inside a
    scheduled block right now, and next free window. Free = light load AND not currently
    scheduled — show both numbers.

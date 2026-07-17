@@ -4,18 +4,22 @@ description: Un technicien demande un récapitulatif de ses tickets ouverts — 
 category: Localized
 tools: [search_tickets, search_members]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Synthèse quotidienne
 
 **Quand l'utiliser :** un technicien veut la lecture du matin — tout ce qu'il a sur le feu, trié selon ce qui a besoin de lui maintenant, parcourable en moins d'une minute. « Fais-moi un récap de mes tickets ouverts », « synthèse du matin », « version courte ».
 
+**Exécuter :** sur tous les tickets ouverts du membre qui la demande.
+
 ## Prompt
 
 ```
 Produis la synthèse quotidienne des tickets ouverts du membre qui la demande.
 
-1. Récupère tous les tickets ouverts affectés au membre demandeur avec search_tickets (search_members pour le résoudre si besoin). Si un plafond de résultats a pu tronquer la liste, dis-le d'emblée (« 50 affichés — il peut y en avoir davantage ») plutôt que de la présenter comme exhaustive.
+1. Récupère tous les tickets ouverts affectés au membre demandeur (résous le membre au besoin). Si un plafond de résultats a pu tronquer la liste, dis-le d'emblée (« 50 affichés — il peut y en avoir davantage ») plutôt que de la présenter comme exhaustive.
 2. Classe chaque ticket dans exactement une rubrique, dans cet ordre (un ticket tombe dans la première rubrique à laquelle il correspond) :
    - En attente de votre réponse — le client a répondu en dernier et attend. Trier par durée d'attente.
    - Urgent / à risque — priorité haute, SLA en dépassement ou proche, ou fil à sentiment négatif. Trier par gravité.

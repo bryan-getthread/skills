@@ -4,11 +4,15 @@ description: A user is getting a flood of MFA push prompts they didn't start (pu
 category: Security
 tools: [search_tickets, search_contacts, add_ticket_note, update_ticket, view_openDraft]
 connectors: []
+scope: single
+flow: no
 ---
 
 # MFA Fatigue Attack Response
 
 **When to use:** A user reports a burst of MFA push notifications they didn't trigger; a "multiple MFA attempts" or "MFA fatigue" alert lands as a ticket; or a user says they "approved one by accident" to stop the prompts (treat as approval-until-proven-otherwise).
+
+**Run it:** on one ticket (an MFA push-bombing report or alert).
 
 ## Prompt
 

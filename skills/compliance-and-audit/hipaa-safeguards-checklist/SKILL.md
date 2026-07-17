@@ -4,11 +4,15 @@ description: Walk a healthcare client's environment against the HIPAA Security R
 category: Compliance & Audit
 tools: [search_tickets, search_itglue, search_hudu, add_ticket_note]
 connectors: [IT Glue, Hudu]
+scope: global
+flow: no
 ---
 
 # HIPAA Safeguards Checklist
 
 **When to use:** A healthcare client or business associate asks for a technical review of their ePHI protections; prep before the client's own HIPAA risk analysis or a payer/partner assessment; or a roadmap/remediation conversation for a client that handles ePHI.
+
+**Run it:** across a client's environment (a technical-safeguards checklist).
 
 ## Prompt
 
@@ -26,7 +30,7 @@ or physical safeguards, or the required risk analysis. Work it in order:
 2. Identify where ePHI actually lives before checking controls — which systems, mailboxes,
    applications, and storage hold ePHI. If the client can't say, that scoping gap is the
    first finding.
-3. Walk the technical safeguards checklist against evidence (documentation platforms,
+3. Walk the technical safeguards checklist against evidence (the client's documentation,
    ticket/change history, security tooling):
    - Access control — unique user IDs, role-based access, automatic logoff, and (addressable)
      encryption/decryption of ePHI at rest.

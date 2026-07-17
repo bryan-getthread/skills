@@ -4,11 +4,15 @@ description: Analyze why tickets reopen — patterns by technician, client, and 
 category: QA & Closure
 tools: [search_tickets, search_members, search_clients]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Reopen Forensics
 
 **When to use:** "Why are our tickets reopening?" / "analyze reopens for the last 90 days" — a lead investigating a rising reopen rate or a specific tech's reopen cluster, feeding root-cause input into the QA rubric, or "which clients keep coming back about the same thing?"
+
+**Run it:** across all reopened tickets in a window (manually or on a schedule).
 
 ## Prompt
 
@@ -17,9 +21,9 @@ Reopens are the desk's most honest quality signal: every one means a closure tha
 Read the reopened population for a window and explain the why — which failure mode, whose tickets,
 which clients, which issue types — with real examples attached.
 
-1. Find reopened tickets in the window with search_tickets: tickets that left a closed status and
-   returned to a working status, or closed tickets whose thread shows a post-closure inbound reply
-   / RE: on the same reference. Split searches per board and disclose result caps.
+1. Find reopened tickets in the window: tickets that left a closed status and returned to a working
+   status, or closed tickets whose thread shows a post-closure inbound reply / RE: on the same
+   reference. Split searches per board and disclose result caps.
 
 2. For each reopen, read the thread around the closure and classify the failure mode from evidence:
    - Premature closure — closed without customer confirmation and the client came back saying it
@@ -30,10 +34,9 @@ which clients, which issue types — with real examples attached.
    - Client-initiated non-failure — "thanks" replies reopening the ticket, a new unrelated issue on
      an old thread. These are hygiene noise, not quality failures; count them separately.
 
-3. Aggregate by three axes: technician (search_members), client (search_clients), and issue
-   type/subtype. For each axis, surface the concentrations — a tech whose reopens are mostly
-   premature closures, a client with repeated recurrences of one issue, an issue type that reopens
-   desk-wide.
+3. Aggregate by three axes: technician, client, and issue type/subtype. For each axis, surface the
+   concentrations — a tech whose reopens are mostly premature closures, a client with repeated
+   recurrences of one issue, an issue type that reopens desk-wide.
 
 4. Attach 2-3 representative examples per major pattern: ticket number, one-line story ("closed
    after work summary, no confirmation; client replied 2 days later — printer still offline").

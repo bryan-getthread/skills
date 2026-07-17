@@ -4,11 +4,15 @@ description: Work through what an agreement change — tier, scope, seats, sites
 category: Client Lifecycle
 tools: [search_clients, search_contacts, search_tickets, create_ticket, add_ticket_note, list_boards]
 connectors: []
+scope: single
+flow: no
 ---
 
 # MSA Change Management
 
 **When to use:** "<client> upgraded to the <tier> plan effective <date> — what needs to change?"; "<client> added 15 seats / a new site — process the change"; or "<client> is dropping after-hours coverage — who needs to know and what do we update?"
+
+**Run it:** on one client's agreement change — a manual coordination pass, not a Flow.
 
 ## Prompt
 
@@ -21,8 +25,8 @@ routed, or supported under the wrong terms.
    sites, coverage hours), the effective date, and who authorized it. If any of the three is
    missing, ask — never process an agreement change on inference.
 
-2. Confirm the client with search_clients and pull current context (open tickets via
-   search_tickets, boards via list_boards).
+2. Confirm the client (look it up) and pull current context (its open tickets and the
+   boards).
 
 3. Build the operational delta — what actually changes on the desk:
    - Tier changes: SLA targets, priority handling, after-hours entitlement, covered services.
@@ -41,13 +45,12 @@ routed, or supported under the wrong terms.
 5. Handle effective dating explicitly:
    - Everything switches on the effective date, not the signing date and not today.
    - Open tickets spanning the boundary: state the rule (work before the date under old
-     terms, after under new) and flag straddling tickets for a billing note via
-     add_ticket_note.
+     terms, after under new) and flag straddling tickets with a billing note.
    - If the change is retroactive, flag it to finance rather than back-dating anything.
 
-6. Create a tracking ticket with create_ticket ("MSA change — <client>: <summary>, effective
-   <date>") carrying the delta, notification list, and dating rules as a plain-text note.
-   Confirm before creating.
+6. Open a tracking ticket ("MSA change — <client>: <summary>, effective <date>") carrying
+   the delta, notification list, and dating rules as a plain-text note. Confirm before
+   creating.
 
 7. Output the operational delta, notification drafts, effective-dating rules, and the
    tracking ticket reference.

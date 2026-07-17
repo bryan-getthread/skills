@@ -4,11 +4,15 @@ description: When someone wants the effective hourly rate on an all-you-can-eat 
 category: Finance & Billing
 tools: [search_tickets, search_clients]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Agreement Profitability
 
 **When to use:** "What's our effective hourly rate on <client>'s AYCE agreement?" / "which managed clients are we losing money on?" / "rank all-you-can-eat clients by effective rate this quarter."
+
+**Run it:** across all fixed-fee-agreement clients, or on a single client you name — run it manually (not a Flow; there's no schedule trigger).
 
 ## Prompt
 
@@ -22,14 +26,12 @@ has fallen below the desk's cost or floor rate.
    want loss flagging. Agreement revenue lives in the PSA/accounting system, not Thread —
    never estimate it.
 
-2. Confirm the period (default: last 3 full months, stated) and resolve the clients with
-   search_clients.
+2. Confirm the period (default: last 3 full months, stated) and look up each client.
 
-3. For each client, pull tickets with time entries for the period via search_tickets — one
-   search per client so result caps are per-client. Sum ALL logged hours against the client
-   (billable and unbillable both consume delivery capacity on a fixed-fee agreement); exclude
-   tickets explicitly worked under a separate project/T&M arrangement if the requester
-   identifies them.
+3. For each client, read the tickets with time entries for the period — one search per
+   client so result caps are per-client. Sum ALL logged hours against the client (billable
+   and unbillable both consume delivery capacity on a fixed-fee agreement); exclude tickets
+   explicitly worked under a separate project/T&M arrangement if the requester identifies them.
 
 4. Compute: effective rate = agreement revenue for the period / logged hours. Also report
    hours/month trend (rising consumption is the early warning).
@@ -48,6 +50,6 @@ hours; if a client's techs under-log time, the effective rate is overstated — 
 logged hours look implausibly low against ticket volume. Result-cap honesty: a capped hours
 total means the effective rate is an upper bound; label it. "Loss-making" is a judgment for
 the business owner — present the rate versus their floor, don't declare clients fire-worthy.
-Read-only; no ticket or note writes. Do not share one client's economics inside another
-client's ticket or any client-facing surface.
+Read-only; change nothing and leave no notes. Do not share one client's economics inside
+another client's ticket or any client-facing surface.
 ```

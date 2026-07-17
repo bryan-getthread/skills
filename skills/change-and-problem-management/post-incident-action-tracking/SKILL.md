@@ -4,11 +4,15 @@ description: Turn post-incident review action items into real tickets with owner
 category: Change & Problem Management
 tools: [search_tickets, create_ticket, update_ticket, add_ticket_note, list_boards, search_members]
 connectors: []
+scope: both
+flow: no
 ---
 
 # Post-Incident Action Tracking
 
 **When to use:** a post-mortem/PIR just concluded ("track the action items from the <incident> post-mortem") / the periodic follow-through audit ("where are we on post-incident actions?") / an RFO letter promised prevention measures that need tracking / before closing a major incident's master ticket.
+
+**Run it:** on one post-mortem · or as a follow-through audit across open action items.
 
 ## Prompt
 
@@ -24,11 +28,10 @@ CONVERSION (at PIR time):
 2. For each accepted item, require three fields before it becomes a ticket: a SPECIFIC
    VERIFIABLE ACTION ("add disk-space alerting on the database volume at 80%," not
    "improve monitoring"), an OWNER (a named person — "the infrastructure team" is where
-   actions go to die; search_members to disambiguate), and a DUE DATE proportionate to the
+   actions go to die; check the team directory to disambiguate), and a DUE DATE proportionate to the
    risk it mitigates. Items missing any field go back to the requester as "not trackable
    yet: needs <field>" — recorded as such, not silently dropped and not created hollow.
-3. Create one ticket per action (create_ticket, on the internal-work board — confirm via
-   list_boards): title "PIR ACTION: <verb phrase> [<incident ref>]", body carrying the
+3. Create one ticket per action (on the internal-work board): title "PIR ACTION: <verb phrase> [<incident ref>]", body carrying the
    action, incident and post-mortem references, why it matters, owner, due date.
 4. Cross-link: a plain-text note on the incident master ticket listing every action ticket
    created. If the RFO letter promised specific prevention measures, verify each promise
@@ -36,7 +39,7 @@ CONVERSION (at PIR time):
    with no ticket behind it is a liability.
 
 FOLLOW-THROUGH AUDIT (on a cadence, default every 2 weeks until the set closes):
-5. search_tickets for open PIR-action tickets; classify each from evidence: DONE (closed
+5. search for open PIR-action tickets; classify each from evidence: DONE (closed
    with completion evidence — change-completion-verification standard where it was a
    change; a bare "done" is unverified), ON TRACK, AT RISK (due within a week, no
    activity), OVERDUE, or STALLED (no activity in 30+ days).

@@ -4,11 +4,15 @@ description: When a ticket enters a resolution status, re-read the whole thread 
 category: Automation & Flows
 tools: [search_tickets, list_boards, update_ticket, add_ticket_note]
 connectors: []
+scope: single
+flow: yes
 ---
 
 # Closure Recategorization
 
 **When to use:** A ticket just entered a resolution/closed-family status and its intake classification looks wrong; "fix the categorization on resolved tickets before they sync out for reporting"; a flow on close should re-classify from the full thread. Fires on the EVENT of entering a resolution status — never on a timer or "N hours after close".
+
+**Run it:** on one ticket · or as a Flow (triggered when a ticket enters a resolution/closed status).
 
 ## Prompt
 
@@ -22,27 +26,27 @@ Your entire reply is the audit note, posted verbatim, plain text (no narration):
 `RECLASSIFIED. Was: <old>. Now: <new>. Evidence: <one line>.` or `CLASSIFICATION UNCHANGED.
 <one line>.`
 
-1. Re-fetch the ticket with search_tickets and read the ENTIRE thread — the resolution, the
+1. Re-read the ticket and its ENTIRE thread — the resolution, the
    work notes, the final client-visible reply. Classify from what was actually done, not the
    opening summary.
 
 2. Establish the valid value set for this board. Thread does not expose PSA setup tables
    directly, so derive it in order of preference: the desk's documented taxonomy sheet;
-   values observed on recently closed tickets on the SAME board via search_tickets; or ask
-   the reviewer. Never use a value you have not seen on this board (list_boards to confirm
-   the board context). Respect pairwise validity — an Item must have been seen with its
+   values observed on recently closed tickets on the SAME board; or ask
+   the reviewer. Never use a value you have not seen on this board (confirm the board
+   context first). Respect pairwise validity — an Item must have been seen with its
    Subtype.
 
 3. Compare the current classification to the evidence-based one. If they already agree, do
    nothing (CLASSIFICATION UNCHANGED).
 
-4. If they differ, correct type/subtype/item and category with update_ticket, using only
+4. If they differ, correct the type/subtype/item and category, using only
    board-valid values. NEVER invent a value — PSAs reject or silently drop unknown values on
    sync. Do not default to a catch-all ("General / Other") to look tidy; if no observed
    value fits, leave it unchanged and flag the gap in the note. If the thread is too thin to
    reclassify with confidence, leave it unchanged.
 
-5. Post the plain-text audit note via add_ticket_note: old classification, new
+5. Leave the plain-text audit note: old classification, new
    classification, one-line evidence ("resolution shows this was a mailbox permissions fix,
    not a hardware issue").
 

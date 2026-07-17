@@ -4,11 +4,15 @@ description: Produce a ranked triage order for the queue using two-layer scoring
 category: Triage & Routing
 tools: [search_tickets, list_boards, list_ticket_priorities, search_clients]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Queue Scoring Triage
 
 **When to use:** "What order should we work the queue in?" / "what's next for the team?" — a dispatcher wants a scored morning triage list across boards, or a lead wants to sanity-check that high-priority work is actually surfacing first.
+
+**Run it:** across all open tickets (manually or on a schedule).
 
 ## Prompt
 
@@ -18,18 +22,17 @@ weight, each ticket earns modifiers on top. Output is a ranked list a dispatcher
 with the math shown. This is read-only: rank and report, never change priorities, statuses,
 or assignments.
 
-1. Fetch open tickets with search_tickets, split per board (list_boards) to stay under result
-   caps; disclose if any board's query may have capped. A ranking over a truncated queue must
-   say it's partial.
+1. Fetch open tickets, split per board to stay under result caps; say so if any board's search
+   may have capped. A ranking over a truncated queue must say it's partial.
 
 2. Layer 1 — queue baseline: assign each board its configured baseline score (e.g. security
    40, NOC 30, help desk 20, internal 5). Unconfigured boards get the default baseline and are
    called out.
 
-3. Layer 2 — ticket modifiers, additive and bounded, e.g.: priority level (from
-   list_ticket_priorities mapping), age beyond target, approaching/breached SLA, VIP or
-   strategic client (via search_clients tier data where present), negative sentiment, and a
-   penalty (not a boost) for waiting-on-client/vendor states.
+3. Layer 2 — ticket modifiers, additive and bounded, e.g.: priority level (from the desk's
+   priority mapping), age beyond target, approaching/breached SLA, VIP or strategic client
+   (from client tier data where present), negative sentiment, and a penalty (not a boost) for
+   waiting-on-client/vendor states.
 
 4. Compute score = baseline + modifiers for every ticket. Ties break by oldest-first.
 

@@ -4,31 +4,34 @@ description: Triage a CPU or memory threshold alert — separate a transient spi
 category: Alert Runbooks
 tools: [search_tickets, search_ninjaone_devices, get_ninjaone_device, list_ninjaone_alerts, get_ninjaone_device_activities, get_ninjaone_device_link, add_ticket_note, update_ticket]
 connectors: [NinjaOne]
+scope: single
+flow: yes
 ---
 
 # High CPU/Memory Alert
 
-**When to use:** A "CPU above X%" or "memory above X%" alert opens a ticket; or a tech asks "<device> keeps alerting on performance — real or noise?" Fires on the alert ticket event, so it runs attended or as a Flow.
+**When to use:** A "CPU above X%" or "memory above X%" alert opens a ticket; or a tech asks "<device> keeps alerting on performance — real or noise?"
+
+**Run it:** on the alert ticket · or as a Flow that fires on the performance-threshold alert ticket event.
 
 ## Prompt
 
 ```
 You are triaging a CPU/memory alert. A CPU pegged for 90 seconds during an AV scan and a server
 at 95% for six hours produce the same alert — separate spike from sustained, name likely consumers
-as hypotheses, and route servers and workstations down their different paths. Post a plain-text
+as hypotheses, and route servers and workstations down their different paths. Leave a plain-text
 note only; change nothing else. Never reboot or kill anything — this is a triage layer.
 
 1. Parse the alert: device, metric (CPU vs memory — different playbooks), threshold, observed
    value, sample duration if stated. A 5-second sample means almost nothing; a 15-minute average
    means a lot.
-2. Dedupe/recurrence with search_tickets and list_ninjaone_alerts: same device + same metric, 30
-   days. The alert history IS the spike-vs-sustained instrument — one alert with recovery = spike;
-   alerts recurring daily at the same hour = scheduled-workload pattern (backup, scan, report job);
-   continuous or escalating = sustained pressure.
-3. Verify current state via get_ninjaone_device (resolve with search_ninjaone_devices if needed):
-   current utilization, uptime, device class. Long uptime plus creeping memory alerts suggests a
-   leak pattern.
-4. Correlate get_ninjaone_device_activities with the alert timestamps: patch installs, AV scans,
+2. Dedupe/recurrence: search recent tickets and the device's RMM alert history for the same
+   device + same metric, 30 days. The alert history IS the spike-vs-sustained instrument — one
+   alert with recovery = spike; alerts recurring daily at the same hour = scheduled-workload
+   pattern (backup, scan, report job); continuous or escalating = sustained pressure.
+3. Verify current state by looking up the device in the RMM: current utilization, uptime, device
+   class. Long uptime plus creeping memory alerts suggests a leak pattern.
+4. Correlate the device's recent RMM activity with the alert timestamps: patch installs, AV scans,
    backup jobs, update downloads are classic benign spikes; a new app install just before pressure
    began is a prime suspect.
 5. Offer top-consumer hypotheses by role, LABELLED as hypotheses (the RMM does not show live
@@ -42,10 +45,10 @@ note only; change nothing else. Never reboot or kill anything — this is a tria
    multiple users affected, weight urgency accordingly.
 7. Classify: self-healed (spike recovered, no recurrence) → close with the recovery evidence;
    needs-tech (sustained, or recurring outside a benign scheduled-job correlation) → route with
-   hypotheses and get_ninjaone_device_link; needs-client (client-owned workload) → account owner;
-   noise (threshold too tight for the device's normal duty cycle) → recommend threshold/schedule
-   tuning, do not just close. Post via add_ticket_note: metric, spike-vs-sustained verdict with the
-   alert-history evidence, hypotheses, path, route.
+   hypotheses and the RMM deep link to the device; needs-client (client-owned workload) → account
+   owner; noise (threshold too tight for the device's normal duty cycle) → recommend
+   threshold/schedule tuning, do not just close. Leave a plain-text note: metric, spike-vs-sustained
+   verdict with the alert-history evidence, hypotheses, path, route.
 
 Guardrails: consumer lists are hypotheses, not observations — say so. A daily-recurring alert
 correlated to a scheduled job is tuning noise, but confirm the job exists in activities before

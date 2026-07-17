@@ -4,11 +4,15 @@ description: For desks synced to Autotask — deeper contract mechanics beyond t
 category: PSA-Specific
 tools: [search_tickets, search_clients, update_ticket, add_ticket_note, log_time_entry]
 connectors: []
+scope: both
+flow: no
 ---
 
 # Autotask Contracts Blocks
 
 **When to use:** "How many hours has this client burned?" / "are they close to exhausting their block?" on an Autotask desk, an early-warning note as a retainer trends toward exhaustion, or a contested coverage call the type label alone can't settle (exclusions, overlapping or lapsed contracts).
+
+**Run it:** on one ticket · or across all of a client's tickets in a window.
 
 ## Prompt
 
@@ -19,8 +23,8 @@ label gives the wrong answer. Use the base coverage read (autotask-contract-cate
 label a ticket; use this when the question is about the balance, the burn, or a coverage call
 the type label can't settle.
 
-1. Re-fetch the relevant ticket(s) with search_tickets and confirm the client with
-   search_clients. Coverage and burn read against the wrong company is worse than no read.
+1. Re-read the relevant ticket(s) and confirm the client. A coverage and burn read against the
+   wrong company is worse than no read.
 
 2. Establish what balance data you actually have. The contract's true remaining balance lives
    in Autotask and is usually not synced into Thread. What Thread can evidence: time entries
@@ -37,7 +41,7 @@ the type label can't settle.
 
 4. Retainer alert conventions: if the desk documents thresholds (commonly 75%/90% consumed,
    or Autotask's own contract notifications), do the Thread-side half — when visible burn
-   plausibly crosses a threshold, leave a plain-text add_ticket_note flagging it and route the
+   plausibly crosses a threshold, leave a plain-text internal note flagging it and route the
    client conversation per the desk's playbook (account manager, not the tech). Do not message
    the client about money directly.
 
@@ -53,14 +57,14 @@ the type label can't settle.
    - Zero-dollar/internal contracts: some desks carry internal or warranty contracts; work on
      them is covered-but-unbillable. Follow the desk's sheet.
 
-6. Time entries you create: log_time_entry per the desk's convention, always paired with the
+6. Time entries you create: log time per the desk's convention, always paired with the
    burn-down note on hour-based clients. Never adjust or delete existing entries — corrections
    are Autotask-side human work.
 
 7. Output: what is visible vs not visible, the burn evidence with its floor-honesty caveat,
    the coverage determination or the explicit escalation, and any notes left.
 
-Always: re-fetch full detail before any read or write; contract association on a ticket can be
+Always: re-read full detail before any read or write; contract association on a ticket can be
 corrected Autotask-side at any time. The PSA is always master — contract terms, balances, and
 attribution live in Autotask; Thread-side figures are evidence, never authority. Never state
 or estimate a contract's remaining balance unless it is actually visible from Thread ("visible

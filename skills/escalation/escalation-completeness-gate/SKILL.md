@@ -4,11 +4,15 @@ description: Review tickets entering an "Escalation Requested" status against th
 category: Escalation
 tools: [search_tickets, update_ticket, add_ticket_note, list_ticket_statuses]
 connectors: []
+scope: both
+flow: yes
 ---
 
 # Escalation Completeness Gate
 
 **When to use:** A lead wants the escalation queue graded for completeness; senior tiers complain escalations arrive thin and you want the gate run over the current queue; or as a Run Skill action on a Flow that fires when a ticket moves to "Escalation Requested."
+
+**Run it:** on one ticket · across the escalation queue · or as a Flow (when a ticket moves to "Escalation Requested").
 
 ## Prompt
 
@@ -18,8 +22,8 @@ request against a fixed checklist, pass complete ones through, and bounce incomp
 ones back to the requesting technician with exactly what is missing. You give feedback
 — you never fill the gaps yourself.
 
-1. Fetch the ticket's full thread and internal notes via search_tickets. Resolve the
-   tenant's status names via list_ticket_statuses rather than assuming them.
+1. Read the ticket's full thread and internal notes. Resolve the tenant's status names
+   from the available statuses rather than assuming them.
 
 2. Grade against the checklist — each item pass/fail with the evidence found (or not):
    - Issue summary a cold reader can act on
@@ -30,11 +34,11 @@ ones back to the requesting technician with exactly what is missing. You give fe
    - What the next tier is being asked to do
    - Correct classification (type, priority) and contact set
 
-3. If every item passes: move the ticket to the escalated status/board via
-   update_ticket and add a one-line plain-text note confirming the gate passed.
+3. If every item passes: move the ticket to the escalated status/board and leave a
+   one-line plain-text note confirming the gate passed.
 
 4. If any item fails: set the ticket back to the pre-escalation working status, keep
-   it assigned to the requesting technician, and post a plain-text note listing ONLY
+   it assigned to the requesting technician, and leave a plain-text note listing ONLY
    the failed items, each with a specific instruction ("Add the result of the DNS
    flush you mentioned", "State how many users at <client> are affected"). Never a
    generic "needs more detail."
@@ -43,13 +47,13 @@ ones back to the requesting technician with exactly what is missing. You give fe
    change. Don't cap the loop, but if the same ticket fails 3+ times, add a line
    suggesting the tech and their lead review it together.
 
-If running unattended as a Flow Run Skill action (trigger: status change to
-"Escalation Requested"): your entire reply is posted verbatim as the internal note —
-no narration, preamble, or questions; output either the pass-confirmation line or the
-itemized failure list. Status moves are the only writes (escalated on pass, prior
-working status on fail); never change assignee, board, priority, or contact. If you
-cannot read the full thread, cannot resolve the tenant's statuses, or the result is
-ambiguous — do nothing and leave the ticket untouched. When in doubt, do not bounce.
+Running as a Flow (trigger: status change to "Escalation Requested"): your entire reply
+is posted verbatim as the internal note — no narration, preamble, or questions; output
+either the pass-confirmation line or the itemized failure list. Status moves are the only
+writes (escalated on pass, prior working status on fail); never change assignee, board,
+priority, or contact. If you cannot read the full thread, cannot resolve the tenant's
+statuses, or the result is ambiguous — do nothing and leave the ticket untouched. When in
+doubt, do not bounce.
 
 Guardrails: the gate gives feedback, never invents or fills missing content.
 Bounce-backs stay with the requesting technician — never reassign, never leave an

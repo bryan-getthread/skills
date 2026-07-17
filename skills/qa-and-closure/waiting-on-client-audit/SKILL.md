@@ -4,11 +4,15 @@ description: Audit every ticket parked in a waiting status — how long it has w
 category: QA & Closure
 tools: [search_tickets, list_ticket_statuses, add_ticket_note, update_ticket, schedule_ticket]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Waiting-on-Client Audit
 
 **When to use:** "Audit the waiting-on-client bucket" / "what's actually waiting on clients vs just parked?" — a weekly review before waiting statuses distort aging and SLA numbers, or suspicions that techs park tickets in waiting to stop the clock.
+
+**Run it:** across all tickets in waiting statuses (manually or on a schedule).
 
 ## Prompt
 
@@ -17,9 +21,8 @@ connectors: []
 sent, ball demonstrably in the client's court) from tickets merely labeled waiting — where the
 status was set but no one ever actually asked the client for anything.
 
-1. Map the board's waiting statuses with list_ticket_statuses (waiting on client, pending
-   customer, on hold variants), then pull every open ticket in them with search_tickets, split per
-   status per board. Disclose result caps.
+1. Map the board's waiting statuses (waiting on client, pending customer, on hold variants), then
+   pull every open ticket in them, split per status per board. Disclose result caps.
 
 2. For each ticket, establish three facts from the thread:
    - Wait duration — time since it entered the waiting status (or since the last client-facing
@@ -40,12 +43,12 @@ status was set but no one ever actually asked the client for anything.
    - Stale-reason wait — waiting on something the thread shows already arrived or was resolved.
 
 4. Recommend one next action per ticket: draft-and-send the missing ask (false wait), nudge per
-   cadence (overdue), unpark to a working status with update_ticket (false/stale), set a follow-up
-   date with schedule_ticket (legitimate wait with no touchpoint), or route to closure sequence.
+   cadence (overdue), unpark to a working status (false/stale), set a follow-up date (legitimate
+   wait with no touchpoint), or route to closure sequence.
 
-5. Apply actions only on approval. Any posted ask or unpark note goes via add_ticket_note;
-   internal notes in plain text. Never bulk-unpark or bulk-send without sign-off — unparking
-   changes SLA clocks and workloads.
+5. Apply actions only on approval. Any posted ask or unpark note goes as an internal plain-text
+   note. Never bulk-unpark or bulk-send without sign-off — unparking changes SLA clocks and
+   workloads.
 
 6. Output a table grouped by classification, longest wait first: ticket, client, days waiting,
    ask-sent yes/no, waiting-for, next action. Headline the false-wait count — it's the audit's
@@ -56,14 +59,13 @@ last message is inbound from the client, the ticket is never "waiting on client,
 status says. If the waiting reason is UNKNOWN, say so and recommend the tech document it. If write
 tools are disabled, deliver the audit and drafts in chat only.
 
-Flows cannot schedule or time-trigger this — run it manually on demand, or from an external
-scheduler that invokes Super Magic; a Flow can only reach it via Run Skill on a qualifying event.
-When it runs unattended: the entire reply is the artifact — the plain-text audit table
-(classification, ticket, client, days waiting, ask-sent yes/no, waiting-for, recommended action),
-with the false-wait count as the first line. No narration. Statuses not supplied are not guessed.
-Permitted writes: none — unparking, scheduling, and posting asks all change SLA clocks or reach
-clients, so they stay attended. If it can't be determined whether an ask was sent, classify the
-ticket UNVERIFIED, never "false wait" — an accusation of parking needs certainty. Capped searches
-labeled "at least N". Zero tickets in waiting statuses → reply exactly "NO TICKETS IN WAITING
-STATUSES."
+This is a sweep, not a Flow — run it manually on demand, or from an external scheduler that
+invokes Super Magic. Running unattended: the entire reply is the artifact — the plain-text audit
+table (classification, ticket, client, days waiting, ask-sent yes/no, waiting-for, recommended
+action), with the false-wait count as the first line. No narration. Statuses not supplied are not
+guessed. Permitted writes: none — unparking, scheduling, and posting asks all change SLA clocks or
+reach clients, so they stay attended. If it can't be determined whether an ask was sent, classify
+the ticket UNVERIFIED, never "false wait" — an accusation of parking needs certainty. Capped
+searches labeled "at least N". Zero tickets in waiting statuses → reply exactly "NO TICKETS IN
+WAITING STATUSES."
 ```

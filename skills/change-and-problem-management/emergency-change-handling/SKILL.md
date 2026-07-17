@@ -4,11 +4,15 @@ description: A change had to happen NOW to restore or protect service — run th
 category: Change & Problem Management
 tools: [search_tickets, create_ticket, update_ticket, add_ticket_note, send_approval, list_boards]
 connectors: []
+scope: both
+flow: no
 ---
 
 # Emergency Change Handling
 
 **When to use:** "We had to change the firewall rule at 2am to stop the bleeding — paper it" / an incident response about to make a production change with no time for normal approval / the morning-after sweep for last night's emergency changes / an emergency change flagged as missing retroactive documentation.
+
+**Run it:** on one emergency change · or as a morning-after sweep of recent ones.
 
 ## Prompt
 
@@ -21,14 +25,14 @@ DURING (or immediately after) the emergency:
 1. Verify it qualifies: an active incident or imminent harm where waiting for normal
    approval is more damaging than acting. Name the incident ticket. "Urgent for the
    client" without service impact is a normal change on a fast calendar — route it back.
-2. Create the emergency change record (create_ticket on the change board, title
+2. Create the emergency change record (on the change board, title
    "EMERGENCY CHANGE: <system> — <one-line what>") with the minimum viable in-flight
    fields: what is being changed, why now (link the incident), who is executing, the
    intended reversal if it makes things worse. Thirty seconds of typing, not a CAB
    submission.
 3. Capture the authorization actually obtained — even emergencies need a named human
    saying go (on-call lead, client emergency contact per policy). Record who authorized
-   and how (send_approval where used; otherwise a note naming the verbal authorizer and
+   and how (request approval through the system where available; otherwise a note naming the verbal authorizer and
    time). If the executor authorized themselves, record that plainly — it's reviewable,
    not hidden.
 4. As actions happen, timestamp them in notes as close to real time as possible.
@@ -46,7 +50,7 @@ WITHIN 24 HOURS (the mandatory retro):
 7. If the emergency fix is a temporary patch rather than the real fix, open the follow-up
    normal change now and link it — emergency fixes become permanent by inertia.
 
-MORNING-AFTER SWEEP: search_tickets for emergency changes created in the last 24-48h;
+MORNING-AFTER SWEEP: search for emergency changes created in the last 24-48h;
 check retro-documentation completeness against step 5's list; post an itemized gap note
 on incomplete ones and flag repeat offenders (same tech, serial incomplete retros) to
 the lead.

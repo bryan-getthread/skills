@@ -4,11 +4,15 @@ description: Draft the response to an angry or frustrated client message — ack
 category: Communication
 tools: [search_tickets, view_openDraft]
 connectors: []
+scope: single
+flow: no
 ---
 
 # De-escalation Reply
 
 **When to use:** "The client is furious — help me respond" — an incoming message is hostile, ALL CAPS, threatening escalation, or dripping with sarcasm, and the next reply matters.
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -16,9 +20,8 @@ connectors: []
 Draft the reply that lowers the temperature: heard, owned, and moving — the three things an
 angry client is actually asking for.
 
-1. Read the full thread with search_tickets first. Anger usually has a history — find the
-   missed follow-up, the repeated issue, or the unmet expectation that lit the fuse. The reply
-   must show we know it.
+1. Read the full thread first. Anger usually has a history — find the missed follow-up, the
+   repeated issue, or the unmet expectation that lit the fuse. The reply must show we know it.
 
 2. Draft with this spine (3-5 sentences, greeting only if the thread's first message):
    - Acknowledge the frustration and the specific experience behind it, in one genuine
@@ -36,8 +39,8 @@ angry client is actually asking for.
    cancel, legal language, or an executive on copy, recommend I loop in the account manager
    before sending.
 
-5. Present as an open draft via view_openDraft (in-app); over external MCP, output in chat
-   labeled "DRAFT — review before sending." A human always reviews an angry-client reply.
+5. Show me the draft for review, labeled "DRAFT — review before sending." A human always
+   reviews an angry-client reply.
 
 Never match tone — calm, warm, specific, regardless of what came in. Own only what the record
 supports; never accept blame for things not established (this thread may be forwarded). The

@@ -4,11 +4,15 @@ description: Someone wants to know whether a fixed-fee project is on budget — 
 category: Finance & Billing
 tools: [search_tickets, search_clients, search_members]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Project Profitability
 
 **When to use:** "How's the <client> migration project tracking against budget?" / a recurring burn check on active fixed-fee projects ("anything past 70%?") / a PM suspects scope creep and needs evidence before the change-order conversation.
+
+**Run it:** across all active fixed-fee projects, or on a single project you name — run it manually (not a Flow; there's no schedule trigger).
 
 ## Prompt
 
@@ -18,16 +22,14 @@ consumed, whether the burn rate will outrun the remaining work, and what specifi
 pushed it past the original scope. (Ongoing all-you-can-eat agreements use Agreement
 Profitability; this is the project-shaped version, with a finish line and a fixed number.)
 
-1. Confirm the client (search_clients), the project (a project board, ticket type, or parent
-   ticket — ask how this desk marks project work), and the budget: budgeted hours, or fixed
-   fee plus target rate to derive them. NEVER guess a budget — if none is provided and none
-   is recorded on the tickets, report burned hours only and say a budget is required for the
-   rest.
+1. Confirm the client, the project (a project board, ticket type, or parent ticket — ask how
+   this desk marks project work), and the budget: budgeted hours, or fixed fee plus target
+   rate to derive them. NEVER guess a budget — if none is provided and none is recorded on the
+   tickets, report burned hours only and say a budget is required for the rest.
 
-2. Pull the project's tickets and their time entries via search_tickets. Record caps — a
-   capped time-entry pull silently understates burn, which is the dangerous direction; if
-   capped, split by phase/tech/date until uncapped or report burn as a floor ("at least N
-   hours").
+2. Read the project's tickets and their time entries. Record caps — a capped time-entry pull
+   silently understates burn, which is the dangerous direction; if capped, split by
+   phase/tech/date until uncapped or report burn as a floor ("at least N hours").
 
 3. Burn status — logged vs budgeted hours, percent consumed, and burn-vs-progress: percent of
    budget used against percent of scope delivered (from milestone/phase tickets or the PM's

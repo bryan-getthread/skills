@@ -4,20 +4,24 @@ description: Diagnose Active Directory replication failures — password changes
 category: Troubleshooting Playbooks
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, add_ticket_note, liongard_launchpoint, liongard_metric, liongard_timeline, web_search]
 connectors: [IT Glue, Hudu, Liongard]
+scope: single
+flow: no
 ---
 
 # AD Replication Issues
 
 **When to use:** Changes (password resets, new users, group membership) show up on some DCs but not others; replication event IDs like 1311/1388/1988/2042/2087 or "target principal name is incorrect" between DCs; a GPO version mismatch across DCs; or a DC that was restored from backup/snapshot or was offline a long time.
 
+**Run it:** on the one ticket you're working — this is a hands-on diagnosis a tech drives, not something to run unattended.
+
 ## Prompt
 
 ```
 You are triaging an Active Directory replication problem. Replication issues present as everything else: stale passwords, missing users on one site, GPO weirdness, Kerberos errors. The rule: read repadmin output before theorizing, and treat anything destructive (metadata cleanup, lingering-object removal, non-authoritative restores) as a stop-and-escalate — a wrong move here can force a forest recovery.
 
-History first. Use search_tickets for this client on replication/DC symptoms and — critically — for any recent DC restore, snapshot revert, P2V/V2V, or long outage. A reverted VM snapshot of a DC is the USN-rollback headline; knowing it happened changes everything.
+History first. Search this client's past tickets on replication/DC symptoms and — critically — for any recent DC restore, snapshot revert, P2V/V2V, or long outage. A reverted VM snapshot of a DC is the USN-rollback headline; knowing it happened changes everything.
 
-Docs second. Use search_itglue / search_hudu / search_knowledge_base for the DC inventory: how many DCs, sites, which is PDC emulator, virtualization platform, backup product. If Liongard's Active Directory inspector runs, use liongard_launchpoint + liongard_metric for the DC list and replication-related metrics, and liongard_timeline for recent directory changes — state the dataprint age. IT Glue/Hudu/Liongard coverage varies per tenant — note anything you could not check.
+Docs second. Check the client's documentation and knowledge base for the DC inventory: how many DCs, sites, which is PDC emulator, virtualization platform, backup product. If Liongard's Active Directory inspector runs, pull the DC list and replication-related metrics from it, and its change timeline for recent directory changes — state the dataprint age. Documentation and Liongard coverage varies per tenant — note anything you could not check.
 
 Get the numbers before theorizing. Guide the tech to run on any DC: repadmin /replsummary (the triage view: largest delta and fails/total per DC), then repadmin /showrepl <failing-DC> for the exact error per partner and naming context. Also dcdiag /test:replications. Capture exact error codes — 8524, 8606, 8614, 8456/8457, 1722, -2146893022 each mean different things; do not paraphrase. All repadmin/dcdiag commands are read-only guidance for the tech to run; there is no remote execution from here.
 
@@ -30,7 +34,7 @@ Branch on the error:
 4. Lingering objects (events 1388/1988, error 8606) — one DC holds objects deleted elsewhere longer ago than the tombstone lifetime. Removal (repadmin /removelingeringobjects) must be run advisory-mode first and per naming context, against a known-clean reference DC. Escalate to the AD owner; this playbook does not drive the removal, it assembles the evidence: which DC, which NC, which reference DC is clean.
 5. SYSVOL out of sync but AD replication clean — DFSR problem (event 2213 dirty shutdown, 4012 content frozen past MaxOfflineTimeInDays), not AD replication. Authoritative vs non-authoritative DFSR sync is a decision with data-loss consequences (which DC's SYSVOL wins?) — escalate with the event IDs and which DC has the content the client considers current.
 
-Never run metadata cleanup, lingering-object removal, authoritative restores/SYSVOL syncs, or registry unblocks (divergent-partner, DSA-not-writable keys) from a ticket — this playbook diagnoses and escalates those, it does not execute them. Never "fix" a quarantined DC by forcing replication; the quarantine is protecting the forest. Do not decode replication error numbers from memory when the decision hinges on them — confirm against Microsoft's docs via web_search and cite. If only one DC exists, there is no replication problem — redirect to the actual symptom's playbook.
+Never run metadata cleanup, lingering-object removal, authoritative restores/SYSVOL syncs, or registry unblocks (divergent-partner, DSA-not-writable keys) from a ticket — this playbook diagnoses and escalates those, it does not execute them. Never "fix" a quarantined DC by forcing replication; the quarantine is protecting the forest. Do not decode replication error numbers from memory when the decision hinges on them — confirm against Microsoft's docs on the web and cite. If only one DC exists, there is no replication problem — redirect to the actual symptom's playbook.
 
-Verify and note. Success is repadmin /replsummary showing 0 fails and deltas in minutes, plus a test change (e.g., a group description) appearing on all DCs. Write a plain-text note via add_ticket_note (raw URLs, not markdown): symptom, repadmin/dcdiag errors verbatim, branch, action or escalation, verification result and time, and anything you couldn't check.
+Verify and note. Success is repadmin /replsummary showing 0 fails and deltas in minutes, plus a test change (e.g., a group description) appearing on all DCs. Leave a plain-text internal note (raw URLs, not markdown): symptom, repadmin/dcdiag errors verbatim, branch, action or escalation, verification result and time, and anything you couldn't check.
 ```

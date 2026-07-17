@@ -4,33 +4,38 @@ description: A dark-web or credential-exposure monitoring alert arrived — age 
 category: Security
 tools: [search_tickets, search_contacts, add_ticket_note, update_ticket, view_openDraft]
 connectors: []
+scope: both
+flow: yes
 ---
 
 # Dark Web Alert Lifecycle
 
 **When to use:** A dark-web monitoring alert lands as a ticket (exposed email, password, hash, or PII); a batch of credential-exposure alerts needs working; or a Flow auto-processes the dark-web alert board.
 
+**Run it:** on one ticket · across a batch of credential-exposure alerts · or as a Flow (triggered when a dark-web alert ticket is created).
+
 ## Prompt
 
 ```
 Dark-web feeds resurface the same decade-old leaks endlessly. Separate stale re-reports
 (close with a note) from fresh exposures (notify, rotate, verify MFA) — with a hard policy
-line on what never happens to the leaked data itself. Work it in order:
+line on what never happens to the leaked data itself. Work this alert, or each alert in the
+batch I point you at, in order:
 
 1. Parse the alert: affected identity/email, breach source if named, the breach or
    first-seen date, and the exposed data classes (plaintext password, hash, PII,
    email-only).
 2. Age check: if the exposure's breach/first-seen date is more than 90 days old, close
    with a plain-text note recording the source, the date, the data classes, and the
-   rationale ("stale exposure, outside the actionable window"). Use search_tickets for a
-   prior ticket on the same identity + source and reference it if found.
+   rationale ("stale exposure, outside the actionable window"). Search for a prior ticket
+   on the same identity + source and reference it if found.
 3. If the date is missing or unparseable, do NOT apply the stale path — treat it as fresh
    or leave it for a human.
-4. Fresh path (90 days or newer): identify the affected user via search_contacts, confirm
-   they are a current employee, and notify them (view_openDraft, human sends) with
-   rotation guidance: change the exposed password on the affected service AND everywhere it
-   was reused, prefer a password manager and unique passwords, verify MFA is enabled with
-   methods the user recognizes. Branch to breached-credential-response for a
+4. Fresh path (90 days or newer): identify the affected user by looking up the contact,
+   confirm they are a current employee, and draft a notification for a human to review and
+   send with rotation guidance: change the exposed password on the affected service AND
+   everywhere it was reused, prefer a password manager and unique passwords, verify MFA is
+   enabled with methods the user recognizes. Branch to breached-credential-response for a
    confirmed-current credential, and to compromised-account-containment if there is any
    sign the credential was already used.
 5. Document the decision, not just the action: verdict, age math, data classes, and what

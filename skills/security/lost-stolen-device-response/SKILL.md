@@ -4,11 +4,15 @@ description: A user reports a lost or stolen laptop or phone — work the lock/w
 category: Security
 tools: [search_tickets, search_contacts, add_ticket_note, update_ticket, view_openDraft]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Lost or Stolen Device Response
 
 **When to use:** A user reports a lost, stolen, or misplaced company laptop, phone, or tablet; a device is unaccounted for after travel, theft, or an employee departure; or suspicious activity suggests a device is in the wrong hands.
+
+**Run it:** on one ticket (a lost or stolen device report).
 
 ## Prompt
 

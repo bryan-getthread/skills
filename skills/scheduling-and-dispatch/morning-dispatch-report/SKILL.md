@@ -4,11 +4,15 @@ description: The dispatcher's start-of-day briefing — overnight arrivals, P1/P
 category: Scheduling & Dispatch
 tools: [search_tickets, list_boards, list_ticket_priorities, search_members]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Morning Dispatch Report
 
-**When to use:** "Morning dispatch report" / "what came in overnight?"; a lead standing in for the dispatcher needs the start-of-day picture. Run it manually (or from an external scheduler that invokes Super Magic) — Flows cannot time-trigger it.
+**When to use:** "Morning dispatch report" / "what came in overnight?"; a lead standing in for the dispatcher needs the start-of-day picture.
+
+**Run it:** across the desk's boards at start of day — a manual sweep (Flows can't time-trigger it; use an external scheduler if you want it automated).
 
 ## Prompt
 
@@ -17,9 +21,9 @@ You are producing the dispatcher's start-of-day briefing in one skimmable, read-
 report: what came in overnight, what's urgent, what's aging, what's already booked, and
 the ten things to attack first.
 
-1. Resolve boards and priorities (list_boards, list_ticket_priorities). Define
-   "overnight" as close of business yesterday to now, in the desk's timezone (use the
-   desk's stated hours; default 6pm–now).
+1. Look up the boards and priority names. Define "overnight" as close of business
+   yesterday to now, in the desk's timezone (use the desk's stated hours; default
+   6pm–now).
 
 2. Overnight arrivals. New tickets created in the window, per board (one search per board
    — result caps apply). Group by priority, then client; call out clusters (several
@@ -42,12 +46,12 @@ the ten things to attack first.
 
 This is a cadence/sweep report. Thread Flows fire on ticket EVENTS only — no schedule,
 cron, or ticket-age trigger — so this cannot run "every morning" from a Flow; run it
-manually or from an external scheduler. If invoked unattended (e.g. a Flow Run Skill
-action posting the report), your entire reply is the report: no narration, no questions,
-fixed section order and format every run, the date and overnight window included, plain
-text if the destination is a PSA-synced note. If a data pull fails or returns nothing,
-include the section with "no data / lookup failed" rather than omitting it. Take no
-assignment actions from this run.
+manually or from an external scheduler. If invoked unattended (e.g. an external scheduler
+posting the report), your entire reply is the report: no narration, no questions, fixed
+section order and format every run, the date and overnight window included, plain text if
+the destination is a PSA-synced note. If a data pull fails or returns nothing, include the
+section with "no data / lookup failed" rather than omitting it. Take no assignment actions
+from this run.
 
 Guardrails: read-only — report and recommend, never assign or modify tickets. Result-cap
 honesty: label any possibly-capped section's counts as "at least N". Aggregate, don't

@@ -4,11 +4,15 @@ description: During a major incident, updates go out on a clock — internal and
 category: Change & Problem Management
 tools: [search_tickets, add_ticket_note, search_contacts, search_clients]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Incident Comms Cadence
 
 **When to use:** a major incident was declared and updates need drafting on schedule / "draft the next client update / what do we tell them at the top of the hour?" / the comms lead wants a check on whether we're current and when the next update is due / post-incident reconstruction of what was communicated when.
+
+**Run it:** on one incident.
 
 ## Prompt
 
@@ -39,7 +43,7 @@ is read as bad news.
    lapse is noted internally, not papered over.
 
 5. Route client-facing drafts to the comms lead for approval and send; confirm the audience
-   list against the client's documented incident contacts (search_contacts) — updates to
+   list against the client's documented incident contacts — updates to
    the wrong contact list are a common majors failure. Record each sent update (time,
    audience, gist) in a note so the comms trail is reconstructable.
 

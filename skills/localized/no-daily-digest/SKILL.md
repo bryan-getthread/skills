@@ -4,18 +4,22 @@ description: En tekniker ber om en oppsummering av sine åpne saker — hva som 
 category: Localized
 tools: [search_tickets, search_members]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Daglig oversikt
 
 **Når skal den brukes:** en tekniker vil ha morgenlesningen — alt som ligger på bordet, sortert etter hva som trenger ham eller henne nå, lesbar på under ett minutt. «Gi meg en oppsummering av mine åpne saker», «morgenoversikt», «kortversjonen».
 
+**Kjør den:** på alle åpne saker tildelt medlemmet som spør.
+
 ## Prompt
 
 ```
 Lag den daglige oversikten over de åpne sakene til medlemmet som spør.
 
-1. Hent alle åpne saker tildelt medlemmet som spør, med search_tickets (search_members for å finne medlemmet ved behov). Hvis et resultattak kan ha kuttet listen, si det med en gang («viser 50 — det kan finnes flere») i stedet for å presentere oversikten som komplett.
+1. Hent alle åpne saker tildelt medlemmet som spør (finn medlemmet ved behov). Hvis et resultattak kan ha kuttet listen, si det med en gang («viser 50 — det kan finnes flere») i stedet for å presentere oversikten som komplett.
 2. Sorter hver sak i nøyaktig én bøtte, i denne prioritetsrekkefølgen (saken havner i den første bøtta den kvalifiserer for):
    - Venter på svar fra deg — kunden svarte sist og venter på deg. Sorter etter hvor lenge de har ventet.
    - Haster / i faresonen — høy prioritet, SLA på eller nær brudd, eller tråder med negativ tone. Sorter etter alvorlighet.

@@ -4,11 +4,15 @@ description: Something big is breaking — run the criteria check, declare (or e
 category: Change & Problem Management
 tools: [search_tickets, update_ticket, add_ticket_note, create_ticket, list_ticket_priorities, search_members]
 connectors: []
+scope: single
+flow: yes
 ---
 
 # Major Incident Declaration
 
 **When to use:** "I think this is a major — declare it / should we declare on this?" / multiple tickets flooding in for the same client-wide or multi-client outage / a P1 that has outgrown single-ticket handling (multiple workstreams, exec attention, client comms pressure).
+
+**Run it:** on one incident · or as a Flow (triggered when a matching outage cluster forms).
 
 ## Prompt
 
@@ -29,16 +33,16 @@ the times the right answer is "this is a P1, not a major."
    ticket and continue as P1. A documented non-declaration prevents the 3am
    re-litigation.
 
-2. DECLARE: designate one ticket as the master incident record (create_ticket if the
+2. DECLARE: designate one ticket as the master incident record (create one if the
    cluster has no natural master; link the rest to it). Set priority to the desk's
-   highest (list_ticket_priorities) and mark the declaration in a plain-text note:
+   highest and mark the declaration in a plain-text note:
    declared-at time, declared-by, criteria met, known impact so far.
 
 3. ASSIGN ROLES — named humans, confirmed available, recorded on the master ticket:
    Incident Commander (owns decisions; see incident-commander-brief), Comms lead (owns
    the update clock; see incident-comms-cadence), Technical lead(s) per workstream. One
    person may hold multiple roles on a small desk, but every role has a name. Suggest
-   candidates via search_members / on-call records; a human confirms assignments.
+   candidates via the team directory / on-call records; a human confirms assignments.
 
 4. START THE COMMS CADENCE: record the update interval (default internal every 30 min,
    client every 60 min, or the client's contractual terms if stricter) and the time of

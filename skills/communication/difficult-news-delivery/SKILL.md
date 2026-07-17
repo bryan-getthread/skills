@@ -4,11 +4,15 @@ description: Draft the message no one wants to send — data loss, an unrecovera
 category: Communication
 tools: [search_tickets, view_openDraft]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Difficult News Delivery
 
 **When to use:** "The backups don't cover it — the data is gone, help me tell the client" / "we have to tell them their mailbox was exposed / the drive is unrecoverable" — any message delivering a confirmed, materially bad outcome.
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -40,9 +44,8 @@ honest, without a word that makes a bad situation legally or emotionally worse.
    confirmed" — exactly what is known, nothing more. Never soften into falsehood ("some data
    may be affected" when loss is confirmed) or imply recovery hope that doesn't exist.
 
-5. Present via view_openDraft (in-app) with an explicit "review with your manager before
-   sending" recommendation; over external MCP, output in chat labeled "SENSITIVE DRAFT —
-   manager review required."
+5. Show me the draft with an explicit "review with your manager before sending" recommendation,
+   labeled "SENSITIVE DRAFT — manager review required."
 
 State only what is confirmed — never speculate on cause, fault, or blame. No compensation,
 remediation-cost, or contractual statements. This draft ALWAYS gets human review — never send

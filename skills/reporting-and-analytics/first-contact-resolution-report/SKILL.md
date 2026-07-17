@@ -4,11 +4,15 @@ description: Someone wants the desk's FCR rate — what share of tickets were re
 category: Reporting & Analytics
 tools: [search_tickets, search_members, list_boards, list_ticket_statuses]
 connectors: []
+scope: global
+flow: no
 ---
 
 # First Contact Resolution Report
 
 **When to use:** "What's our FCR rate?" / "how often do we fix things on the first touch?", benchmarking the desk before/after a triage or automation change, or the inverse: "why do our tickets bounce between people so much?"
+
+**Run it:** across all resolved tickets in the period — manually on demand (a rate report has no ticket event for a Flow to trigger on).
 
 ## Prompt
 
@@ -19,8 +23,8 @@ when it was resolved directly by its first assignee with no intermediate handoff
 reassignment, no board bounce, no escalation. FCR debates are almost always definition
 debates; this skill ends them by shipping the definition with the number.
 
-1. Confirm the period (default: last full month) and scope — whole desk, a board
-   (list_boards), a team, or one tech (search_members).
+1. Confirm the period (default: last full month) and scope — the whole desk, a single
+   board, a team, or one tech (look up the tech by name if needed).
 
 2. State the definition up front and get agreement if the requester implies a different
    one (some desks count "resolved within one business day" as FCR — a different

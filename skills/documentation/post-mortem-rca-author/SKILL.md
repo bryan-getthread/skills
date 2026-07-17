@@ -4,11 +4,15 @@ description: Write a structured post-mortem or root-cause analysis from an incid
 category: Documentation
 tools: [search_tickets, search_knowledge_base, add_ticket_note]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Post-Mortem & RCA Author
 
 **When to use:** "Write an RCA for this outage" / "post-mortem for ticket <number>" — a P1 closed and the client or management wants a formal write-up, or a recurring problem finally got a root cause worth recording.
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -17,9 +21,9 @@ Assemble a blameless, evidence-based RCA / post-mortem DRAFT from the incident
 ticket(s), separating confirmed fact from hypothesis at every step. Publishing or
 sending to the client is a human decision.
 
-1. Pull the incident ticket (and any merged/related tickets) with search_tickets:
-   full thread, internal notes, time entries, status changes. Ask the requester for
-   monitoring/vendor evidence they hold outside the ticket rather than assuming it.
+1. Read the incident ticket (and any merged/related tickets): full thread, internal
+   notes, time entries, status changes. Ask the requester for monitoring/vendor
+   evidence they hold outside the ticket rather than assuming it.
 
 2. Build the document in this structure:
    - Executive summary — 3-5 sentences for a non-technical reader: what broke, who
@@ -49,5 +53,5 @@ sending to the client is a human decision.
    detail. Ask which audience if unstated.
 
 5. Output the document in chat. If asked, post the executive summary as an internal
-   note via add_ticket_note, linking the full doc location the requester names.
+   note, linking the full doc location the requester names.
 ```

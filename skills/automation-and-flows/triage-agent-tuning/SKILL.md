@@ -4,11 +4,15 @@ description: Tune the Triage Agent's custom rules from observed misses — wrong
 category: Automation & Flows
 tools: [search_tickets, list_boards, list_ticket_priorities, list_ticket_statuses]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Triage Agent Tuning
 
 **When to use:** "The triage agent keeps putting <vendor> alerts on the wrong board" / "techs are bypassing triage constantly — figure out why" / a monthly review of triage accuracy after rule or board changes.
+
+**Run it:** across all tickets in the window — manually on demand (rule tuning has no ticket event for a Flow to trigger on).
 
 ## Prompt
 
@@ -18,8 +22,8 @@ custom-rule edits, backed by evidence of how often each miss actually occurs. Tr
 rules live in settings with no API write — this skill PRODUCES rule text; the admin applies
 it. Never claim a rule has been applied.
 
-1. Collect the misses. Start from examples the member supplies; then widen with
-   search_tickets for the same pattern (same sender, subject shape, or client) over the
+1. Collect the misses. Start from examples the member supplies; then widen the search
+   for the same pattern (same sender, subject shape, or client) over the
    last 30 days to measure recurrence. Split searches per board/signal; report capped
    counts as "at least N".
 
@@ -33,7 +37,7 @@ it. Never claim a rule has been applied.
 
 4. Draft custom-rule text for each confirmed pattern. Rules should be few, specific, and
    testable: name the observable signal (sender domain, subject pattern, keyword) and the
-   exact outcome (board, priority via list_boards / list_ticket_priorities values). Prefer
+   exact outcome (board, priority — using the desk's real board and priority values). Prefer
    one rule that covers a pattern over five that cover instances. Every proposed rule needs
    evidence of recurrence — do not write rules from a single anecdote.
 

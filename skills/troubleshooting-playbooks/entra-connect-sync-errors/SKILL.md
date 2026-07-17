@@ -4,11 +4,15 @@ description: Diagnose Entra Connect (Azure AD Connect) sync problems — export 
 category: Troubleshooting Playbooks
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, add_ticket_note, web_search]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # Entra Connect Sync Errors
 
 **When to use:** New or changed on-prem users/groups aren't appearing or updating in Entra ID / M365; the portal shows provisioning errors (duplicate attribute, InvalidSoftMatch, AttributeValueMustBeUnique); sync-health alerts fire (export errors, a connector quarantined, password hash sync stopped); or after a migration/consolidation objects matched to the wrong cloud user or a server swap is planned.
+
+**Run it:** on the one ticket you're working — a tech drives the sync console hands-on with the identity owner; not unattended.
 
 ## Prompt
 
@@ -17,9 +21,9 @@ Sync errors are precise — each carries an error type and the exact attribute i
 
 Work it in this order:
 
-1. Version identification first. Run search_itglue / search_hudu / search_knowledge_base for the sync design: Entra Connect vs Cloud Sync (different products, different fixes), server name, staging server present?, the source anchor in use (ms-DS-ConsistencyGuid vs legacy objectGUID), OU/domain filtering scope, and any custom sync rules. Also check the installed version against Microsoft's minimum-supported list — retired builds silently stop syncing. IT Glue/Hudu coverage varies per tenant — note anything you could not check.
+1. Version identification first. Check the client's documentation and knowledge base for the sync design: Entra Connect vs Cloud Sync (different products, different fixes), server name, staging server present?, the source anchor in use (ms-DS-ConsistencyGuid vs legacy objectGUID), OU/domain filtering scope, and any custom sync rules. Also check the installed version against Microsoft's minimum-supported list — retired builds silently stop syncing. Documentation coverage varies per tenant — note anything you could not check.
 
-2. History first. Run search_tickets for this client: recent AD cleanups, OU moves/renames, domain consolidations, server migrations, bulk user imports. Bulk on-prem changes immediately preceding the symptom usually are the story — especially pending deletions from an OU move out of scope.
+2. History first. Search this client's past tickets: recent AD cleanups, OU moves/renames, domain consolidations, server migrations, bulk user imports. Bulk on-prem changes immediately preceding the symptom usually are the story — especially pending deletions from an OU move out of scope.
 
 3. Get the error before theorizing. Guide the tech to Synchronization Service Manager -> Operations (per-run, per-object errors) and the Entra admin center's provisioning error report. Capture verbatim: error type, attribute named, the conflicting object pair if given, and which step failed (import/sync/export). "Sync is broken" is not evidence — never invent it.
 
@@ -32,7 +36,7 @@ Work it in this order:
    - Connector/run-level failures (stopped-server-down, quarantine, password hash sync heartbeat lost) — service account lockout/expiry, TLS 1.2 enforcement after a hardening pass, permissions removed from the connector account, or the connector quarantined after repeated failures. Fix the cause, then let the scheduler run; forcing repeated Initial (full) syncs is not a repair and multiplies load.
    - Staging mode surprises — nothing exports and no errors: check whether the server is in staging mode (someone built a replacement and never cut over, or a cutover left two active). Exactly one active (non-staging) server per tenant; two active servers fight, zero export nothing. When swapping servers, the new one goes staging -> verify pending exports -> old to staging -> new to active, in that order. Never run two active (non-staging) sync servers against one tenant.
 
-Guardrails to hold throughout: never run a full/initial sync — or any sync after a scope/rule/server change — without previewing pending exports first, and never disable the export deletion threshold to force one through. Never edit source anchors to force a match without documented justification and the identity owner's sign-off. Fix synced-object attributes on-prem, not in the cloud — cloud edits on synced objects are overwritten or refused. Deleting the Entra Connect server or uninstalling to "start fresh" converts every synced user to cloud-managed with consequences — that is a designed migration, not a troubleshooting step. All sync console/PowerShell work is guidance for the tech; you never execute it. Verify error meanings and supported-version status against Microsoft's current docs with web_search — the product renames and rewires often; don't recite from memory.
+Guardrails to hold throughout: never run a full/initial sync — or any sync after a scope/rule/server change — without previewing pending exports first, and never disable the export deletion threshold to force one through. Never edit source anchors to force a match without documented justification and the identity owner's sign-off. Fix synced-object attributes on-prem, not in the cloud — cloud edits on synced objects are overwritten or refused. Deleting the Entra Connect server or uninstalling to "start fresh" converts every synced user to cloud-managed with consequences — that is a designed migration, not a troubleshooting step. All sync console/PowerShell work is guidance for the tech; you never execute it. Verify error meanings and supported-version status against Microsoft's current docs on the web — the product renames and rewires often; don't recite from memory.
 
-Verify and note. Success = the affected objects clean in the next delta cycle (Operations shows no errors for them) and correct in the cloud, plus the portal's provisioning-error count back at baseline. Post a plain-text PSA note (no markdown, no emojis, raw URLs not markdown links): error verbatim, objects involved (sanitized), branch, on-prem fix applied or escalated, whether any sync cycle was run and what the preview showed, verification time.
+Verify and note. Success = the affected objects clean in the next delta cycle (Operations shows no errors for them) and correct in the cloud, plus the portal's provisioning-error count back at baseline. Leave a plain-text internal note (no markdown, no emojis, raw URLs not markdown links): error verbatim, objects involved (sanitized), branch, on-prem fix applied or escalated, whether any sync cycle was run and what the preview showed, verification time.
 ```

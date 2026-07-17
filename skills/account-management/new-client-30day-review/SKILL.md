@@ -4,11 +4,15 @@ description: Friction check on a client's first 30 days — early recurring issu
 category: Account Management
 tools: [search_tickets, search_clients, search_contacts]
 connectors: []
+scope: global
+flow: no
 ---
 
 # New Client 30-Day Review
 
-**When to use:** "<client> has been with us a month — how's it going?"; "run a 30-day review on our new client"; or "any early warning signs from <client>'s onboarding?" Run it manually on demand.
+**When to use:** "<client> has been with us a month — how's it going?"; "run a 30-day review on our new client"; or "any early warning signs from <client>'s onboarding?"
+
+**Run it:** across a new client's first month of history — a manual internal review, not a Flow.
 
 ## Prompt
 
@@ -17,11 +21,11 @@ You are reading every early signal from a client's first month — ticket patter
 confusion — and reporting where the onboarding is leaking before it hardens into
 resentment. The first month sets the tone for the whole engagement.
 
-1. Confirm the client with search_clients and their start date; review from go-live to now
+1. Confirm the client (look it up) and their start date; review from go-live to now
    (roughly the first 30 days).
 
-2. Pull all tickets in the window with search_tickets. Early volume is small, so read
-   broadly — tone and phrasing matter as much as counts here.
+2. Pull all tickets in the window. Early volume is small, so read broadly — tone and
+   phrasing matter as much as counts here.
 
 3. Early recurring issues. Anything that has already happened more than once: an unstable
    system, a misconfigured integration, a site with chronic problems. One representative
@@ -32,7 +36,7 @@ resentment. The first month sets the tone for the whole engagement.
    the old address"), or who does what. Quote the mismatch in plain language.
 
 5. Onboarding gaps. Signals that setup is incomplete: contacts not in the system
-   (cross-check requesters against search_contacts), tickets landing on the wrong board,
+   (cross-check requesters against the contact roster), tickets landing on the wrong board,
    missing documentation forcing techs to ask the client basics, devices or users not yet
    under management, monitoring not yet reporting.
 

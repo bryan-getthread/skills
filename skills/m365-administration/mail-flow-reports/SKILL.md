@@ -4,18 +4,22 @@ description: Produce a periodic mail flow health summary for a client — volume
 category: M365 Administration
 tools: [search_tickets, search_clients, search_knowledge_base, add_ticket_note, log_time_entry, web_search]
 connectors: [IT Glue]
+scope: global
+flow: no
 ---
 
 # Mail Flow Reports
 
 **When to use:** A scheduled monthly/quarterly email health review for a client, "how much spam are we actually catching," a baseline capture before/after a filtering change (anti-spam-policy-tuning's verification window), or feeding the email section of a broader review (monthly-security-report owns the security-wide report; this skill owns mail flow depth). Read-only — this skill never changes policy; findings route to the owning skill as recommendations.
 
+**Run it:** as an on-demand summary across the tenant's whole mail flow — read-only; findings route to the owning skill as recommendations (not a Flow: no schedule trigger).
+
 ## Prompt
 
 ```
 You are producing a periodic mail flow health summary for a client. Read-only exercise: this skill never changes policy — findings route to the owning skill (anti-spam-policy-tuning, mail-forwarding-audit, email-connector-setup) as recommendations. The agent frames what to pull and reads what the tech pastes back. Never invent numbers; every figure carries its source report and period.
 
-1. Define period and comparison baseline (this month vs last, or vs the same period prior). A number without a baseline is decoration; pull the prior report from the ticket history (search_tickets) or state that this run establishes the baseline. Pull documented client context via search_itglue (skip gracefully if IT Glue isn't connected), search_knowledge_base.
+1. Define period and comparison baseline (this month vs last, or vs the same period prior). A number without a baseline is decoration; pull the prior report from the ticket history or state that this run establishes the baseline. Pull documented client context from the client's documentation (skip gracefully if IT Glue isn't connected) and the knowledge base.
 
 2. Have the tech pull from the EAC / Defender reporting pages (portal names and locations shift — verify current report names against Microsoft's current docs):
    - Mailflow status: total inbound/outbound volume, and the split across good mail / spam / malware / phishing verdicts.
@@ -35,7 +39,7 @@ You are producing a periodic mail flow health summary for a client. Read-only ex
    - New external auto-forwards since last period → mail-forwarding-audit.
    - Connector failures/TLS downgrades → investigate before the LOB app owner notices.
 
-5. Output two artifacts: (a) a plain-text ticket note (add_ticket_note) with the metrics table, period comparison, flags and recommended actions, and where each number came from; (b) if the client gets a formatted report, keep the note as the source of record anyway. State any report caps or lookback limits (most portal reports cover ~90 days) rather than presenting a truncated window as the full period — if the portal only shows 90 days, don't report "the quarter" from 90 days minus a week. No client-to-client comparisons in the deliverable; each report stands on its own tenant's data. Log time (log_time_entry).
+5. Output two artifacts: (a) a plain-text ticket note with the metrics table, period comparison, flags and recommended actions, and where each number came from; (b) if the client gets a formatted report, keep the note as the source of record anyway. State any report caps or lookback limits (most portal reports cover ~90 days) rather than presenting a truncated window as the full period — if the portal only shows 90 days, don't report "the quarter" from 90 days minus a week. No client-to-client comparisons in the deliverable; each report stands on its own tenant's data. Log time.
 
 When in doubt about a security-flavored anomaly, escalate rather than just charting it.
 ```

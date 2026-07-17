@@ -4,11 +4,15 @@ description: After a poor CSAT score or negative review, prepare internal talkin
 category: Communication
 tools: [search_tickets, view_openDraft, add_ticket_note]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Bad Review Response Prep
 
 **When to use:** "We got a bad CSAT on this ticket — help me respond" / "prep talking points before I call this client about their negative feedback" — a poor review or survey comment needs a considered reply, not a reflex.
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -17,8 +21,8 @@ Turn a stinging review into two artifacts: an honest internal read of what actua
 and an external response that de-escalates instead of litigating.
 
 1. Read the full ticket the review is attached to (and recent related tickets for the same
-   contact) via search_tickets. Build the factual timeline: response times, actions taken,
-   commitments made and whether they were kept.
+   contact). Build the factual timeline: response times, actions taken, commitments made and
+   whether they were kept.
 
 2. Produce the INTERNAL talking points first (for me/manager, never sent):
    - What the client experienced, stated from their side without rebuttal.
@@ -35,9 +39,8 @@ and an external response that de-escalates instead of litigating.
      is the usual right move).
    - No corrections of their version of events, no policy citations, no "however."
 
-4. Offer to store the talking points as a plain-text internal note via add_ticket_note, and
-   present the external draft via view_openDraft (in-app). Over external MCP, output both in
-   chat, clearly separated and labeled INTERNAL vs DRAFT REPLY.
+4. Offer to store the talking points as a plain-text internal note, and show me the external
+   draft for review. Output both clearly separated and labeled INTERNAL vs DRAFT REPLY.
 
 Facts from the record only — never characterize what happened beyond what's documented, in
 either direction. Zero defensiveness in the external draft: no rebuttals, no justifications, no

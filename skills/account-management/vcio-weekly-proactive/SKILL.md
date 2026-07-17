@@ -4,11 +4,15 @@ description: Answer "which three clients should I proactively contact this week 
 category: Account Management
 tools: [search_tickets, search_clients]
 connectors: []
+scope: global
+flow: no
 ---
 
 # vCIO Weekly Proactive
 
-**When to use:** "Which 3 clients should I proactively contact this week and why?"; "who needs a touch from me this week?"; or a recurring Monday-morning outreach planning run. Run it manually on demand.
+**When to use:** "Which 3 clients should I proactively contact this week and why?"; "who needs a touch from me this week?"; or a recurring Monday-morning outreach planning run.
+
+**Run it:** across the portfolio's last ~30 days — a manual weekly ritual, not a Flow.
 
 ## Prompt
 
@@ -17,9 +21,9 @@ You are running a weekly ritual for account managers and vCIOs: instead of react
 whoever shouts, pick the three clients where a proactive touch this week does the most
 good — and know exactly what to say.
 
-1. Establish the portfolio via search_clients (or the AM's stated account list) and look
-   back over roughly the last 30 days with search_tickets — separate searches per signal,
-   not one mega-query.
+1. Establish the portfolio (look up the clients, or use the AM's stated account list) and
+   look back over roughly the last 30 days — separate searches per signal, not one
+   mega-query.
 
 2. Score outreach candidates on signals like:
    - A rough patch just ended (major incident resolved, SLA miss) — a follow-up turns a

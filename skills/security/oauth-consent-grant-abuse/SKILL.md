@@ -4,11 +4,15 @@ description: A malicious or over-privileged third-party app has an OAuth grant i
 category: Security
 tools: [search_tickets, search_contacts, add_ticket_note, update_ticket, view_openDraft]
 connectors: []
+scope: single
+flow: no
 ---
 
 # OAuth Consent Grant Abuse
 
 **When to use:** An alert fires for a newly consented enterprise app, a risky OAuth grant, or an unfamiliar app with mail/file permissions; a user reports approving an app "to view a document" that then behaved oddly; or persistence hunting during a takeover/BEC recovery surfaces an attacker-added app consent.
+
+**Run it:** on one ticket (a suspicious OAuth grant).
 
 ## Prompt
 

@@ -4,11 +4,15 @@ description: A user's credential is confirmed exposed and likely current — not
 category: Security
 tools: [search_tickets, search_contacts, add_ticket_note, update_ticket, view_openDraft]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Breached Credential Response
 
 **When to use:** A credential exposure is confirmed fresh/current (often handed off from dark-web-alert-lifecycle); a user reports entering their password on a phishing page; or a vendor/breach notification names one of the client's users.
+
+**Run it:** on one ticket (a confirmed credential exposure).
 
 ## Prompt
 
@@ -21,13 +25,13 @@ the user, then document all of it. Work it in order:
    phishing entry, infostealer). Exposure via phishing entry or infostealer means treat it
    as attacker-held RIGHT NOW, not eventually.
 2. Check for use before assuming none: review the account's recent sign-in evidence for
-   anomalies since the exposure window, and use search_tickets for concurrent alerts on
+   anomalies since the exposure window, and search related tickets for concurrent alerts on
    the same user (sign-in anomaly, inbox rule). Any sign the credential was used → this
    stops being a notification exercise: branch to compromised-account-containment and the
    account-takeover-runbook immediately.
 3. Privileged account exposed → escalate the tier: rotation and session revocation happen
    now, on the containment clock, not the notification clock.
-4. Notify the user through a verified channel (view_openDraft, human sends) with
+4. Notify the user through a verified channel (draft it for a human to review and send) with
    rotation-everywhere guidance: change the password on the affected service AND on every
    other account where it or a close variant was reused (reuse is the whole attack surface
    here); move to unique passwords via a password manager.

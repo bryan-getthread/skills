@@ -4,11 +4,15 @@ description: The composite dispatcher partners keep asking for — classify a ne
 category: Scheduling & Dispatch
 tools: [search_tickets, search_members, search_clients, list_boards, list_ticket_priorities, update_ticket, schedule_ticket, add_ticket_note]
 connectors: []
+scope: single
+flow: yes
 ---
 
 # Smart Dispatch
 
-**When to use:** "Automate our dispatching" — a Flow fires on ticket creation and the desk wants classify → route → assign → schedule in one Run Skill pass; or a dispatcher wants one command that does the whole first-pass dispatch instead of running triage, routing, and assignment separately.
+**When to use:** "Automate our dispatching" — a Flow fires on ticket creation and the desk wants classify → route → assign → schedule in one pass; or a dispatcher wants one command that does the whole first-pass dispatch instead of running triage, routing, and assignment separately.
+
+**Run it:** on one ticket · or as a Flow that classifies, routes, assigns, and schedules each new ticket.
 
 ## Prompt
 
@@ -18,17 +22,17 @@ technicians against a routing matrix (who knows the stack/client AND who has cap
 assign the winner, and put the work on their schedule — with the reasoning written down.
 
 1. Classify. Apply intake-classification logic to the ticket's summary and description:
-   type (Incident/Request/Problem), affected technology, priority sanity-check via
-   list_ticket_priorities. If the ticket is unclassifiable (empty body, pure noise),
-   stop — dispatch needs a classification.
+   type (Incident/Request/Problem), affected technology, and a priority sanity-check
+   against the desk's priority names. If the ticket is unclassifiable (empty body, pure
+   noise), stop — dispatch needs a classification.
 
-2. Build the routing matrix. For each candidate from search_members (the board's team,
-   minus inactive members and stated exclusions), score two signals:
+2. Build the routing matrix. For each candidate from the board's team (minus inactive
+   members and stated exclusions), score two signals:
    - Specialty fit: does the tech's stated specialty (from the desk's configured list)
      match the classified technology?
-   - Client familiarity: search_tickets per candidate filtered to resolved tickets for
-     this client — recent closes score higher. If the search caps out, report familiarity
-     as "at least N" rather than exact.
+   - Client familiarity: search each candidate's resolved tickets for this client — recent
+     closes score higher. If the search caps out, report familiarity as "at least N"
+     rather than exact.
 
 3. Weigh capacity. Apply the workload formula (base capacity − priority-weighted open
    tickets) to the top specialty/familiarity candidates, so a perfect-fit tech who is
@@ -38,20 +42,20 @@ assign the winner, and put the work on their schedule — with the reasoning wri
    candidate has both a plausible fit and capacity, do not guess — leave unassigned and
    post the score table for a human dispatcher.
 
-5. Assign and schedule. update_ticket to set the owner, then schedule_ticket to place a
-   work block sized to the classification (small default block unless the desk configured
-   durations per ticket type).
+5. Assign and schedule. Set the owner, then put a work block on their schedule sized to the
+   classification (small default block unless the desk configured durations per ticket
+   type).
 
-6. Record. Post a plain-text internal note via add_ticket_note: the classification, the
-   score table (winner, runner-up, formula inputs), and the scheduled block. No markdown,
-   no emojis — this note may sync to a PSA.
+6. Record. Post a plain-text internal note: the classification, the score table (winner,
+   runner-up, formula inputs), and the scheduled block. No markdown, no emojis — this note
+   may sync to a PSA.
 
-If running unattended as a Flow Run Skill action: your entire reply is posted verbatim as
-the note — plain text, no narration, no questions. Act only on a clear winner (single top
-scorer after exclusions, confident classification, client rule respected); otherwise make
-no writes and post "Smart dispatch: no unambiguous assignment (reason). Left for
-dispatcher." with the score table. Never touch status or priority. If the ticket already
-has an owner or a schedule entry, do nothing and post nothing.
+Running unattended in a Flow: your entire reply is posted verbatim as the note — plain
+text, no narration, no questions. Act only on a clear winner (single top scorer after
+exclusions, confident classification, client rule respected); otherwise make no writes and
+post "Smart dispatch: no unambiguous assignment (reason). Left for dispatcher." with the
+score table. Never touch status or priority. If the ticket already has an owner or a
+schedule entry, do nothing and post nothing.
 
 Guardrails: honesty about calendars — this is NOT capacity-calendar-aware (no Planner/
 Outlook read on the tool surface); it schedules against Thread schedule entries only. When

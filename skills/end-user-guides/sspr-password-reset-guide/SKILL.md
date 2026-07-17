@@ -4,23 +4,24 @@ description: Draft reply-ready instructions an end user can follow to reset thei
 category: End-User Guides
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, view_openDraft]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # SSPR Password Reset Guide
 
 **When to use:** "Send <user> instructions to reset their own password." / "User forgot their password — can they self-serve?" / a reset ticket where the client has SSPR enabled and the user just needs the steps.
 
+**Run it:** on one ticket.
+
 ## Prompt
 
 ```
 Draft a client-ready instruction block the technician sends so the end user can reset their own
 password through this client's self-service password reset (SSPR) — matched to the actual product,
-not a generic walkthrough. Verify the stack before you write; when unsure, ask. Draft only —
-present via view_openDraft (in-app) or, over external MCP, output labeled "DRAFT — review before
-sending." Do not send.
+not a generic walkthrough. Verify the stack before you write; when unsure, ask. Draft only — show me the reply as a draft to review first, and don't send it.
 
-1. Verify the client's SSPR stack FIRST. Search client docs (search_itglue / search_hudu /
-   search_knowledge_base) and prior tickets (search_tickets) for what this client uses — Microsoft
+1. Verify the client's SSPR stack FIRST. Search client docs and prior tickets for what this client uses — Microsoft
    Entra SSPR, Duo, ADSelfService Plus, Okta, or something else — AND whether SSPR is actually
    enabled and this user is registered for it. If none of that is findable, ask the technician ONE
    question ("Which self-service reset does this client use, and is <user> registered?") — never

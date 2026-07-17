@@ -4,21 +4,26 @@ description: Draft a polite, escalating follow-up when a client hasn't replied o
 category: Communication
 tools: [search_tickets, view_openDraft, add_ticket_note]
 connectors: []
+scope: both
+flow: yes
 ---
 
 # Follow-up Chaser
 
 **When to use:** "The client hasn't responded — draft a follow-up" / "second follow-up on this ticket" / working a stale-ticket queue where each waiting-on-client ticket needs its next chase.
 
+**Run it:** on one ticket · across a waiting-on-client queue · or as a Flow (triggered on a ticket waiting on the client).
+
 ## Prompt
 
 ```
 Draft the next follow-up for a ticket waiting on the client, with tone matched to how many
-attempts have already been made.
+attempts have already been made. If I point you at a queue, do this for each waiting-on-client
+ticket in it.
 
-1. Read the ticket thread with search_tickets. Establish: what we asked the client for, when
-   we last asked, and how many follow-up attempts are already DOCUMENTED. Count only real,
-   recorded attempts — not vibes.
+1. Read the ticket thread. Establish: what we asked the client for, when we last asked, and how
+   many follow-up attempts are already DOCUMENTED. Count only real, recorded attempts — not
+   vibes.
 
 2. Confirm the ball is genuinely in the client's court. If the last substantive action needed
    is actually ours (or a vendor's), say so and STOP — chasing a client for our own stall is
@@ -38,9 +43,8 @@ attempts have already been made.
 4. Every attempt restates the original ask — never send a content-free "just checking in."
    Never skip rungs: don't use attempt-3 tone when only one attempt is documented.
 
-5. Present as an open draft via view_openDraft (in-app); over external MCP, output in chat
-   labeled with the attempt number. Offer a plain-text internal note via add_ticket_note
-   recording the attempt number and date.
+5. Show me the draft for review, labeled with the attempt number. Offer a plain-text internal
+   note recording the attempt number and date.
 
 Dates in the closure warning must be real and honored — no "we'll close this Friday" unless
 someone will. Never bulk-send follow-ups across tickets without per-ticket human review. If

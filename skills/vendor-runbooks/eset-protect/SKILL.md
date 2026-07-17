@@ -4,11 +4,15 @@ description: An ESET PROTECT detection or protection-status alert landed — tri
 category: Vendor Runbooks
 tools: [search_tickets, search_clients, search_contacts, search_itglue, add_ticket_note, update_ticket]
 connectors: []
+scope: single
+flow: no
 ---
 
 # ESET PROTECT
 
 **When to use:** An ESET detection, firewall/HIPS event, or protection-status alert arrives as a ticket; a user reports a file or download "stuck" or blocked and LiveGuard analysis is suspected; or a "protection disabled / product not activated / policy not applied" alarm needs triage — on ESET PROTECT cloud or on-prem console.
+
+**Run it:** on the alert ticket.
 
 ## Prompt
 
@@ -25,7 +29,7 @@ You are triaging an ESET PROTECT alert — a vendor specialization of security-a
 
 5. Detections with action "cleaned/quarantined" get the standard verification pass: "cleaned" covers the object, not the incident — scope before closing. Confirm in console, scope siblings by hash across the client, check persistence, identity involvement → compromised-account-containment. Detect-only → contain first; isolation (where the license provides it) is a technician action the agent directs and records.
 
-6. Document layer, verdict, policy-conflict findings if any, and decisions with approvers; classify per soc-classification-tree. Exclusions are security decisions: narrowest scope, named approver, review date — HIPS exclusions especially, since they blind the behavioral layer. Recurring false alarms from policy drift feed security-noise-tuning; client-facing wording per defensive-writing-standard.
+6. In the internal note, document layer, verdict, policy-conflict findings if any, and decisions with approvers; classify per soc-classification-tree. Exclusions are security decisions: narrowest scope, named approver, review date — HIPS exclusions especially, since they blind the behavioral layer. Recurring false alarms from policy drift feed security-noise-tuning; client-facing wording per defensive-writing-standard.
 
 Degradation: without documentation access, the client's policy hierarchy is unknown — say so and have the tech read effective settings from the device. When in doubt, do nothing irreversible and escalate.
 ```

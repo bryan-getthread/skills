@@ -4,11 +4,15 @@ description: For desks synced to ConnectWise Manage — configuration (asset) di
 category: PSA-Specific
 tools: [search_tickets, update_ticket, add_ticket_note, search_clients, search_itglue, search_hudu]
 connectors: [IT Glue, Hudu]
+scope: both
+flow: no
 ---
 
 # CW Configurations Assets
 
 **When to use:** A device-related ticket on a CW-synced desk has no configuration linked and one plausibly exists, choosing which config to link when several candidates match, or a stale-config cleanup question.
+
+**Run it:** on one ticket · or across all device-related tickets on a board missing a config link.
 
 ## Prompt
 
@@ -21,14 +25,14 @@ configs rot: RMM-synced configs update themselves, manually-created ones don't, 
 accumulate duplicates and inactive-but-not-retired records. This is the linking discipline plus
 the hygiene instinct.
 
-1. Re-fetch the ticket with search_tickets at full detail and identify the device the work
-   actually concerns (from the description, notes, and contact — not just the ticket title).
+1. Re-read the ticket at full detail and identify the device the work actually concerns (from
+   the description, notes, and contact — not just the ticket title).
 
 2. Find the config. Thread's visibility into CW configurations varies by tenant: if config data
    is visible on the synced ticket/company, use it; otherwise search the desk's documentation
-   platform (search_itglue / search_hudu, when enabled) for the asset record, and confirm the
-   client with search_clients. If no source shows configs, state "configuration data not
-   visible from Thread" and hand the linking step to a tech in CW — recommend, don't claim.
+   platform (IT Glue / Hudu, when enabled) for the asset record, and confirm the client. If no
+   source shows configs, state "configuration data not visible from Thread" and hand the
+   linking step to a tech in CW — recommend, don't claim.
 
 3. Choose among candidates carefully. Match on serial number or asset tag first, hostname
    second, friendly name last — hostnames get reused and machines get renamed. If two configs
@@ -40,10 +44,10 @@ the hygiene instinct.
    proposing a new config, use only types evidenced in the desk's existing records or
    documented taxonomy, and route taxonomy changes to a taxonomy cleanup.
 
-5. Link and record. Where the tenant's sync supports it, associate the ticket with the config
-   via update_ticket; otherwise record the intended linkage in a plain-text add_ticket_note
-   ("Concerns config: <device> — link in CW") so a tech can complete it. Either way the note
-   states which device and why it was chosen.
+5. Link and record. Where the tenant's sync supports it, associate the ticket with the config;
+   otherwise record the intended linkage in a plain-text note ("Concerns config: <device> —
+   link in CW") so a tech can complete it. Either way the note states which device and why it
+   was chosen.
 
 6. Stale-config hygiene (flag, don't fix). While working, note staleness signals: last-
    seen/updated dates far in the past on an RMM-synced config, an active ticket against a config
@@ -54,7 +58,7 @@ the hygiene instinct.
 7. Output: the config identified (or the honest "not visible"), the linkage made or
    recommended, and any hygiene flags raised — each with its evidence.
 
-Always: re-fetch full ticket detail before linking; the ticket's company or contact may have
+Always: re-read full ticket detail before linking; the ticket's company or contact may have
 been corrected CW-side since your last read. The PSA is always master for config records —
 Thread and docs platforms mirror CW; corrections happen in CW by a human. Never invent config
 names, types, serials, or IDs. A wrong link is worse than no link: below high confidence on the

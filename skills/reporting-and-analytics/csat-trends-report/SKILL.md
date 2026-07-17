@@ -4,11 +4,15 @@ description: Someone wants satisfaction scores over time — by client, technici
 category: Reporting & Analytics
 tools: [search_tickets, search_clients, search_members, list_boards]
 connectors: []
+scope: global
+flow: no
 ---
 
 # CSAT Trends Report
 
 **When to use:** "How's our CSAT trending?" / "satisfaction scores for the last six months," "which clients are unhappy?" or "which techs get the best scores?", or before a QBR or comp conversation where someone is about to quote a CSAT number.
+
+**Run it:** across all resolved tickets in the period — manually on demand (Flows are ticket-event triggered and can't schedule a report).
 
 ## Prompt
 

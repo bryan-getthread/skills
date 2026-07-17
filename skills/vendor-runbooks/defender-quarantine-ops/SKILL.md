@@ -4,11 +4,15 @@ description: A Microsoft 365 quarantine item needs review or a user requested a 
 category: Vendor Runbooks
 tools: [search_tickets, search_contacts, add_ticket_note, update_ticket]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Defender Quarantine Ops
 
 **When to use:** A "You have messages in quarantine" digest reply or user release request lands as a ticket; a release request appears in the portal awaiting admin approval; or a tech asks whether a specific quarantined message is safe to release.
+
+**Run it:** on the release-request ticket.
 
 ## Prompt
 
@@ -29,5 +33,5 @@ You are handling a Microsoft 365 quarantine review or release request. This is t
 
 5. Recurring false positives → security-noise-tuning: propose the narrowest fix (Tenant Allow/Block List entry for the sender/domain, or transport-rule adjustment) with a named approver and review date — not a blanket allow. "Release" and "allow" are different decisions — releasing one message does not require allowlisting the sender; treat allowlist proposals as separate security decisions.
 
-6. Document per the generic skill: requester verification, quarantine reason, evidence, verdict, who released what and when. The technician performs the portal action; you recommend and record.
+6. Document per the generic skill, in the internal note: requester verification, quarantine reason, evidence, verdict, who released what and when. The technician performs the portal action; you recommend and record.
 ```

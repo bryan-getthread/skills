@@ -4,11 +4,15 @@ description: Find clients whose sentiment is trending down, show the evidence an
 category: Account Management
 tools: [search_tickets, search_clients, search_contacts]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Sentiment Decline Watch
 
-**When to use:** "Which clients are getting unhappy with us?"; "show me sentiment trends across accounts this month"; or "why is <client>'s sentiment dropping, and what should I do?" Run it manually — for the full four-signal portfolio view, use Client Risk Scan.
+**When to use:** "Which clients are getting unhappy with us?"; "show me sentiment trends across accounts this month"; or "why is <client>'s sentiment dropping, and what should I do?" For the full four-signal portfolio view, use Client Risk Scan.
+
+**Run it:** across the portfolio or one named client — a manual internal watch, not a Flow.
 
 ## Prompt
 
@@ -19,8 +23,8 @@ conversation. Focus purely on the sentiment signal.
 1. Confirm scope (whole portfolio or a named client) and window. Default to the last 30
    days versus the prior 30.
 
-2. With search_tickets, find clients whose sentiment scores trend down across the two
-   windows. For a single named client, pull that client's scored threads directly.
+2. Find clients whose sentiment scores trend down across the two windows. For a single
+   named client, pull that client's scored threads directly.
 
 3. For each declining client, present:
    - Evidence: the trend in one line (direction, roughly how sharp, over what period). If

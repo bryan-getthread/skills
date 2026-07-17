@@ -4,11 +4,15 @@ description: Draft a planned-work notice for clients — what's happening, when,
 category: Communication
 tools: [search_tickets, view_openDraft]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Maintenance Window Notice
 
 **When to use:** "Draft the maintenance notice for Saturday's server patching" / "let the client know we're migrating their email this weekend" — any planned change with client-visible impact needs its heads-up.
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -16,9 +20,8 @@ connectors: []
 Draft the advance notice for planned work so clients are informed, not surprised — and nobody
 schedules a board meeting inside your maintenance window.
 
-1. Pull the specifics from the ticket or change record with search_tickets: what work, which
-   systems, date, start time WITH timezone, expected duration, and expected impact during the
-   window.
+1. Pull the specifics from the ticket or change record: what work, which systems, date, start
+   time WITH timezone, expected duration, and expected impact during the window.
 
 2. Draft:
    - What and when: the work in plain terms, date, start-end time with timezone, stated twice
@@ -34,9 +37,8 @@ schedules a board meeting inside your maintenance window.
 3. State when they'll hear from us again: confirmation after completion, or an update if the
    window extends.
 
-4. Present as an open draft via view_openDraft (in-app); over external MCP, output in chat
-   labeled "MAINTENANCE NOTICE DRAFT." Sending and choosing the audience is the technician's
-   action.
+4. Show me the draft for review, labeled "MAINTENANCE NOTICE DRAFT." Sending and choosing the
+   audience is the technician's action.
 
 Times come from the scheduled record, never assumed — always carry the timezone; multi-region
 clients get an explicit zone label. Never promise "no downtime" unless the change record says

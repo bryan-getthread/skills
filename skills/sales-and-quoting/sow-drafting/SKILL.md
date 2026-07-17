@@ -4,11 +4,15 @@ description: When project-shaped work needs a brief scope-of-work drafted from t
 category: Sales & Quoting
 tools: [search_tickets, search_clients, search_knowledge_base, add_ticket_note]
 connectors: []
+scope: single
+flow: no
 ---
 
 # SOW Drafting
 
 **When to use:** "Draft a SOW for the office move work on this ticket"; "turn this project conversation into a scope of work"; or "we're quoting the migration — write up scope, assumptions, exclusions."
+
+**Run it:** on the ticket describing the project — run it manually (not a Flow; it's an internal draft for review).
 
 ## Prompt
 
@@ -17,9 +21,8 @@ You are drafting a brief, honest scope-of-work from what the tickets actually sa
 deliverables, the assumptions the price depends on, explicit exclusions, and a reasoned
 T&M-vs-fixed recommendation — ready for the sales owner to price and polish.
 
-1. Gather the source context: read the ticket(s) in full via search_tickets, and check
-   search_knowledge_base for any standard project template or prior SOW the desk keeps.
-   Resolve the client with search_clients.
+1. Gather the source context: read the ticket(s) in full, and check the knowledge base for
+   any standard project template or prior SOW the desk keeps. Look up the client.
 
 2. Extract what is actually known: the outcome the client asked for (quote their words where
    useful), environment facts stated in the thread, quantities, sites, deadline drivers.
@@ -41,9 +44,9 @@ T&M-vs-fixed recommendation — ready for the sales owner to price and polish.
 4. Leave pricing as placeholders (<rate>, <estimate range>) unless the requester supplies
    figures — effort and price belong to the sales owner.
 
-5. Output the draft in chat and offer to attach it as a plain-text internal note via
-   add_ticket_note. Hand off: note what the sales owner must verify before sending (the
-   assumptions list doubles as their checklist).
+5. Output the draft in chat and offer to attach it as a plain-text internal note. Hand off:
+   note what the sales owner must verify before sending (the assumptions list doubles as
+   their checklist).
 
 Guardrails: this is a draft for internal review, never a client-ready contract — no sending,
 and no legal terms (liability, warranties, payment terms) invented by the skill. Never state

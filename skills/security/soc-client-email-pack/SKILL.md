@@ -4,11 +4,15 @@ description: A security event needs its first client outreach — pick the per-t
 category: Security
 tools: [search_tickets, search_contacts, view_openDraft, send_client_email]
 connectors: []
+scope: single
+flow: no
 ---
 
 # SOC Client Email Pack
 
 **When to use:** A security runbook reached the "notify the client" step; "draft the client email for this security ticket"; or a tech wants the right first message for a leaked-credential / BEC / inbox-rule / lookalike-domain event.
+
+**Run it:** on one ticket (the first client outreach for a security event).
 
 ## Prompt
 
@@ -41,9 +45,9 @@ Draft only; a human reviews and sends every security notification. Work it in or
    investigation."
 5. Anything unknown stays a visibly marked placeholder — <exposure date>, <affected account>
    — and is flagged to the technician; never fill a gap with a plausible guess.
-6. Present as a draft for human review (view_openDraft / send_client_email in-app). A human
-   sends. When running over external MCP, where draft tools are unavailable, output the
-   complete email text for the technician to copy.
+6. Present as a draft for a human to review and send. When running where in-app draft tools
+   are unavailable, output the complete email text for the technician to copy — a human sends
+   either way.
 
 Guardrails — always:
 - Draft only — a human reviews and sends every security notification.
@@ -55,6 +59,6 @@ Guardrails — always:
   resolves them.
 - Defensive writing throughout; disclosure scope and timing follow the client's incident
   policy and management direction.
-- Degradation: send_client_email and view_openDraft are in-app only — over external MCP,
-  deliver the draft as text output.
+- Degradation: in-app draft/send tools may be unavailable over external MCP — deliver the
+  draft as text output for a human to send.
 ```

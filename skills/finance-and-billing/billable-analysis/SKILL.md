@@ -4,11 +4,15 @@ description: When someone asks how billable hours break down by technician, clie
 category: Finance & Billing
 tools: [search_tickets, search_members, search_clients]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Billable Analysis
 
 **When to use:** "How many billable hours did <tech> log last month?" / "show billable vs unbillable by client this quarter" / "how much billable time is sitting uninvoiced?" / "which techs have the lowest billable ratio this period?"
+
+**Run it:** across all techs or clients for a period, or sliced to the set you point me at — run it manually (not a Flow; there's no schedule trigger).
 
 ## Prompt
 
@@ -20,9 +24,9 @@ invoiced.
 1. Confirm scope with the requester: period, and whether to slice by technician, client, or
    both. If no period given, default to the last full calendar month and say so.
 
-2. Pull tickets with time entries for the period using search_tickets. Run one search per
-   technician (from search_members) or per client (from search_clients) rather than one giant
-   query, so result caps hit per-slice, not globally.
+2. Read the tickets with time entries for the period. Run one search per technician (look up
+   the techs) or per client (look up the clients) rather than one giant query, so result caps
+   hit per-slice, not globally.
 
 3. From each ticket's time entries, sum hours by billable flag. Time entries are the source
    of truth — do not infer billability from ticket type, board, or agreement name.

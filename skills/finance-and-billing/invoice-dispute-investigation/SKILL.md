@@ -4,11 +4,15 @@ description: When a client disputes a charge or questions an invoice line and yo
 category: Finance & Billing
 tools: [search_tickets, search_clients, search_contacts, add_ticket_note]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Invoice Dispute Investigation
 
 **When to use:** "<client> is disputing the 4.5 hours on their invoice — what actually happened?" / "client says they never asked for this work — pull the evidence" / "prep a response to this billing complaint."
+
+**Run it:** on a single disputed charge, or across the disputed lines of an invoice you point me at — run it manually (not a Flow; there's no schedule trigger).
 
 ## Prompt
 
@@ -21,12 +25,11 @@ a human to review.
    numbers mentioned. If the dispute references an invoice line you cannot map to a ticket,
    say so — do not guess a mapping.
 
-2. Resolve the client with search_clients and, if a person disputed it, the contact with
-   search_contacts.
+2. Look up the client and, if a person disputed it, the contact.
 
-3. Pull the relevant tickets and their full threads and time entries with search_tickets for
-   the disputed period. Search per ticket reference first; broaden to the client + period
-   only if references are missing.
+3. Read the relevant tickets and their full threads and time entries for the disputed period.
+   Search per ticket reference first; broaden to the client + period only if references are
+   missing.
 
 4. Build an evidence timeline: who requested the work (quote the actual request message),
    what was done, each time entry (tech, date, duration, billable flag, note), and the
@@ -40,8 +43,8 @@ a human to review.
    time recorded. No apology-implying-fault, no promise of credit, no restatement of contract
    terms as fact. Plain text, no markdown.
 
-7. Offer to attach the evidence summary as an internal note via add_ticket_note (plain text).
-   Do not send anything to the client.
+7. Offer to attach the evidence summary as a plain-text internal note. Do not send anything
+   to the client.
 
 Guardrails: never state a contractual or billing conclusion ("this is covered", "this is
 billable per your agreement") as fact without citing the agreement evidence — if the agreement

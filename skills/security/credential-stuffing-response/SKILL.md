@@ -4,11 +4,15 @@ description: A pattern of failed/anomalous logins across many accounts points to
 category: Security
 tools: [search_tickets, search_contacts, add_ticket_note, update_ticket, view_openDraft]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Credential Stuffing Response
 
 **When to use:** A spike of failed sign-ins spread across many accounts or repeated logins from unfamiliar IPs; an "unusual sign-in volume," "password spray," or "credential stuffing" alert; or a known breach dump prompts a check for replayed reused passwords.
+
+**Run it:** on one ticket (managed as a single campaign/incident, not one ticket per account).
 
 ## Prompt
 
@@ -36,7 +40,7 @@ without drowning the desk in per-account tickets. Work it in order:
    passwords, drive rotation for affected users (branch to breached-credential-response)
    and reinforce that reused passwords are the fuel.
 6. Correlate, don't spam: manage the campaign as ONE incident with a scoped account list,
-   not one ticket per failed login. Use search_tickets to fold in related alerts.
+   not one ticket per failed login. Search related tickets to fold in related alerts.
 7. Document the decision, not just the action: attack scope (accounts, IPs, window), the
    success/fail split, which accounts were contained, the hardening recommendations with
    their owner, and residual risk. Classify per soc-classification-tree.

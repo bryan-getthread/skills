@@ -4,11 +4,15 @@ description: Tier every open ticket by SLA exposure — Breached / Critical / Hi
 category: QA & Closure
 tools: [search_tickets, list_boards, list_ticket_priorities, add_ticket_note, update_ticket]
 connectors: []
+scope: global
+flow: no
 ---
 
 # SLA Breach Risk Tiering
 
 **When to use:** "What's at risk of breaching?" / "tier the queue by SLA risk" / "anything breached overnight?" — the dispatcher's morning and pre-EOD passes, or feeding an escalation huddle a defensible priority order.
+
+**Run it:** across all open tickets (manually or on a schedule).
 
 ## Prompt
 
@@ -18,11 +22,11 @@ breaching today/tomorrow, and worth watching. Remaining time sets the base tier;
 shows moves tickets up or down.
 
 1. Establish the SLA scheme: per-priority response/resolution targets from the desk's config as
-   the user states them, or the priority mapping via list_ticket_priorities with the desk's
-   default targets. If no targets are known, ask — never invent an SLA.
+   the user states them, or the priority mapping from the available levels with the desk's default
+   targets. If no targets are known, ask — never invent an SLA.
 
-2. Pull open tickets with search_tickets, split per board (list_boards) and per priority; disclose
-   result caps — a missed board in an SLA sweep is exactly the ticket that breaches.
+2. Pull open tickets, split per board and per priority; disclose result caps — a missed board in an
+   SLA sweep is exactly the ticket that breaches.
 
 3. For each ticket, compute remaining time to the nearest applicable SLA target (first response
    for unanswered tickets, resolution otherwise), respecting SLA clock pauses where waiting
@@ -47,19 +51,19 @@ shows moves tickets up or down.
 
 7. Output the tier board: Breached first with age-past-target, then Critical / High / Watch each
    sorted by remaining time; per line: ticket, client, priority, remaining/overdue time,
-   adjustment factor if any, recommended move. On request, add_ticket_note a plain-text risk flag
-   or update_ticket to assign/escalate — with confirmation, never in bulk.
+   adjustment factor if any, recommended move. On request, leave a plain-text risk-flag note or
+   assign/escalate the ticket — with confirmation, never in bulk.
 
 If the scheme is unknown or a ticket's target is ambiguous, put it in an UNKNOWN bucket and say
 what's missing. Breached tickets are reported without spin: age past target, not "slightly over."
 Read-mostly: notes, assignments, and escalations happen only on explicit approval.
 
-Unattended (Flows): the entire reply is the artifact — a plain-text tier digest, no narration, no
-questions. Deterministic inputs from the flow: board list, per-priority SLA targets, tier
-horizons, business calendar — none ever inferred; if SLA targets aren't supplied, reply exactly
-"SLA TARGETS NOT CONFIGURED - NO REPORT." Format: Breached / Critical / High / Watch sections, one
-line per ticket. Ambiguous-target tickets go in an UNKNOWN section, never guessed into a tier.
-Capped searches labeled "at least N". Factor adjustments (step 5) do NOT run in this variant —
-thread-evidence bumps are judgment and stay attended; base tiers by remaining time only. Permitted
-writes: none. Zero open tickets in scope → reply exactly "NO TICKETS AT RISK."
+Running unattended (from a scheduler): the entire reply is the artifact — a plain-text tier
+digest, no narration, no questions. Deterministic inputs: board list, per-priority SLA targets,
+tier horizons, business calendar — none ever inferred; if SLA targets aren't supplied, reply
+exactly "SLA TARGETS NOT CONFIGURED - NO REPORT." Format: Breached / Critical / High / Watch
+sections, one line per ticket. Ambiguous-target tickets go in an UNKNOWN section, never guessed
+into a tier. Capped searches labeled "at least N". Factor adjustments (step 5) do NOT run in this
+variant — thread-evidence bumps are judgment and stay attended; base tiers by remaining time only.
+Permitted writes: none. Zero open tickets in scope → reply exactly "NO TICKETS AT RISK."
 ```

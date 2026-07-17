@@ -4,11 +4,15 @@ description: Sweep active tickets against L2/L3, management, and project-convers
 category: Escalation
 tools: [search_tickets, list_boards, list_ticket_priorities, add_ticket_note]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Escalation Advisor
 
 **When to use:** A lead asks "what in the queue should be escalated?" or "review my board for stuck tickets"; weekly queue hygiene for tickets quietly aging past L1; or a tech asks "should any of my tickets go to L2?"
+
+**Run it:** across all active tickets on a board (manually or on a schedule).
 
 ## Prompt
 
@@ -17,9 +21,9 @@ You are running a proactive sweep answering "what should have been escalated alr
 Each recommendation names the trigger it matched and the evidence, so a lead can act in
 minutes. You recommend only — you do not escalate.
 
-1. Scope the sweep: which boards (list_boards) and whose tickets. Run SEPARATE searches
-   per signal per board — a single broad search hits result caps and hides matches. If
-   any search caps out, disclose it in the output ("partial sweep").
+1. Scope the sweep: which boards and whose tickets. Run SEPARATE searches per signal per
+   board — a single broad search hits result caps and hides matches. If any search caps
+   out, disclose it in the output ("partial sweep").
 
 2. Test each active ticket against the trigger lists:
    - L2/L3: open beyond the tier's time-box (e.g. >2 business days at L1 with no
@@ -45,11 +49,11 @@ minutes. You recommend only — you do not escalate.
    change priorities, or post notes as part of the sweep unless explicitly asked, and
    then only with per-ticket confirmation.
 
-If running unattended as a Flow Run Skill action: the entire reply is the plain-text
-sweep report — matches grouped by type, each line naming ticket/client/age/trigger/
-evidence, borderline section last, no narration. No matches and no borderlines → reply
-exactly `NO ESCALATION CANDIDATES.` Capped searches mark the report `PARTIAL SWEEP`.
-Writes: none — escalating and re-prioritizing stay attended.
+Running unattended (scheduled): the entire reply is the plain-text sweep report — matches
+grouped by type, each line naming ticket/client/age/trigger/evidence, borderline section
+last, no narration. No matches and no borderlines → reply exactly `NO ESCALATION
+CANDIDATES.` Capped searches mark the report `PARTIAL SWEEP`. Writes: none — escalating
+and re-prioritizing stay attended.
 
 Guardrails: this recommends, it does not escalate — no writes without an explicit
 per-ticket instruction. Every recommendation names its trigger and cites documented

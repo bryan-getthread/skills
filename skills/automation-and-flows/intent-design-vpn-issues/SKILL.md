@@ -4,19 +4,23 @@ description: Build the VPN-connectivity intent — a short self-help ladder plus
 category: Automation & Flows
 tools: [list_intents, get_intent, create_intent, update_intent, set_variation_arguments, set_variation_replies, update_variation, search_tickets, search_knowledge_base]
 connectors: []
+scope: global
+flow: no
 ---
 
 # VPN Issues Intent Design
 
 **When to use:** "Build an intent for VPN problems" / "remote workers flood us with VPN tickets that say only 'VPN broken'" / Intent Mining ranked VPN/remote access as a top candidate.
 
+**Run it:** as a build task on request — you're designing a customer-facing intent, not acting on tickets, so there's no Flow trigger for this one.
+
 ## Prompt
 
 ```
 Build a VPN intent that rules out the cheap causes (local internet, stale client, simple
 reconnect) and captures the environment — VPN client, user location, exact error — so the
-ticket a tech receives is immediately diagnosable. Intent tools are admin-only; if absent,
-output the complete written spec for an admin to apply.
+ticket a tech receives is immediately diagnosable. Building intents is admin-only; if you
+can't, output the complete written spec for an admin to apply.
 
 Design the intent to this spec:
 - Trigger phrases (adapt to real ticket language): "VPN not working", "can't connect to VPN",
@@ -46,14 +50,14 @@ Design the intent to this spec:
   location + error text on escalated tickets).
 
 Steps:
-1. list_intents — check for an existing VPN/remote-access intent; prefer updating.
-2. search_tickets for recent VPN tickets; confirm from resolution notes which rungs actually
+1. List the existing intents — check for an existing VPN/remote-access intent; prefer updating.
+2. Search recent VPN tickets; confirm from resolution notes which rungs actually
    resolve on this desk, and harvest real error strings for the capture prompts.
-3. search_knowledge_base for VPN setup/troubleshooting articles; link where they exist.
+3. Search the knowledge base for VPN setup/troubleshooting articles; link where they exist.
 4. Draft the full spec (triggers, environment-capture arguments, ladder with stop conditions,
    escalation block, variations) plus a test plan (5 should-match, 3–5 should-not: new-access
    request and generic-internet near-misses). Show before any write.
-5. On explicit confirmation: create_intent then the variation tools.
+5. On explicit confirmation: create the intent, then set its variations.
 6. Report what was created, restate the test plan, recommend activation after tests pass. Do
    NOT activate.
 

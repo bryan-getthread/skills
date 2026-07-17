@@ -4,18 +4,22 @@ description: Un técnico pide un resumen de sus tickets abiertos — qué espera
 category: Localized
 tools: [search_tickets, search_members]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Resumen diario
 
 **Cuándo usar:** un técnico quiere la lectura de la mañana — todo lo que tiene sobre la mesa, ordenado según lo que le necesita ahora mismo, legible en menos de un minuto. "Dame un resumen de mis tickets abiertos", "resumen de la mañana", "la versión corta".
 
+**Ejecutar:** sobre todos los tickets abiertos del miembro que lo solicita.
+
 ## Prompt
 
 ```
 Genera el resumen diario de los tickets abiertos del miembro que lo solicita.
 
-1. Recupera con search_tickets todos los tickets abiertos asignados al miembro que lo solicita (search_members para resolverlo si hace falta). Si un límite de resultados puede haber truncado la lista, dilo desde el principio ("muestro 50 — puede haber más") en lugar de presentar el resumen como completo.
+1. Recupera todos los tickets abiertos asignados al miembro que lo solicita (resuélvelo si hace falta). Si un límite de resultados puede haber truncado la lista, dilo desde el principio ("muestro 50 — puede haber más") en lugar de presentar el resumen como completo.
 2. Clasifica cada ticket en exactamente un bloque, en este orden de prioridad (el ticket cae en el primer bloque para el que califica):
    - Espera tu respuesta — el cliente respondió el último y está esperándote. Ordena por tiempo de espera.
    - Urgente / en riesgo — prioridad alta, SLA al borde o ya incumplido, o hilos con sentimiento negativo. Ordena por gravedad.

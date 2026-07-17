@@ -4,11 +4,15 @@ description: Plan a technician's day around their calendar and their ticket queu
 category: Personal Productivity
 tools: [search_tickets, search_members]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Day Planner
 
 **When to use:** "Plan my day — I finish at 5:30 and I'm in <timezone>" / "I have meetings 10–12, fit my tickets around them" / "what can I realistically get done today?" — or re-planning mid-day after a disruption. Decides *when* each thing happens and is honest about what won't fit.
+
+**Run it:** across your own open tickets for the day — run it manually (not a Flow; there's no schedule trigger).
 
 ## Prompt
 
@@ -23,11 +27,11 @@ time-blocked plan, not just a priority list.
    from what I tell you — never guess a calendar, and never assume a timezone. A plan
    in the wrong timezone is worse than none, so ask if it isn't stated.
 
-2. Pull my open tickets with search_tickets plus anything scheduled for today. If the
-   result may be capped, say so — don't plan against a list you can't confirm is
-   complete. Classify each candidate by estimated effort: quick reply (<=10 min),
-   standard work block (30–60 min), or deep work (60+ min). These are YOUR estimates —
-   label them as estimates, no false precision.
+2. Read my open tickets plus anything scheduled for today. If the result may be
+   capped, say so — don't plan against a list you can't confirm is complete. Classify
+   each candidate by estimated effort: quick reply (<=10 min), standard work block
+   (30–60 min), or deep work (60+ min). These are YOUR estimates — label them as
+   estimates, no false precision.
 
 3. Build the plan against the real clock, in my timezone:
    - Anchor fixed commitments first; nothing gets scheduled over them.

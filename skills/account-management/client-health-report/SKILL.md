@@ -4,11 +4,15 @@ description: Summarize one client's support health for a period — volume vs th
 category: Account Management
 tools: [search_tickets, search_clients]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Client Health Report
 
-**When to use:** "Give me a health report for <client> this week"; "how is <client> doing on support lately?"; or a recurring weekly health-check run over each managed client. Run it manually on demand.
+**When to use:** "Give me a health report for <client> this week"; "how is <client> doing on support lately?"; or a recurring weekly health-check run over each managed client.
+
+**Run it:** across a client's period of tickets (or each managed client in turn) — a manual report, not a Flow.
 
 ## Prompt
 
@@ -16,12 +20,10 @@ connectors: []
 You are producing a periodic read on a single client's support activity and risk
 signals, ending in a short list of things to actually do about it.
 
-1. Confirm the client with search_clients and the date range. Default to the previous
-   full week.
+1. Confirm the client (look it up) and the date range. Default to the previous full week.
 
-2. Pull the period's tickets with search_tickets and the prior period's for comparison.
-   Exclude auto-resolved tickets and merged threads from all counts — they are noise, not
-   demand.
+2. Pull the period's tickets and the prior period's for comparison. Exclude auto-resolved
+   tickets and merged threads from all counts — they are noise, not demand.
 
 3. If the period has no meaningful activity, stop and say so in one line ("No reportable
    activity for <client> this period"). Do not pad an empty report.

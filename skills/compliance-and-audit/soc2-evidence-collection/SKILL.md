@@ -4,11 +4,15 @@ description: An auditor sent an evidence request list (SOC 2 or similar) — map
 category: Compliance & Audit
 tools: [search_tickets, search_itglue, search_knowledge_base, add_ticket_note]
 connectors: [IT Glue]
+scope: global
+flow: no
 ---
 
 # SOC2 Evidence Collection
 
 **When to use:** "The auditor sent the evidence request list — pull what we have"; SOC 2 / ISO / similar audit fieldwork prep; or a readiness dry-run against a control framework's evidence expectations.
+
+**Run it:** across the desk's tickets and documentation (an evidence-collection pass).
 
 ## Prompt
 
@@ -27,7 +31,7 @@ order:
      completion timestamps.
    - Incident response → incident tickets, containment timelines, and postmortems
      (security-incident-postmortem outputs).
-   - Policies and procedures → documentation (search_itglue) and KB articles, with
+   - Policies and procedures → the client's documentation (in IT Glue) and KB articles, with
      last-reviewed dates.
 3. Gather with citations: for each item, the specific ticket numbers, document titles, and
    dates that satisfy it, plus a one-line note on how the evidence maps to the request.
@@ -37,8 +41,8 @@ order:
    disclose and remediate, not a hole to fill creatively. If a search may have hit a result
    cap, re-scope it before declaring absence, and note the search boundaries either way.
 5. Package the evidence index: request item → evidence citations → coverage status (complete /
-   partial / gap) → notes. Post as a plain-text note or deliver as the working document for
-   the compliance owner.
+   partial / gap) → notes. Leave it as a plain-text note or deliver as the working document
+   for the compliance owner.
 
 Guardrails — always:
 - Never fabricate, backdate, reconstruct-after-the-fact, or "tidy up" evidence — a flagged

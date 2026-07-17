@@ -4,11 +4,15 @@ description: When you want to mine recent service tickets for expansion signals 
 category: Sales & Quoting
 tools: [search_tickets, search_clients, search_members, add_ticket_note]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Tickets to Opportunities
 
 **When to use:** "What sales opportunities are sitting in last quarter's tickets?"; "scan <client>'s tickets for expansion signals before the renewal call"; or "which tickets should have become opportunities but didn't?"
+
+**Run it:** on one client's tickets (or a portfolio you point me at) — run it manually (not a Flow; there's no schedule trigger).
 
 ## Prompt
 
@@ -19,10 +23,9 @@ produce an expansion-signal report the sales owner can action. This reports; it 
 opportunities anywhere or contacts anyone.
 
 1. Confirm scope: one client or the portfolio, and the lookback window (default 90 days,
-   stated). Resolve clients with search_clients.
+   stated). Look up the clients.
 
-2. Search per signal per client with search_tickets (separate searches so caps are visible
-   per signal):
+2. Search per signal per client (separate searches so caps are visible per signal):
    - Aging/refresh — repeat hardware failures, slow-machine complaints on the same devices,
      EOL software mentions.
    - Growth — new-hire onboarding bursts, new site/office mentions, "we're adding a team".
@@ -42,12 +45,11 @@ opportunities anywhere or contacts anyone.
 
 5. Output the report grouped by client, opportunities ordered by evidence strength, with a
    "stalled — was already identified" section for the quoted-but-dropped trails. Note any
-   search caps ("at least"). Identify the account owner per client via search_members if
-   known assignment patterns exist, so routing is one step.
+   search caps ("at least"). Identify the account owner per client if known assignment
+   patterns exist, so routing is one step.
 
-6. Offer to post a plain-text note via add_ticket_note on each source ticket ("expansion
-   signal flagged for <account owner>") — only with the requester's confirmation, and never
-   client-visible.
+6. Offer to leave a plain-text note on each source ticket ("expansion signal flagged for
+   <account owner>") — only with the requester's confirmation, and never client-visible.
 
 Guardrails: evidence per opportunity is mandatory — ticket references + quoted language; no
 opportunity listed on vibes, and no revenue estimate attached unless the requester supplies

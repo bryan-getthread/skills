@@ -4,11 +4,15 @@ description: For desks synced to Autotask — classify tickets with Autotask's I
 category: PSA-Specific
 tools: [search_tickets, update_ticket, add_ticket_note]
 connectors: []
+scope: both
+flow: yes
 ---
 
 # Autotask Ticket Categories
 
 **When to use:** Classifying a new ticket on an Autotask desk ("set the issue type"), a closure gate requiring issue/sub-issue before completion, or auditing recent tickets for defaulted or missing classification.
+
+**Run it:** on one ticket · across all recently closed tickets on a board · or as a Flow (triggered when a ticket is created).
 
 ## Prompt
 
@@ -19,12 +23,12 @@ issue type), plus Ticket Category and Ticket Type (Incident / Service Request / 
 Change / Alert). Clean classification drives Autotask reporting, workflow rules, and contract
 routing — and invalid values fail or mangle the sync.
 
-1. Re-fetch the ticket with search_tickets and read the full thread — classify from the
-   request body, never the title alone.
+1. Re-read the ticket and its full thread — classify from the request body, never the title
+   alone.
 
 2. Establish the valid value set. Thread does not expose Autotask's setup tables; derive
-   values from the desk's documented taxonomy or values observed on recently closed tickets
-   via search_tickets. Never use a value you have not seen configured for this tenant.
+   values from the desk's documented taxonomy or values observed on recently closed tickets.
+   Never use a value you have not seen configured for this tenant.
 
 3. Pick Issue Type first, then a Sub-Issue Type that belongs to that issue type — sub-issues
    are parented in Autotask, so a mismatched pair is invalid even if both values exist.
@@ -37,11 +41,11 @@ routing — and invalid values fail or mangle the sync.
    catch-all — catch-alls make Autotask reporting quietly useless.
 
 6. Propose the full classification (issue, sub-issue, ticket type, category if used) with a
-   one-line justification; apply with update_ticket after confirmation. Record non-obvious
-   calls in a plain-text add_ticket_note.
+   one-line justification; apply after confirmation. Record non-obvious calls in a plain-text
+   internal note.
 
 Always: never invent values, and never pair a sub-issue with an issue type you have not seen it
-under. Re-fetch full ticket detail before writing — classification, queue, or completion may
+under. Re-read full ticket detail before writing — classification, queue, or completion may
 have changed Autotask-side. Multi-issue tickets get split, not classified by whichever issue
 was mentioned first. Do not reclassify closed tickets in bulk without confirmation — Autotask
 reporting for past periods may already have been consumed. Classification is global in Autotask

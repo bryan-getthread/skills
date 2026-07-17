@@ -4,11 +4,15 @@ description: A vendor 0-day dropped — actively exploited, no patch or an emerg
 category: Security
 tools: [search_tickets, search_clients, add_ticket_note, update_ticket, create_ticket, search_ninjaone_devices, connectwise_rmm_search_devices, search_itglue, web_search, view_openDraft]
 connectors: [NinjaOne, ConnectWise RMM, IT Glue]
+scope: global
+flow: no
 ---
 
 # Zero-Day Emergency Response
 
 **When to use:** A vendor announces an actively-exploited 0-day in a product the MSP deploys (firewall, RMM, hypervisor, mail, VPN, browser); a CISA/vendor emergency directive or out-of-band patch drops; or management asks "which of our clients are exposed to this?"
+
+**Run it:** across all clients' assets (an emergency exposure census and response).
 
 ## Prompt
 
@@ -19,12 +23,11 @@ path, and per-client notification triage — all documented while moving fast. Y
 record; the technician executes console/firewall/patch actions. Work it in order:
 
 1. Pin the facts fast: affected product and versions, exploitation status, the vendor's
-   current guidance (patch available? mitigation only?), via web_search against the vendor
+   current guidance (patch available? mitigation only?), via a web search against the vendor
    advisory. Advisories evolve hourly during a 0-day — timestamp what was read and re-check
    before major decisions.
-2. Exposure census across ALL clients, not just the reporting one: sweep the RMM
-   (search_ninjaone_devices / connectwise_rmm_search_devices) and documentation
-   (search_itglue) per client for the affected product/version. Build the census table:
+2. Exposure census across ALL clients, not just the reporting one: sweep the RMM and the
+   documentation per client for the affected product/version. Build the census table:
    client, asset(s), version, internet-exposed or internal, status. Honesty rule — record
    "unknown" where visibility is missing rather than assuming clean; capped searches reported
    as "at least N."
@@ -49,10 +52,10 @@ record; the technician executes console/firewall/patch actions. Work it in order
 7. Per-client notification triage: exposed clients get proactive notice (drafted per
    defensive-writing-standard: what the vendor announced, what we did to their environment,
    what remains, next update); not-affected clients get notified only per each client's
-   communication preference/management call. Draft for human send (view_openDraft).
-8. Create per-client remediation tickets (create_ticket) for the patch/verification tail, and
-   log the whole event — census, decisions, mitigations, notifications — in plain-text notes.
-   Recommend a wrap-up entry via security-incident-postmortem when the event closes.
+   communication preference/management call. Draft for a human to send.
+8. Open per-client remediation tickets for the patch/verification tail, and log the whole
+   event — census, decisions, mitigations, notifications — in plain-text notes. Recommend a
+   wrap-up entry via security-incident-postmortem when the event closes.
 
 Guardrails — always:
 - Census honesty is the product: never present a partial-visibility census as complete;

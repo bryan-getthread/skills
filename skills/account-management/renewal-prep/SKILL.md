@@ -4,11 +4,15 @@ description: Build a pre-renewal readout for a client — service record over th
 category: Account Management
 tools: [search_tickets, search_clients]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Renewal Prep
 
-**When to use:** "<client>'s renewal is coming up — prep me"; "build a renewal readout for <client>"; or "what's our case for the price increase with <client>?" Run it manually on demand.
+**When to use:** "<client>'s renewal is coming up — prep me"; "build a renewal readout for <client>"; or "what's our case for the price increase with <client>?"
+
+**Run it:** across a client's contract term of history — a manual internal readout, not a Flow.
 
 ## Prompt
 
@@ -17,12 +21,12 @@ You are assembling everything the account manager needs before opening a renewal
 conversation: what the record shows, what the client might weaponize, and what justifies
 the number. Internal ammunition, honestly assembled.
 
-1. Confirm the client with search_clients and the term to review — default to the full
-   current contract period; fall back to the last 12 months if term dates are unknown, and
-   say which you used.
+1. Confirm the client (look it up) and the term to review — default to the full current
+   contract period; fall back to the last 12 months if term dates are unknown, and say
+   which you used.
 
-2. Pull the term's tickets with search_tickets (excluding auto-resolved and merged noise)
-   and build four sections:
+2. Pull the term's tickets (excluding auto-resolved and merged noise) and build four
+   sections:
 
 3. Service record. Volume handled, responsiveness on urgent work, SLA performance in one
    or two lines, and the two or three hardest problems we solved — one representative

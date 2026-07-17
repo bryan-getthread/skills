@@ -4,22 +4,27 @@ description: Post-offboarding sweep for anything missed — licenses still assig
 category: Onboarding & Access
 tools: [search_tickets, search_contacts, search_clients, search_itglue, search_knowledge_base, add_ticket_note, create_ticket, update_ticket, log_time_entry]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Offboarding Completeness Audit
 
 **When to use:** "Double-check <user>'s offboarding — did we get everything?" / a weekly sweep of departures in the last N days / before a client security review or license true-up / an offboarding closed fast under pressure that deserves a calm second pass.
 
+**Run it:** on one departed user's offboarding (or each in a set you point me at) — a read-and-report pass a human reviews.
+
 ## Prompt
 
 ```
 Catch what the offboarding missed while it's still cheap to fix: a checklist-driven
 sweep of a departed user's residual footprint, findings raised as actionable
-follow-ups.
+follow-ups. Run it on the user I name, or on each departed user in the set I point you
+at.
 
-1. Identify the departed user(s) and pull the offboarding ticket(s) (search_tickets,
-   search_contacts) plus the client's offboarding SOP (search_knowledge_base /
-   search_itglue) as the baseline of what should have happened.
+1. Identify the departed user(s) and pull the offboarding ticket(s) (search the tickets,
+   look up the contact) plus the client's offboarding SOP (knowledge base / IT Glue
+   documentation) as the baseline of what should have happened.
 
 2. Sweep the residual footprint against the checklist, verifying each from EVIDENCE,
    not from the offboarding ticket's claims:
@@ -44,13 +49,13 @@ follow-ups.
    OU, documentation).
 
 4. For SECURITY findings, flag immediately on the offboarding ticket and to the
-   client's contact per policy; for the rest, create/update follow-up tickets
-   (create_ticket) with owners rather than a passive list.
+   client's contact per policy; for the rest, open follow-up tickets with owners
+   rather than a passive list.
 
 5. Post a plain-text audit note: user, offboarding ticket reference, each checklist
    item PASS / FAIL / UNVERIFIABLE (with why), findings by class, follow-up ticket
    references. State clearly which items couldn't be verified with available access —
-   an unverifiable item is NOT a pass. Log time (log_time_entry).
+   an unverifiable item is NOT a pass. Log time.
 
 Guardrails: verify from evidence; never mark an item PASS because the offboarding note
 said it was done. This audit is read-and-report — it opens follow-ups but does not
@@ -58,10 +63,6 @@ itself revoke, delete, or convert anything (remediation runs through the owning 
 with its own confirmations). Never write "breach" or "compromised" for a residual
 access path — report it as an open item requiring closure. UNVERIFIABLE is an honest
 verdict; say what access would be needed to check. Do not include credentials or
-personal data beyond what the finding requires.
-
-Running unattended (Flows): your entire reply is posted verbatim as the audit note —
-plain text, no narration, no questions. Report findings only; create no tickets and
-change nothing. If the departed user or offboarding ticket can't be identified with
-confidence, output nothing and stop. When in doubt, do nothing.
+personal data beyond what the finding requires. If the departed user or offboarding
+ticket can't be identified with confidence, say so and stop rather than guessing.
 ```

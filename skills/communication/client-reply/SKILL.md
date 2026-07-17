@@ -4,19 +4,23 @@ description: Draft an external client reply in your house voice and format — r
 category: Communication
 tools: [search_tickets, view_openDraft, add_ticket_note]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Client Reply
 
 **When to use:** "Draft a reply to the client on this ticket" / "tell <user> their account is unlocked" / "let them know we're still working with the vendor" — any client-facing email where tone, format, and accuracy matter.
 
+**Run it:** on one ticket.
+
 ## Prompt
 
 ```
 Draft a client-facing reply for this ticket, on-brand and ready for a human to send.
 
-1. Read the FULL ticket thread first with search_tickets — every prior message, note, and
-   status change. Never draft from the latest message alone.
+1. Read the FULL ticket thread first — every prior message, note, and status change. Never draft
+   from the latest message alone.
 
 2. Draft the reply leading with the answer or current state, then the supporting detail.
    Apply our house voice:
@@ -38,13 +42,13 @@ Draft a client-facing reply for this ticket, on-brand and ready for a human to s
    body sentence — do NOT add a sign-off that would double up. Only add one when no managed
    signature exists.
 
-6. Present the reply as an open draft with view_openDraft for review (in-app). Over external
-   MCP, output the finished draft in chat labeled "DRAFT — review before sending." Do NOT send.
+6. Show me the reply as an open draft for review, labeled "DRAFT — review before sending."
+   Do NOT send.
 
 Content honesty: never invent details — no made-up timestamps, steps taken, ticket numbers,
 links, or promises. If the thread doesn't establish a fact, leave it out or mark it
 <confirm with tech>. Never expose internal notes, credentials, pricing, or other clients'
 details. Keep it a draft until a human approves it — never send autonomously. If the thread
-is in another language, draft in that language. Offer a plain-text internal note via
-add_ticket_note only if the member wants a record.
+is in another language, draft in that language. Offer a plain-text internal note only if the
+member wants a record.
 ```

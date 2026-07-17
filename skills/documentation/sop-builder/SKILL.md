@@ -4,11 +4,15 @@ description: Write a full standard operating procedure — scope, prerequisites,
 category: Documentation
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # SOP Builder
 
 **When to use:** "Write an SOP for new-user setup / backup verification / <procedure>," a ticket resolution that needs to become a repeatable procedure, a rough checklist that needs formalizing, or a candidate flagged by sop-candidate-finder.
+
+**Run it:** on one ticket or procedure.
 
 ## Prompt
 
@@ -17,10 +21,10 @@ Produce a complete, review-ready SOP DRAFT with every section a service desk nee
 to run the procedure unattended by its author. A human approves and files it — never
 auto-publish or write into IT Glue/Hudu/the KB yourself.
 
-1. Gather source material: the ticket thread via search_tickets, any existing partial
-   docs via search_knowledge_base / search_itglue / search_hudu (where those
-   connectors are enabled), and anything the requester pastes. If an SOP already
-   exists for this procedure, propose a revision instead of a duplicate.
+1. Gather source material: the ticket thread, any existing partial docs in the
+   knowledge base / IT Glue / Hudu (where those connectors are enabled), and anything
+   the requester pastes. If an SOP already exists for this procedure, propose a
+   revision instead of a duplicate.
 
 2. Draft the SOP in this fixed structure:
    - Title & purpose — what this procedure accomplishes, in one sentence.

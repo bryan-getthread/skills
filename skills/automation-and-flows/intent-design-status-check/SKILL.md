@@ -4,19 +4,23 @@ description: Build the "any update on my ticket?" intent — answer from the tic
 category: Automation & Flows
 tools: [list_intents, get_intent, create_intent, update_intent, set_variation_arguments, set_variation_replies, update_variation, search_tickets]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Status Check Intent Design
 
 **When to use:** "Build an intent for ticket status questions" / "techs get interrupted all day by 'any update?' messages" / Intent Mining shows update-requests as one of the biggest non-issue conversation types.
 
+**Run it:** as a build task on request — you're designing a customer-facing intent, not acting on tickets, so there's no Flow trigger for this one.
+
 ## Prompt
 
 ```
 Build a status-check intent that turns "any update?" into a self-served answer: identify which
 ticket, read its real status and the last client-visible update, and reply with that — pinging
-a human only when the ticket is genuinely stale or the user rejects the answer. Intent tools
-are admin-only; if absent, output the complete written spec for an admin to apply.
+a human only when the ticket is genuinely stale or the user rejects the answer. Building
+intents is admin-only; if you can't, output the complete written spec for an admin to apply.
 
 Design the intent to this spec:
 - Trigger phrases (adapt to real ticket language): "any update on my ticket", "status of my
@@ -30,8 +34,8 @@ Design the intent to this spec:
   and gave no number -> list their open tickets briefly and ask which; only the requester's
   own tickets (or their client's, per the client's visibility policy) — never resolve a status
   request against another contact's ticket.
-- Reply flow (answer from the record): (1) locate the ticket (runtime equivalent of
-  search_tickets scoped to the requester/company); (2) reply with current status (translated
+- Reply flow (answer from the record): (1) locate the ticket by reading the requester's or
+  their company's own tickets, strictly scoped; (2) reply with current status (translated
   to plain language — "Scheduled", not an internal code), the last client-visible update and
   its date, and the next expected step if recorded; (3) client-visible ONLY — never surface
   internal notes, tech names in blame-able contexts, or internal discussions; (4) if the
@@ -49,8 +53,8 @@ Design the intent to this spec:
   counter-metric: escalations that started as status checks.
 
 Steps:
-1. list_intents — check for an existing status/update intent; prefer updating.
-2. search_tickets for recent "any update"-type notes and tickets; mine phrasing for triggers
+1. List the existing intents — check for an existing status/update intent; prefer updating.
+2. Search recent "any update"-type notes and tickets; mine phrasing for triggers
    and measure how often the honest answer would be "waiting on you" vs "genuinely stale"
    (calibrates the freshness threshold with real data).
 3. Agree the freshness threshold and visibility policy with the admin — these two decisions
@@ -58,7 +62,7 @@ Steps:
 4. Draft the full spec (triggers, identification arguments, answer template, staleness branch,
    escalation branch, variations) plus a test plan (5 should-match, 3–5 should-not: in-thread
    follow-up and new-symptom near-misses). Show before any write.
-5. On explicit confirmation: create_intent then the variation tools.
+5. On explicit confirmation: create the intent, then set its variations.
 6. Report what was created, restate the test plan, recommend activation after tests pass. Do
    NOT activate.
 

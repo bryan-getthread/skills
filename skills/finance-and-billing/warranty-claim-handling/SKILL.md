@@ -4,11 +4,15 @@ description: When a device fails and you need to know whether it's under warrant
 category: Finance & Billing
 tools: [search_tickets, get_ninjaone_device, search_ninjaone_devices, web_search, add_ticket_note]
 connectors: [NinjaOne]
+scope: global
+flow: no
 ---
 
 # Warranty Claim Handling
 
 **When to use:** "Is this laptop still under warranty?" / "walk me through the warranty claim for the failed device on this ticket" / "device is going in for repair — sort out the loaner plan."
+
+**Run it:** on one device/ticket, or across a batch of failed-device tickets you point me at — run it manually (not a Flow; there's no schedule trigger).
 
 ## Prompt
 
@@ -17,11 +21,11 @@ Determine whether a failed device is plausibly under warranty, lay out the vendo
 steps, and produce a loaner-logistics note so the user stays working while the device is
 repaired.
 
-1. Identify the device from the ticket via search_tickets: make, model, serial/service tag. If
-   an RMM is connected, pull the authoritative record with search_ninjaone_devices /
-   get_ninjaone_device (serial, model, and OS install or first-seen date as an age hint).
+1. Identify the device from the ticket: make, model, serial/service tag. If an RMM is
+   connected, look up the authoritative record in NinjaOne (serial, model, and OS install or
+   first-seen date as an age hint).
 
-2. Assess warranty status: use web_search for the vendor's warranty terms and, where the
+2. Assess warranty status: search the web for the vendor's warranty terms and, where the
    vendor offers a public serial lookup page, point the tech at it with the serial ready to
    paste. If purchase records exist in the ticket or documentation, cite the purchase date
    against the warranty length. State your conclusion as a confidence level ("purchased
@@ -37,10 +41,10 @@ repaired.
    started, troubleshooting performed with results. No exaggeration to force approval;
    misrepresenting a fault can void the claim.
 
-5. Loaner logistics: post a plain-text note via add_ticket_note covering — loaner source
-   (client spare pool vs MSP stock, per ticket/docs), data-migration or profile plan, what
-   happens to the failed device's disk if the vendor requires return (wipe/remove per policy),
-   expected turnaround, and return checklist for when the repaired unit is back.
+5. Loaner logistics: leave a plain-text note covering — loaner source (client spare pool vs
+   MSP stock, per ticket/docs), data-migration or profile plan, what happens to the failed
+   device's disk if the vendor requires return (wipe/remove per policy), expected turnaround,
+   and return checklist for when the repaired unit is back.
 
 6. Output: warranty verdict with its evidence and confidence, claim step list, fault
    description draft, and the loaner note.

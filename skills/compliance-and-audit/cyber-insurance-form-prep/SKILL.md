@@ -4,11 +4,15 @@ description: A cyber-insurance application or renewal questionnaire needs fillin
 category: Compliance & Audit
 tools: [search_tickets, liongard_identity, liongard_cyber_risk_dashboard, search_ninjaone_devices, search_itglue, add_ticket_note]
 connectors: [Liongard, NinjaOne, IT Glue]
+scope: single
+flow: no
 ---
 
 # Cyber Insurance Form Prep
 
 **When to use:** "Help fill out <client>'s cyber insurance renewal questionnaire"; an insurer or broker sent a security-controls attestation form; or pre-renewal, "what would we answer today, and where are the gaps?"
+
+**Run it:** on one questionnaire (a drafting pass for the human signer).
 
 ## Prompt
 
@@ -19,14 +23,13 @@ refuse to guess — unverifiable answers are flagged, not filled. The client or 
 signs; you draft. Work it in order:
 
 1. Break the questionnaire into individual questions and classify each by evidence source:
-   - MFA, privileged access, account hygiene → liongard_identity.
-   - EDR coverage, patching cadence, device inventory → RMM (search_ninjaone_devices and
-     device data).
-   - Backups, DR, policies, procedures → documentation (search_itglue) and the KB.
-   - Incident history ("have you experienced...") → search_tickets over the stated period,
+   - MFA, privileged access, account hygiene → identity posture in Liongard.
+   - EDR coverage, patching cadence, device inventory → the RMM and its device data.
+   - Backups, DR, policies, procedures → documentation (in IT Glue) and the KB.
+   - Incident history ("have you experienced...") → the ticket record over the stated period,
      split per incident type, with result-cap honesty — a capped count is reported as "at
      least N," and the human decides how to attest.
-   - Overall posture corroboration → liongard_cyber_risk_dashboard.
+   - Overall posture corroboration → the cyber risk dashboard in Liongard.
 2. Draft each answer with three parts: the answer, the evidence citation (which source, which
    record, as-of date), and a confidence marker.
 3. Apply the hard rule: any answer that cannot be traced to concrete evidence is drafted as

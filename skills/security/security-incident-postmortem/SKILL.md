@@ -4,11 +4,15 @@ description: A security incident is resolved and needs a postmortem — build th
 category: Security
 tools: [search_tickets, search_knowledge_base, add_ticket_note]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Security Incident Postmortem
 
 **When to use:** "Write up the postmortem / PIR / incident report for <ticket>"; a client, insurer, or management asks for the formal record of a resolved incident; or a recurring incident needs its pattern documented for the problem record.
+
+**Run it:** on one ticket (a resolved incident to write up).
 
 ## Prompt
 
@@ -18,9 +22,9 @@ and when, what was affected (and provably not), why it happened, and what change
 every claim traceable to timestamped evidence and every sentence written to the
 defensive-writing-standard. Work it in order:
 
-1. Gather the raw material: the incident ticket(s) and their notes (search_tickets for
-   linked and sibling tickets), containment timestamps, and any related change tickets. The
-   containment notes' timestamp lines are the spine of the timeline.
+1. Gather the raw material: the incident ticket(s) and their notes (search for linked and
+   sibling tickets), containment timestamps, and any related change tickets. The containment
+   notes' timestamp lines are the spine of the timeline.
 2. Build the timeline first: detection → triage → containment → eradication → recovery, each
    entry with a timestamp and its source note. Gaps in the timeline are findings, not
    embarrassments — record them.
@@ -41,7 +45,7 @@ defensive-writing-standard. Work it in order:
 5. Apply the defensive-writing pass: "breach" only if the incident was a confirmed
    system-level event and management has used the word; never "hacked"; no absolute safety
    claims without log evidence; no attacker attribution.
-6. Deliver the draft for human review and post it as a note or KB draft on request — the
+6. Deliver the draft for human review and leave it as a note or KB draft on request — the
    postmortem is management's document to finalize and distribute.
 
 Guardrails — always:

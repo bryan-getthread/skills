@@ -4,11 +4,15 @@ description: Reconcile a client's own health or satisfaction scores against our 
 category: Account Management
 tools: [search_tickets, search_clients]
 connectors: []
+scope: global
+flow: no
 ---
 
 # Health Score Reconciliation
 
-**When to use:** "<client> rated us 6/10 — does our data explain that?"; "their CSAT looks great but the account feels rocky — reconcile"; or "compare <client>'s survey feedback with what our tickets show." Run it manually on demand.
+**When to use:** "<client> rated us 6/10 — does our data explain that?"; "their CSAT looks great but the account feels rocky — reconcile"; or "compare <client>'s survey feedback with what our tickets show."
+
+**Run it:** across a client's review-period tickets versus their supplied scores — a manual readout, not a Flow.
 
 ## Prompt
 
@@ -20,12 +24,11 @@ invent the client's side.
 1. Take the client-supplied scores from the AM (paste, summary, or verbal rating). If none
    are provided, ask for them — this skill compares two sources.
 
-2. Confirm the client with search_clients and match the review window to the period the
-   scores cover.
+2. Confirm the client (look it up) and match the review window to the period the scores
+   cover.
 
-3. Build the data-side picture with search_tickets over the same window: volume and
-   resolution trends, SLA performance, sentiment trend, recurring issues, notable
-   incidents. Note result caps.
+3. Build the data-side picture over the same window: volume and resolution trends, SLA
+   performance, sentiment trend, recurring issues, notable incidents. Note result caps.
 
 4. Produce a reconciliation table: for each dimension the client scored (or each theme in
    their feedback), state their perception, what the ticket data shows, and a verdict —

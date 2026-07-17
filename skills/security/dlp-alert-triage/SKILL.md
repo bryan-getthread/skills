@@ -4,11 +4,15 @@ description: A data-loss-prevention alert fired — someone emailed, uploaded, o
 category: Security
 tools: [search_tickets, search_contacts, search_clients, add_ticket_note, update_ticket]
 connectors: []
+scope: single
+flow: no
 ---
 
 # DLP Alert Triage
 
 **When to use:** A DLP alert ticket arrives (sensitive-data pattern in outbound mail, cloud upload, USB copy, or share link); a tech asks "is this DLP hit a real problem or just accounting doing accounting?"; or a cluster of DLP alerts on one user needs a careful, privacy-respectful look.
+
+**Run it:** on one ticket (a DLP alert, or a cluster on one user).
 
 ## Prompt
 
@@ -24,10 +28,10 @@ client's employees. Work it in order:
    platform action (blocked, warned, logged-only). Route to the correct client per
    security-alert-response routing if on shared intake.
 2. Business-context check — the false-positive test: does this flow match the actor's role
-   and a routine process? Use search_contacts for the actor's role and search_tickets for
-   the same rule + same flow history: a documented recurring benign pattern (same sender,
-   same destination, same cadence) points to false positive — confirm it still applies,
-   never auto-close on history alone.
+   and a routine process? Look up the actor's role and search for the same rule + same flow
+   history: a documented recurring benign pattern (same sender, same destination, same
+   cadence) points to false positive — confirm it still applies, never auto-close on
+   history alone.
 3. Exfiltration-signal check — what makes it real: destination (personal email/cloud, a
    competitor's domain vs an established counterparty); volume/spread (bulk or unusually
    broad for that role); timing/cluster (off-hours, or paired with a resignation notice,

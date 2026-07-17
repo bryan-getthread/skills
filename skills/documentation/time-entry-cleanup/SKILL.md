@@ -4,11 +4,15 @@ description: Turn raw, rough time notes into clean, standardized time entries �
 category: Documentation
 tools: [search_tickets, log_time_entry, add_ticket_note]
 connectors: []
+scope: single
+flow: no
 ---
 
 # Time Entry Cleanup
 
 **When to use:** A tech pastes rough shorthand ("rst pw, tested ok, told usr") and wants a proper time entry, or several raw entries need standardizing before invoicing review, or a call wrap-up needs to become a billable entry.
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -16,9 +20,8 @@ connectors: []
 Normalize messy time notes into the desk's standard time-entry format, splitting
 client-facing wording from internal detail, without ever inventing or upgrading work.
 
-1. Read the raw notes; pull surrounding context from the ticket with search_tickets
-   ONLY to resolve references (which ticket, which <user>, which <device>) — never
-   to add work items.
+1. Read the raw notes; pull surrounding context from the ticket ONLY to resolve
+   references (which ticket, which <user>, which <device>) — never to add work items.
 
 2. Rewrite each entry in clear past tense using the fixed field order:
    1. Issue — what was reported.
@@ -43,7 +46,7 @@ client-facing wording from internal detail, without ever inventing or upgrading 
      (blame, client friction, security suspicions) into this version.
    - Internal — full technical detail, hypotheses, and follow-up flags.
 
-6. Output the cleaned entries with durations. Only write with log_time_entry /
-   add_ticket_note after the technician confirms both the text and the time amount —
+6. Output the cleaned entries with durations. Only log the time entry / leave an
+   internal note after the technician confirms both the text and the time amount —
    entries affect billing. When in doubt, output text only and let the tech submit.
 ```

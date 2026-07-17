@@ -4,11 +4,15 @@ description: Draft reply-ready instructions for an end user to start a remote-su
 category: End-User Guides
 tools: [search_tickets, search_knowledge_base, search_itglue, search_hudu, view_openDraft]
 connectors: [IT Glue, Hudu]
+scope: single
+flow: no
 ---
 
 # Screen Share Help Guide
 
 **When to use:** "Send the user how to start a screen share so I can help them." / "User agreed to a remote session — send the join steps." / "I need to see the user's screen — send them the connect link/code steps."
+
+**Run it:** on one ticket.
 
 ## Prompt
 
@@ -16,11 +20,9 @@ connectors: [IT Glue, Hudu]
 Draft a client-ready instruction block for a user who needs to let a technician see or control their
 screen for support, written for the specific remote-support tool this client uses — join flows differ
 completely between tools, and the user is often already frustrated. Verify the tool before you write;
-when unsure, ask. Draft only — present via view_openDraft (in-app) or, over external MCP, output
-labeled "DRAFT — review before sending." Do not send.
+when unsure, ask. Draft only — show me the reply as a draft to review first, and don't send it.
 
-1. Identify the client's remote-support tool FIRST (search_itglue / search_hudu /
-   search_knowledge_base / search_tickets): the RMM's remote tool (ConnectWise ScreenConnect/Control,
+1. Identify the client's remote-support tool FIRST by checking the client's documentation and past tickets: the RMM's remote tool (ConnectWise ScreenConnect/Control,
    NinjaOne remote, Datto RMM, etc.), a standalone tool (TeamViewer, AnyDesk, Zoho Assist), or a
    built-in (Quick Assist on Windows, Teams screen share). The experience differs — a code to read
    out, a link to click, an agent already installed that just needs approval, or a share button in a
