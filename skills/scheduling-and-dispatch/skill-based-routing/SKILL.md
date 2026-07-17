@@ -55,5 +55,6 @@ of overstating fit. Ties or thin evidence → ask, don't pick. Never route to th
 inactive members, or around a client-specific routing rule/pinned exclusion. Show counts
 and recency for every candidate. If searches hit caps, say the expertise picture may be
 incomplete. This recommends and assigns on confirmation — it's not for silent auto-assign;
-use Workload-Balancing or Round-Robin for unattended flows.
+use Workload-Balancing or Round-Robin for unattended flows, or Pod-Based Dispatch when each
+client is aligned to a dedicated service team.
 ```

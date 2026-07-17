@@ -2,7 +2,7 @@
 name: Smart Dispatch
 description: The composite dispatcher partners keep asking for — classify a new ticket, consult a routing matrix (tech specialties plus client familiarity from resolved-ticket history), then assign and schedule it in one pass.
 category: Scheduling & Dispatch
-tools: [search_tickets, search_members, search_clients, list_boards, list_ticket_priorities, update_ticket, schedule_ticket, add_ticket_note]
+tools: [search_tickets, search_members, search_clients, list_boards, list_ticket_priorities, list_ticket_statuses, update_ticket, schedule_ticket, add_ticket_note]
 connectors: []
 scope: single
 flow: yes
@@ -46,16 +46,21 @@ assign the winner, and put the work on their schedule — with the reasoning wri
    classification (small default block unless the desk configured durations per ticket
    type).
 
-6. Record. Post a plain-text internal note: the classification, the score table (winner,
+6. Advance the status — only because the assignment succeeded. If the desk uses an
+   "Assigned" status for dispatched work, move the ticket to it; if no such status exists,
+   leave status alone. Never change priority.
+
+7. Record. Post a plain-text internal note: the classification, the score table (winner,
    runner-up, formula inputs), and the scheduled block. No markdown, no emojis — this note
    may sync to a PSA.
 
-Running unattended in a Flow: your entire reply is posted verbatim as the note — plain
-text, no narration, no questions. Act only on a clear winner (single top scorer after
+Running as an agent in a Flow (unattended): your entire reply is posted verbatim as the
+note — plain text, no narration, no questions. Complete the full path (classify → route →
+assign → schedule → status → note) only on a clear winner (single top scorer after
 exclusions, confident classification, client rule respected); otherwise make no writes and
 post "Smart dispatch: no unambiguous assignment (reason). Left for dispatcher." with the
-score table. Never touch status or priority. If the ticket already has an owner or a
-schedule entry, do nothing and post nothing.
+score table. Advance status only on a successful assignment; on any hand-off, leave status
+alone. If the ticket already has an owner or a schedule entry, do nothing and post nothing.
 
 Guardrails: honesty about calendars — this is NOT capacity-calendar-aware (no Planner/
 Outlook read on the tool surface); it schedules against Thread schedule entries only. When
@@ -63,5 +68,7 @@ exact timing matters, pair with Calendar-Aware Scheduling in attended mode. Show
 — every assignment carries its score breakdown. Client-specific routing rules beat every
 score. Never assign to the requester, an inactive/excluded member, or reassign a ticket
 that already has an owner. Per-candidate searches can cap — report familiarity as minimums
-when capped. When in doubt, do nothing beyond the diagnostic note.
+when capped. When in doubt, do nothing beyond the diagnostic note. If clients are aligned to
+dedicated service pods, use Pod-Based Dispatch to scope the candidate pool to the client's
+team before scoring.
 ```
