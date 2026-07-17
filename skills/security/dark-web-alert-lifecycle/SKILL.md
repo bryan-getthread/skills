@@ -3,37 +3,61 @@ name: Dark Web Alert Lifecycle
 description: A dark-web or credential-exposure monitoring alert arrived — age it, close stale exposures with a documented note, and notify affected users with rotation guidance on fresh ones.
 category: Security
 tools: [search_tickets, search_contacts, add_ticket_note, update_ticket, view_openDraft]
+connectors: []
 ---
 
 # Dark Web Alert Lifecycle
 
-Dark-web feeds resurface the same decade-old leaks endlessly. This lifecycle separates stale re-reports (close with a note) from fresh exposures (notify, rotate, verify MFA) — with a hard policy line on what never happens to the leaked data itself.
+**When to use:** A dark-web monitoring alert lands as a ticket (exposed email, password, hash, or PII); a batch of credential-exposure alerts needs working; or a Flow auto-processes the dark-web alert board.
 
-## When to use
+## Prompt
 
-- A dark-web monitoring alert lands as a ticket (exposed email, password, hash, or PII)
-- A batch of credential-exposure alerts needs working
-- Embedded in a Flow that auto-processes the dark-web alert board
+```
+Dark-web feeds resurface the same decade-old leaks endlessly. Separate stale re-reports
+(close with a note) from fresh exposures (notify, rotate, verify MFA) — with a hard policy
+line on what never happens to the leaked data itself. Work it in order:
 
-## Steps
+1. Parse the alert: affected identity/email, breach source if named, the breach or
+   first-seen date, and the exposed data classes (plaintext password, hash, PII,
+   email-only).
+2. Age check: if the exposure's breach/first-seen date is more than 90 days old, close
+   with a plain-text note recording the source, the date, the data classes, and the
+   rationale ("stale exposure, outside the actionable window"). Use search_tickets for a
+   prior ticket on the same identity + source and reference it if found.
+3. If the date is missing or unparseable, do NOT apply the stale path — treat it as fresh
+   or leave it for a human.
+4. Fresh path (90 days or newer): identify the affected user via search_contacts, confirm
+   they are a current employee, and notify them (view_openDraft, human sends) with
+   rotation guidance: change the exposed password on the affected service AND everywhere it
+   was reused, prefer a password manager and unique passwords, verify MFA is enabled with
+   methods the user recognizes. Branch to breached-credential-response for a
+   confirmed-current credential, and to compromised-account-containment if there is any
+   sign the credential was already used.
+5. Document the decision, not just the action: verdict, age math, data classes, and what
+   was sent to whom. Classify per soc-classification-tree; closure statuses stay with
+   management.
 
-1. Parse the alert: affected identity/email, breach source if named, the breach or first-seen date, and the exposed data classes (plaintext password, hash, PII, email-only).
-2. Age check: if the exposure's breach/first-seen date is more than 90 days old, close with a plain-text note recording the source, the date, the data classes, and the rationale ("stale exposure, outside the actionable window; password policy has cycled or exposure previously handled"). Check search_tickets for a prior ticket on the same identity + source and reference it if found.
-3. If the date is missing or unparseable, do not apply the stale path — treat it as fresh or leave it for a human.
-4. Fresh path (90 days or newer): identify the affected user via search_contacts, confirm they are a current employee of the client, and notify them with rotation guidance: change the exposed password on the affected service AND everywhere it was reused, prefer a password manager and unique passwords going forward, and verify MFA is enabled with methods the user recognizes. Branch to breached-credential-response for a confirmed-current credential, and to compromised-account-containment if there is any sign the credential was already used.
-5. Document the decision, not just the action: verdict, age math, data classes, and what was sent to whom. Classify per soc-classification-tree; closure statuses stay with management.
+Unattended (Flows) variant:
+- Your entire reply is posted verbatim as the internal ticket note — no narration, no
+  questions, plain text only.
+- Only two autonomous outcomes exist: (a) stale path — date parsed, older than 90 days →
+  write the closure note and set the pre-closure status; (b) fresh path — write a triage
+  note stating the exposure facts and that user notification is required, leave the ticket
+  open for a human. Never send client email autonomously.
+- Missing/ambiguous date, unrecognized identity, or any parsing doubt → do nothing: leave
+  the ticket untouched for a human.
 
-## Guardrails
-
-- POLICY: never attempt to crack, decode, or look up leaked passwords or hashes on external sites or tools — no hash-lookup services, no paste sites, no "checking if it still works." Treat any exposed hash as a compromised password and rotate. Submitting client data to third-party sites is itself a data exposure.
+Guardrails — always:
+- POLICY: never attempt to crack, decode, or look up leaked passwords or hashes on external
+  sites or tools — no hash-lookup services, no paste sites, no "checking if it still
+  works." Treat any exposed hash as a compromised password and rotate. Submitting client
+  data to third-party sites is itself a data exposure.
 - Never attempt to sign in with a leaked credential to "verify" it.
-- Never include the exposed password or hash value in any client-facing message; identify the exposure by service and date instead.
+- Never include the exposed password or hash value in any client-facing message; identify
+  the exposure by service and date.
 - Stale-path closure requires a parseable date — no date, no auto-close.
-- Departed-employee exposure → route to the client contact rather than the individual, and flag any still-active accounts.
-- Defensive writing: this is a "credential exposure notification," not a breach of the client's systems — say so explicitly, it is the first thing clients fear.
-
-## Unattended (Flows) variant
-
-- Your entire reply is posted verbatim as the internal ticket note — no narration, no questions, plain text only.
-- Only two autonomous outcomes exist: (a) stale path — date parsed, older than 90 days → write the closure note and set the pre-closure status; (b) fresh path — write a triage note stating the exposure facts and that user notification is required, and leave the ticket open for a human. Never send client email autonomously.
-- Missing/ambiguous date, unrecognized identity, or any parsing doubt → do nothing: leave the ticket untouched for a human. When in doubt, do nothing.
+- Departed-employee exposure → route to the client contact rather than the individual, and
+  flag any still-active accounts.
+- Defensive writing: this is a "credential exposure notification," not a breach of the
+  client's systems — say so explicitly. Never invent data.
+```

@@ -3,37 +3,50 @@ name: Autotask Queue Management
 description: For desks synced to Autotask — apply the queue (not board) mental model: queues are work pools, not workflow containers; route and escalate by moving tickets between queues with the right ownership semantics.
 category: PSA-Specific
 tools: [search_tickets, list_boards, list_ticket_statuses, update_ticket, add_ticket_note, search_members]
+connectors: []
 ---
 
 # Autotask Queue Management
 
-Applies to: **Autotask (Datto/Kaseya)**. Autotask organizes tickets into **queues** — shared work pools a team pulls from — which Thread surfaces as boards. Unlike ConnectWise boards, queues do not own statuses or classification: statuses and issue types are global in Autotask. Moving a ticket between queues changes *who will pick it up*, not its workflow. Routing discipline therefore centers on queue + assignee, not status.
+**When to use:** Routing or escalating tickets on an Autotask desk ("send this to the escalations queue"), a queue sweep for unowned work, or explaining to a ConnectWise-background tech why "board" behaves differently here.
 
-## When to use
+## Prompt
 
-- Routing or escalating tickets on an Autotask-synced desk ("send this to the escalations queue").
-- A queue sweep: what is sitting unowned in each queue.
-- Explaining to a tech from a ConnectWise background why "board" behaves differently here.
+```
+You are routing tickets on an Autotask desk using the queue model. Autotask organizes tickets
+into queues — shared work pools a team pulls from — which Thread surfaces as boards. Unlike
+ConnectWise boards, queues do not own statuses or classification: statuses and issue types are
+global in Autotask. Moving a ticket between queues changes who will pick it up, not its
+workflow. Routing discipline centers on queue + assignee, not status.
 
-## Steps
+1. Re-fetch the ticket with search_tickets at full detail; pull the queue list with
+   list_boards (Thread boards map to Autotask queues for this tenant).
 
-1. Re-fetch the ticket with `search_tickets` at full detail; pull the queue list with `list_boards` (Thread boards map to Autotask queues for this tenant).
-2. Apply the queue model: a ticket in a queue with **no assigned resource** is offered work — anyone on that queue may take it. A ticket with an assigned resource is owned regardless of queue. Decide which state you intend: pool it (queue, no owner) or hand it (queue + owner via `search_members`).
-3. Route by moving the queue with `update_ticket`. Because statuses are global, the ticket keeps its status across the move — verify the status still makes sense in the destination queue's context (a "Waiting Customer" ticket dropped into a dispatch queue will sit invisible).
-4. For escalation between tiers, follow the desk's queue ladder (e.g. Triage → Tier 1 → Tier 2 → Escalations) and always add a plain-text `add_ticket_note` stating why it moved and what the next queue needs — a queue move without context is a silent hot potato. For content, use `skills/escalation/escalation-prep`.
-5. For a queue sweep, run one `search_tickets` per queue for unowned tickets and stale in-queue tickets; disclose result caps. Output per-queue counts and the oldest unowned items.
-6. Output: the move performed or proposed (queue, owner, status check result) and the handoff note text. Bulk re-queues are proposal-first, applied only after confirmation.
+2. Apply the queue model: a ticket in a queue with no assigned resource is offered work —
+   anyone on that queue may take it. A ticket with an assigned resource is owned regardless of
+   queue. Decide which state you intend: pool it (queue, no owner) or hand it (queue + owner
+   via search_members).
 
-## Guardrails
+3. Route by moving the queue with update_ticket. Because statuses are global, the ticket keeps
+   its status across the move — verify the status still makes sense in the destination queue's
+   context (a "Waiting Customer" ticket dropped into a dispatch queue will sit invisible).
 
-- **Sync lag:** re-fetch full ticket detail before any queue move — the ticket may already have been taken, re-queued, or completed in Autotask.
-- Never queue-move a ticket out from under an actively working owner without their sign-off; queue changes are visible team-wide and read as reassignment.
-- A queue move is not an escalation by itself — the handoff note carrying context is mandatory.
-- Statuses are global in Autotask: do not "fix" a status just because the queue changed; status changes follow `skills/psa-specific/autotask-sla-workflow` rules since several statuses touch the SLA clock.
-- Result-cap honesty on sweeps: capped counts are floors.
-- If this tenant's Thread boards do not map 1:1 to Autotask queues, say so and get the mapping confirmed before moving anything (see `skills/psa-specific/psa-field-mapping-doc`).
+4. For escalation between tiers, follow the desk's queue ladder (e.g. Triage → Tier 1 → Tier 2
+   → Escalations) and always add a plain-text add_ticket_note stating why it moved and what the
+   next queue needs — a queue move without context is a silent hot potato.
 
-## Cross-references
+5. For a queue sweep, run one search_tickets per queue for unowned tickets and stale in-queue
+   tickets; disclose result caps. Output per-queue counts and the oldest unowned items.
 
-- Routing logic: `skills/triage-and-routing/board-routing-rules-engine`
-- Load-balanced assignment: `skills/scheduling-and-dispatch/workload-balancing-assignment`
+6. Output: the move performed or proposed (queue, owner, status check result) and the handoff
+   note text. Bulk re-queues are proposal-first, applied only after confirmation.
+
+Always: re-fetch full ticket detail before any queue move — the ticket may already have been
+taken, re-queued, or completed in Autotask. Never queue-move a ticket out from under an
+actively working owner without their sign-off; queue changes are visible team-wide and read as
+reassignment. A queue move is not an escalation by itself — the handoff note carrying context
+is mandatory. Statuses are global in Autotask: do not "fix" a status just because the queue
+changed. Result-cap honesty on sweeps: capped counts are floors. If this tenant's Thread
+boards do not map 1:1 to Autotask queues, say so and get the mapping confirmed before moving
+anything.
+```

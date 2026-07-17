@@ -3,39 +3,51 @@ name: vCIO Weekly Proactive
 description: Answer "which three clients should I proactively contact this week and why" — pick the highest-leverage outreach targets from live ticket signals and give a reason and an opener for each.
 category: Account Management
 tools: [search_tickets, search_clients]
+connectors: []
 ---
 
 # vCIO Weekly Proactive
 
-A weekly ritual for account managers and vCIOs: instead of reacting to whoever shouts, pick the three clients where a proactive touch this week does the most good — and know exactly what to say.
+**When to use:** "Which 3 clients should I proactively contact this week and why?"; "who needs a touch from me this week?"; or a recurring Monday-morning outreach planning run. Run it manually on demand.
 
-## When to use
+## Prompt
 
-- "Which 3 clients should I proactively contact this week and why?"
-- "Who needs a touch from me this week?"
-- A recurring Monday-morning outreach planning run.
+```
+You are running a weekly ritual for account managers and vCIOs: instead of reacting to
+whoever shouts, pick the three clients where a proactive touch this week does the most
+good — and know exactly what to say.
 
-## Steps
+1. Establish the portfolio via search_clients (or the AM's stated account list) and look
+   back over roughly the last 30 days with search_tickets — separate searches per signal,
+   not one mega-query.
 
-1. Establish the portfolio via search_clients (or the AM's stated account list) and look back over roughly the last 30 days with search_tickets — separate searches per signal, not one mega-query.
 2. Score outreach candidates on signals like:
-   - A rough patch just ended (major incident resolved, SLA miss) — a follow-up call turns a miss into a save.
+   - A rough patch just ended (major incident resolved, SLA miss) — a follow-up turns a
+     miss into a save.
    - Sentiment drifting down — early, cheap to repair.
    - Unusual quiet from a normally active client — silence can mean disengagement.
-   - A pattern worth advising on (recurring issue, aging kit) — a proactive recommendation lands better than a reactive quote.
+   - A pattern worth advising on (recurring issue, aging kit) — a proactive recommendation
+     lands better than a reactive quote.
    - A win worth celebrating — a project landed, a fast save; goodwill is free.
    - No touch in a long time — relationship maintenance.
-3. Pick exactly **three** clients — the highest-leverage touches, not the three loudest accounts. Diversity of reason is a feature: ideally not three of the same signal.
+
+3. Pick exactly THREE clients — the highest-leverage touches, not the three loudest.
+   Diversity of reason is a feature: ideally not three of the same signal.
+
 4. For each of the three, output:
-   - **Why now** — the signal, with one representative example in plain language (no ticket IDs).
-   - **Suggested opener** — two or three sentences the AM could actually say or send, labeled DRAFT.
-   - **Watch-out** — one line on anything to avoid stepping in during the call.
-5. List one or two **bench** clients (would have made the list on another week) so the AM can trade if they disagree.
+   - Why now — the signal, with one representative example in plain language (no ticket
+     IDs).
+   - Suggested opener — two or three sentences the AM could actually say or send, labeled
+     DRAFT.
+   - Watch-out — one line on anything to avoid stepping in during the call.
 
-## Guardrails
+5. List one or two bench clients (would have made the list on another week) so the AM can
+   trade if they disagree.
 
-- Recommendations only — never send the outreach yourself.
-- Every pick needs ticket-evidence for its "why now"; no filler picks to reach three. If the portfolio genuinely offers fewer than three good touches, say so.
-- Never pick on volume alone; the signal, not the count, justifies the call.
-- Internal analysis and the DRAFT openers are clearly separated; openers contain no ticket IDs or internal commentary.
-- Note any result caps hit — a capped scan means the picks come from a sample, and the output should say so.
+Guardrails: recommendations only — never send the outreach yourself. Every pick needs
+ticket-evidence for its "why now"; no filler picks to reach three — if the portfolio
+genuinely offers fewer than three good touches, say so. Never pick on volume alone; the
+signal, not the count, justifies the call. Internal analysis and DRAFT openers are clearly
+separated; openers contain no ticket IDs or internal commentary. Note any result caps hit
+— a capped scan means the picks come from a sample, and the output should say so.
+```

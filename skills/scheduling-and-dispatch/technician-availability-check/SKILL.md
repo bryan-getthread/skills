@@ -3,42 +3,54 @@ name: Technician Availability Check
 description: Answer "who is the next available technician?" — combine today's schedules, priority-weighted open load, and shift/PTO context into a ranked availability answer.
 category: Scheduling & Dispatch
 tools: [search_members, search_tickets]
+connectors: []
 ---
 
 # Technician Availability Check
 
-A fast, honest answer to "who can take this?" — grounded in schedule entries, current load, and who is actually on shift, with the numbers shown.
+**When to use:** "Who's the next available tech?" / "who can jump on this call right now?"; "is <tech> free this afternoon?"; or picking a warm-transfer target for a live client call.
 
-## When to use
+## Prompt
 
-- "Who's the next available tech?" / "who can jump on this call right now?"
-- "Is <tech> free this afternoon?"
-- Picking a warm-transfer target for a live client call.
+```
+You are giving a fast, honest answer to "who can take this?" — grounded in schedule
+entries, current load, and who is actually on shift, with the numbers shown. Read-only:
+you answer, you do not assign or book.
 
-## Steps
+1. Build the pool with search_members: active technicians on the relevant team/board.
+   Exclude inactive members, anyone flagged out/PTO, and — if this is for a specific
+   ticket — that ticket's requester and anyone excluded by a client routing rule.
 
-1. Build the pool with `search_members`: active technicians on the relevant team/board. Exclude inactive members, anyone the desk has flagged as out/PTO, and — if this is for a specific ticket — that ticket's requester and anyone excluded by a client routing rule.
 2. For each candidate, gather:
-   - **Now:** are they inside a scheduled entry right now (onsite, booked session)? When does it end?
-   - **Load:** open tickets, priority-weighted — someone with two Criticals is not "available" in any useful sense even with a clear calendar.
-   - **Shift context:** are they on shift, near end of shift, or after-hours/on-call? Use the desk's stated hours; if shift data is unknown, say so instead of assuming.
-3. Rank into three buckets: **free now** (on shift, no current block, light load), **free soon** (current block ends within the hour, or moderate load), **not today** (heavy load, out, off shift).
-4. Answer the actual question first ("Next available: <tech> — free now, 2 open tickets, nothing scheduled until 3pm"), then show the ranked table with the numbers per candidate.
-5. For a single-tech question ("is <tech> free?"), answer for that tech with the same evidence, plus their next free window.
+   - Now: are they inside a scheduled entry right now (onsite, booked session)? When does
+     it end?
+   - Load: open tickets, priority-weighted — someone with two Criticals isn't "available"
+     even with a clear calendar.
+   - Shift context: on shift, near end of shift, or after-hours/on-call? Use the desk's
+     stated hours; if shift data is unknown, say so instead of assuming.
 
-## Guardrails
+3. Rank into three buckets: free now (on shift, no current block, light load), free soon
+   (current block ends within the hour, or moderate load), not today (heavy load, out,
+   off shift).
 
-- Read-only: this skill answers; it does not assign or book. Offer the follow-on ("want me to assign it / schedule it?") and hand off to the assignment or scheduling skill.
-- Show the evidence — never a bare name. The asker must be able to see why the answer is that tech.
-- Availability without external-calendar data is partial: if the member hasn't connected a calendar source, say the view covers Thread schedules and load only.
-- Effectively tied candidates → present both, let the human pick.
-- Never mark someone available near or past end of shift for new work without flagging it; after-hours handoff rules beat raw availability.
-- Result caps on ticket searches → load figures are "at least"; say so.
+4. Answer the actual question first ("Next available: <tech> — free now, 2 open tickets,
+   nothing scheduled until 3pm"), then show the ranked table with the numbers per
+   candidate.
 
-## Unattended (Flows) variant
+5. For a single-tech question ("is <tech> free?"), answer for that tech with the same
+   evidence, plus their next free window.
 
-- Follows the Unattended Output Discipline contract: the entire reply is the answer artifact — first line `NEXT AVAILABLE: <tech> (<one-line evidence>)`, then the ranked plain-text table with the numbers per candidate. No narration, no questions.
-- Deterministic inputs from the flow: the team/board pool and any exclusions. Pool empty or unresolvable → reply exactly `NO CANDIDATES.`
-- Effectively tied top candidates → list both on the first line; unattended never breaks a tie a dispatcher should break.
-- Caveats live inside the artifact: unknown shift data, missing calendar sources, and capped load counts ("at least N") are stated, never silently dropped.
-- Permitted writes: none. Assignment and booking stay attended — this variant only answers.
+If running unattended as a Flow Run Skill action: the entire reply is the answer artifact
+— first line `NEXT AVAILABLE: <tech> (<one-line evidence>)`, then the ranked plain-text
+table. No narration, no questions. Pool empty or unresolvable → reply exactly
+`NO CANDIDATES.` Tied top candidates → list both on the first line (never break a tie a
+dispatcher should break). Caveats (unknown shift data, missing calendar sources, capped
+counts as "at least N") live inside the artifact. Writes: none.
+
+Guardrails: read-only — offer the follow-on ("want me to assign / schedule it?") and hand
+off. Show the evidence, never a bare name. Availability without external-calendar data is
+partial: if the member hasn't connected a calendar source, say the view covers Thread
+schedules and load only. Tied candidates → present both, let the human pick. Never mark
+someone available near or past end of shift without flagging it; after-hours handoff rules
+beat raw availability. Result caps → load figures are "at least"; say so.
+```

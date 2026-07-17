@@ -3,45 +3,50 @@ name: Morning Huddle Builder
 description: Build the daily standup or morning huddle message — yesterday's P1s, overnight items, today's SLA risks, and shout-outs — ready to read out or paste.
 category: Reporting & Analytics
 tools: [search_tickets, search_members, list_boards]
+connectors: []
 ---
 
 # Morning Huddle Builder
 
-Assemble a structured daily standup message the team can absorb in under a minute: what happened yesterday, what came in overnight, what is at risk today, and who deserves a shout-out.
+**When to use:** "Build this morning's huddle" / "prep the daily standup" — a dispatcher or lead running the 8am sync who wants the queue read pre-digested.
 
-## When to use
+## Prompt
 
-- "Build this morning's huddle" / "prep the daily standup."
-- A dispatcher or lead running the 8am sync who wants the queue read pre-digested.
-- A scheduled flow that posts the huddle each weekday morning.
+```
+Assemble a structured daily standup message the team can absorb in under a minute: what
+happened yesterday, what came in overnight, what is at risk today, and who deserves a
+shout-out.
 
-## Steps
+This runs MANUALLY on demand — Thread Flows are ticket-event triggered with no
+schedule/cron, so this is not a scheduled skill; run it on request or from an external
+scheduler that invokes Super Magic.
 
-1. Establish the windows: "yesterday" = the previous business day; "overnight" = close of business to now. Exclude junk/NOC noise boards.
-2. Run split searches per signal (disclose caps):
-   - **Yesterday's P1s/majors** — status now, one line each.
-   - **Overnight arrivals** — new tickets since close, flagging anything urgent or unassigned.
-   - **Today's SLA risks** — tickets whose response or resolution clock lands today.
-   - **Shout-outs** — 1–2 genuinely notable saves from yesterday (tough resolution, great client reply, big backlog dent).
+1. Establish the windows: "yesterday" = the previous business day; "overnight" = close
+   of business to now. Exclude junk/NOC noise boards.
+
+2. Run split searches per signal (disclose caps in a trailing note if overnight volume
+   exceeded a search):
+   - Yesterday's P1s/majors — status now, one line each.
+   - Overnight arrivals — new tickets since close, flagging anything urgent or
+     unassigned.
+   - Today's SLA risks — tickets whose response or resolution clock lands today.
+   - Shout-outs — 1-2 genuinely notable saves from yesterday (tough resolution, great
+     client reply, big backlog dent).
+
 3. Format as a fixed skimmable structure:
-   - **Yesterday:** P1 recap in 1–2 lines each.
-   - **Overnight:** count + the items needing an owner first thing.
-   - **Today's risks:** SLA-clock tickets with owner and deadline.
-   - **Shout-out:** one or two, specific and genuine.
-4. Keep the whole message under ~15 lines. Every item names an owner or says "needs an owner."
+   - Yesterday: P1 recap in 1-2 lines each.
+   - Overnight: count + the items needing an owner first thing.
+   - Today's risks: SLA-clock tickets with owner and deadline.
+   - Shout-out: one or two, specific and genuine.
 
-## Guardrails
+4. Keep the whole message under ~15 lines. Every item names an owner or says "needs an
+   owner" — unassigned urgent items go at the TOP; the huddle's job is to get them
+   owned, not buried.
 
-- Unassigned urgent items go at the top — the huddle's job is to get them owned, not buried.
-- Shout-outs must cite something real from yesterday's tickets; skip the section entirely rather than fabricate praise.
-- No client-blaming language — this message often ends up screen-shared.
-- Disclose result caps in a trailing note if overnight volume exceeded a search.
-- Do not include sensitive content (credentials, security-incident details) — reference the ticket instead.
-
-## Running this unattended
-
-> **Flows cannot schedule or time-trigger this.** Thread Flows fire on ticket *events* and conditions only — there is no schedule, cron, ticket-age, or elapsed-time trigger. This is a cadence/sweep skill, so run it **manually** on demand, or from an external scheduler that invokes Super Magic. A Flow can only reach it via **Run Skill** on a qualifying ticket event, never "every morning" or "after N hours". The output discipline below applies whenever it runs unattended.
-
-- Your entire reply is the posted huddle message, verbatim — no narration, no questions.
-- If a section has nothing to report, print the header with "none" rather than omitting it, so the format stays deterministic.
-- If searches fail, post only the sections that succeeded plus a "data incomplete" line; never fill gaps with guesses.
+5. Shout-outs must cite something real from yesterday's tickets; skip the section
+   entirely rather than fabricate praise. No client-blaming language — this message
+   often ends up screen-shared. Do not include sensitive content (credentials,
+   security-incident details) — reference the ticket instead. If searches fail, produce
+   only the sections that succeeded plus a "data incomplete" line; never fill gaps with
+   guesses.
+```

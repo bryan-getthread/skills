@@ -3,43 +3,45 @@ name: Sentiment Decline Watch
 description: Find clients whose sentiment is trending down, show the evidence and the specific conversations driving it, and draft suggested outreach for each.
 category: Account Management
 tools: [search_tickets, search_clients, search_contacts]
+connectors: []
 ---
 
 # Sentiment Decline Watch
 
-Catch relationship damage while it is still one bad thread, not a churn conversation. Focused purely on the sentiment signal — for the full four-signal portfolio view, use Client Risk Scan.
+**When to use:** "Which clients are getting unhappy with us?"; "show me sentiment trends across accounts this month"; or "why is <client>'s sentiment dropping, and what should I do?" Run it manually — for the full four-signal portfolio view, use Client Risk Scan.
 
-## When to use
+## Prompt
 
-- "Which clients are getting unhappy with us?"
-- "Show me sentiment trends across accounts this month."
-- "Why is <client>'s sentiment dropping, and what should I do about it?"
+```
+You are catching relationship damage while it's still one bad thread, not a churn
+conversation. Focus purely on the sentiment signal.
 
-## Steps
+1. Confirm scope (whole portfolio or a named client) and window. Default to the last 30
+   days versus the prior 30.
 
-1. Confirm scope (whole portfolio or a named client) and window. Default to the last 30 days versus the prior 30.
-2. With search_tickets, find clients whose sentiment scores trend down across the two windows. For a single named client, pull that client's scored threads directly.
+2. With search_tickets, find clients whose sentiment scores trend down across the two
+   windows. For a single named client, pull that client's scored threads directly.
+
 3. For each declining client, present:
-   - **Evidence:** the trend in one line (direction, roughly how sharp, over what period). If searches hit a result cap, say the trend is based on a partial sample.
-   - **At-risk conversations:** the two or three open threads doing the damage — for each, who the contact is, what they are upset about in plain language, and the current state. One representative example per underlying issue; no ticket IDs in any text that could be forwarded.
-   - **Suggested outreach:** a two-to-four-sentence draft the account manager could send or say — acknowledging the specific friction, stating what is being done, and offering a call. Clearly labeled DRAFT.
+   - Evidence: the trend in one line (direction, roughly how sharp, over what period). If
+     searches hit a cap, say the trend is based on a partial sample.
+   - At-risk conversations: the two or three open threads doing the damage — for each, who
+     the contact is, what they're upset about in plain language, and the current state.
+     One representative example per underlying issue; no ticket IDs in forwardable text.
+   - Suggested outreach: a two-to-four-sentence draft the account manager could send or
+     say — acknowledging the specific friction, stating what's being done, offering a call.
+     Clearly labeled DRAFT.
+
 4. Order clients by steepness of decline, worst first.
-5. If nothing is declining, say so plainly and stop — do not manufacture concern.
 
-## Guardrails
+5. If nothing is declining, say so plainly and stop — do not manufacture concern. (A
+   scheduled watch run: reply exactly `NO DECLINING CLIENTS.`)
 
-- One low score is a data point, not a trend. Require multiple scored interactions before naming a client as declining, and say how many the trend rests on.
-- Sentiment scores describe conversations, not people. Never attribute the decline to a named technician's performance — describe the interaction pattern; performance conversations belong to the manager.
-- Outreach drafts are suggestions for the account manager, not messages to send. Never send outreach yourself.
-- Internal analysis and client-facing draft are clearly separated in the output; the draft contains no ticket IDs and no internal commentary.
-- Do not speculate about causes the threads do not support.
-
-## Running this unattended
-
-> **Flows cannot schedule or time-trigger this.** Thread Flows fire on ticket *events* and conditions only — there is no schedule, cron, ticket-age, or elapsed-time trigger. This is a cadence/sweep skill, so run it **manually** on demand, or from an external scheduler that invokes Super Magic. A Flow can only reach it via **Run Skill** on a qualifying ticket event, never "every morning" or "after N hours". The output discipline below applies whenever it runs unattended.
-
-- Follows the Unattended Output Discipline contract: the entire reply is the plain-text watch report — per declining client: the one-line trend with the interaction count it rests on, the at-risk conversations in plain language (no ticket IDs), and the outreach draft clearly labeled DRAFT. Worst decline first. No narration.
-- Deterministic inputs from the flow: scope and the two comparison windows. The multiple-interaction bar is hard: clients with too few scored interactions never appear, whatever a single score says.
-- Nothing declining → reply exactly `NO DECLINING CLIENTS.` — a scheduled watch must not manufacture concern to justify itself.
-- No technician names ever appear in the report; partial samples from capped searches are labeled inside it.
-- Permitted writes: none. Outreach is never sent unattended — drafts exist for the account manager to send or adapt.
+Guardrails: one low score is a data point, not a trend — require multiple scored
+interactions before naming a client as declining, and say how many the trend rests on.
+Sentiment scores describe conversations, not people; never attribute the decline to a
+named technician's performance — that belongs to the manager. Outreach drafts are
+suggestions for the account manager, never sent by you. Internal analysis and client-facing
+draft are clearly separated; the draft contains no ticket IDs and no internal commentary.
+Do not speculate about causes the threads don't support.
+```

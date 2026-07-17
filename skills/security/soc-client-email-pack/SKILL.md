@@ -3,36 +3,58 @@ name: SOC Client Email Pack
 description: A security event needs its first client outreach — pick the per-threat-type template (leaked credentials, vendor fraud/BEC, inbox rule, lookalike domain), fill it with verified facts only, and present a draft.
 category: Security
 tools: [search_tickets, search_contacts, view_openDraft, send_client_email]
+connectors: []
 ---
 
 # SOC Client Email Pack
 
-First-outreach templates for the four most common client-facing security events. Every template shares one skeleton — what we detected, what we've done, what we need from you, what happens next — filled only with verified facts and worded to the defensive-writing-standard.
+**When to use:** A security runbook reached the "notify the client" step; "draft the client email for this security ticket"; or a tech wants the right first message for a leaked-credential / BEC / inbox-rule / lookalike-domain event.
 
-## When to use
+## Prompt
 
-- A security runbook reached the "notify the client" step
-- "Draft the client email for this security ticket"
-- A tech wants the right first message for a leaked-credential / BEC / inbox-rule / lookalike-domain event
+```
+Provide the first-outreach template for the most common client-facing security events. Every
+template shares one skeleton — what we detected, what we've done, what we need from you, what
+happens next — filled only with verified facts and worded to the defensive-writing-standard.
+Draft only; a human reviews and sends every security notification. Work it in order:
 
-## Steps
-
-1. Identify the threat type and pull the verified facts from the ticket: what was detected, when (timestamps), what has already been done, and what the client must do. Anything not yet verified does not go in the email.
+1. Identify the threat type and pull the verified facts from the ticket: what was detected,
+   when (timestamps), what has already been done, and what the client must do. Anything not
+   yet verified does not go in the email.
 2. Select the template skeleton by threat type:
-   - Leaked credentials: which account, exposure source and date, that this is a third-party exposure and not a breach of their systems, rotation-everywhere and MFA-verification asks. Never include the credential value itself.
-   - Vendor fraud / BEC: the fraudulent request received, freeze guidance for pending payments to the affected vendor, the callback-verification instruction (verify by phone using a number on file — never contact details from the suspicious message), and the rule to state outright: banking or wire details are never confirmed or changed by email.
-   - Malicious inbox rule: what the rule did in plain terms, that it was removed and the account secured, what the user should watch for, timestamps.
-   - Lookalike domain: the suspect domain spelled out defensively (spaced or bracketed so it isn't a live link), what it could be used for, the verify-sender-addresses and callback-for-payment-changes guidance.
-3. Every template closes with all four skeleton sections plus: when the next update will come, and how the client can verify this message genuinely came from the service desk.
-4. Apply the house voice via the client-reply skill (the email baseline standard) and the defensive-writing-standard vocabulary: first outreach never says "breach" or "hacked"; unconfirmed items are "under investigation."
-5. Anything unknown stays a visibly marked placeholder — <exposure date>, <affected account> — and is flagged to the technician; never fill a gap with a plausible guess.
-6. Present as a draft for human review (view_openDraft / send_client_email in-app). A human sends. When running over external MCP, where draft tools are unavailable, output the complete email text for the technician to copy.
+   - Leaked credentials: which account, exposure source and date, that this is a third-party
+     exposure and not a breach of their systems, rotation-everywhere and MFA-verification
+     asks. Never include the credential value itself.
+   - Vendor fraud / BEC: the fraudulent request received, freeze guidance for pending
+     payments to the affected vendor, the callback-verification instruction (verify by phone
+     using a number on file — never contact details from the suspicious message), and the
+     rule to state outright: banking or wire details are never confirmed or changed by email.
+   - Malicious inbox rule: what the rule did in plain terms, that it was removed and the
+     account secured, what the user should watch for, timestamps.
+   - Lookalike domain: the suspect domain spelled out defensively (spaced or bracketed so it
+     isn't a live link), what it could be used for, the verify-sender-addresses and
+     callback-for-payment-changes guidance.
+3. Every template closes with all four skeleton sections plus: when the next update will
+   come, and how the client can verify this message genuinely came from the service desk.
+4. Apply the house voice (the email baseline standard) and the defensive-writing-standard
+   vocabulary: first outreach never says "breach" or "hacked"; unconfirmed items are "under
+   investigation."
+5. Anything unknown stays a visibly marked placeholder — <exposure date>, <affected account>
+   — and is flagged to the technician; never fill a gap with a plausible guess.
+6. Present as a draft for human review (view_openDraft / send_client_email in-app). A human
+   sends. When running over external MCP, where draft tools are unavailable, output the
+   complete email text for the technician to copy.
 
-## Guardrails
-
+Guardrails — always:
 - Draft only — a human reviews and sends every security notification.
-- Never include leaked credential values, hashes, live malicious links, or another client's details in any email.
-- BEC rule is absolute: never confirm, request, or transmit wire or banking details by email — the email itself must tell the client the same.
-- No fabricated facts, timestamps, or reassurances; placeholders stay visible until a human resolves them.
-- Defensive writing throughout; disclosure scope and timing follow the client's incident policy and management direction.
-- Degradation: send_client_email and view_openDraft are in-app only — over external MCP, deliver the draft as text output.
+- Never include leaked credential values, hashes, live malicious links, or another client's
+  details in any email.
+- BEC rule is absolute: never confirm, request, or transmit wire or banking details by email
+  — the email itself must tell the client the same.
+- No fabricated facts, timestamps, or reassurances; placeholders stay visible until a human
+  resolves them.
+- Defensive writing throughout; disclosure scope and timing follow the client's incident
+  policy and management direction.
+- Degradation: send_client_email and view_openDraft are in-app only — over external MCP,
+  deliver the draft as text output.
+```

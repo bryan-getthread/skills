@@ -3,56 +3,54 @@ name: Conditional Access Exception
 description: Exclude a user, app, or location from a conditional-access policy with a written risk note, approval, expiry, and revert plan. Use when a ticket asks to bypass, exclude from, or "make an exception to" a sign-in or CA policy.
 category: Onboarding & Access
 tools: [search_tickets, search_contacts, search_clients, search_knowledge_base, search_itglue, add_ticket_note, update_ticket, schedule_ticket, send_approval, log_time_entry]
+connectors: []
 ---
 
 # Conditional Access Exception
 
-Processes a CA exclusion as a controlled risk acceptance: the risk is written
-down in plain language, the right person approves it, and the exception dies on
-schedule instead of living forever.
+**When to use:** "Exclude <user> from the MFA policy — their app can't handle it" / "this service account keeps getting blocked by conditional access" / "add an exception for <application>/<location> to the sign-in policy" / a recurring sign-in failure whose requested fix is a policy carve-out.
 
-## When to use
+## Prompt
 
-- "Exclude <user> from the MFA policy — their app can't handle it."
-- "This service account keeps getting blocked by conditional access."
-- "Add an exception for <application> / <location> to the sign-in policy."
-- A recurring sign-in failure where the fix being requested is a policy carve-out.
+```
+Process this CA exclusion as a controlled risk acceptance: write the risk down in plain
+language, get the right person to approve it, and make the exception die on schedule
+instead of living forever.
 
-## Steps
+1. Understand the block first: which policy, which condition, why it fires for this
+   user/app. Often the right fix is NOT an exception — a compliant device, an app
+   registration change, or modern-auth configuration removes the need. Propose the
+   non-exception fix when one exists.
 
-1. Understand the block first: which policy, which condition, and why it fires
-   for this user/app. Often the right fix is not an exception — a compliant
-   device, an app registration change, or modern-auth configuration removes
-   the need. Propose the non-exception fix when one exists.
-2. If an exception is genuinely needed, write the risk note in plain language:
-   what protection is being removed, for which identity/app/location, what an
-   attacker could do with it, and any compensating controls (still has MFA,
-   IP-restricted, monitored sign-ins). This note travels with the approval.
+2. If an exception is genuinely needed, write the risk note in plain language: what
+   protection is being removed, for which identity/app/location, what an attacker could
+   do with it, and any compensating controls (still has MFA, IP-restricted, monitored
+   sign-ins). This note travels with the approval.
+
 3. Identify the approver from the client's policy (search_knowledge_base /
-   search_itglue). CA exceptions are security-posture changes: the approver is
-   the client's documented security/IT authority, not the blocked user's
-   manager. Send the risk note for sign-off (send_approval or the client's
-   channel) and wait for it.
-4. Scope minimally: one identity or app, the narrowest condition, via a
-   dedicated exclusion group where possible (auditable and reversible) rather
-   than editing the policy body.
-5. Set the expiry: agree a review-or-remove date with the approver (default to
-   the shortest workable window, not "permanent"). Create the tracked revert —
-   scheduled follow-up (schedule_ticket) or dated follow-up ticket — to remove
-   or re-justify the exception at expiry.
-6. Apply, verify the user/app now works AND that the policy still applies to
-   everyone else, and post a plain-text note: policy, exclusion, risk summary,
-   approver, expiry, revert reference. Log time (log_time_entry).
+   search_itglue). CA exceptions are security-posture changes: the approver is the
+   client's documented security/IT authority, NOT the blocked user's manager. Send the
+   risk note for sign-off (send_approval or the client's channel) and wait for it.
 
-## Guardrails
+4. Scope minimally: one identity or app, the narrowest condition, via a dedicated
+   exclusion group where possible (auditable and reversible) rather than editing the
+   policy body.
 
-- No exception without a written risk note and sign-off from the client's
-  security authority; user or manager convenience is not approval.
-- Always propose the non-exception fix when one exists; an exception is the
-  last resort, and the note should say why alternatives were rejected.
-- Every exception has an expiry and a tracked revert before it goes live.
-- Never broaden an existing exclusion group "because it's already there" —
-  each identity added is its own approval.
-- Service accounts excluded from MFA policies need compensating controls named
-  in the note (IP restriction, credential rotation, monitoring) — an exclusion
-  with none is a finding, not a fix.
+5. Set the expiry: agree a review-or-remove date with the approver (default to the
+   shortest workable window, not "permanent"). Create the tracked revert — scheduled
+   follow-up (schedule_ticket) or dated follow-up ticket — to remove or re-justify at
+   expiry.
+
+6. Apply, verify the user/app now works AND that the policy still applies to everyone
+   else, and post a plain-text note: policy, exclusion, risk summary, approver, expiry,
+   revert reference. Log time (log_time_entry).
+
+Guardrails: no exception without a written risk note and sign-off from the client's
+security authority — user or manager convenience is not approval. Always propose the
+non-exception fix when one exists; the note should say why alternatives were rejected.
+Every exception has an expiry and a tracked revert before it goes live. Never broaden an
+existing exclusion group "because it's already there" — each identity added is its own
+approval. Service accounts excluded from MFA need compensating controls named in the
+note (IP restriction, credential rotation, monitoring) — an exclusion with none is a
+finding, not a fix.
+```

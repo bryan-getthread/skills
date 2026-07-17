@@ -2,36 +2,57 @@
 name: Voice Call QA Review
 description: Review AI-handled voice calls against a fixed rubric — caller identified, issue captured, commitments accurate, handoff clean — and grade each call with cited transcript evidence. Use for "QA the Voice AI calls" or reviewing a specific AI-answered call.
 category: Voice & Messenger
-tools: [search_tickets, add_ticket_note, run_assistive_ai]
+tools: [search_tickets, add_ticket_note]
+connectors: []
 ---
 
 # Voice Call QA Review
 
-Grades calls the Voice AI answered the way Ticket QA Review grades closures: a fixed rubric, pass/fail per criterion, and every finding pinned to a transcript line. The output tells a service manager which calls to listen to and what to tune.
+**When to use:** "QA the AI-handled calls from yesterday" / "did the Voice AI handle this call properly?" (single-ticket review) / a weekly Voice AI quality sweep feeding tuning decisions.
 
-## When to use
+## Prompt
 
-- "QA the AI-handled calls from yesterday."
-- "Did the Voice AI handle this call properly?" (single-ticket review)
-- Weekly Voice AI quality sweep feeding tuning decisions (pairs with Voice Intent Coverage for the transfer-reason side).
+```
+Grade calls the Voice AI answered: a fixed rubric, pass/fail per criterion, every finding
+pinned to a transcript line. The output tells a service manager which calls to listen to and
+what to tune. This is read-and-recommend — it changes no configuration and touches no ticket
+state.
 
-## Steps
+1. Collect the calls: search_tickets for voice-sourced tickets in the window, or load the
+   single ticket given. Read each transcript and the ticket the call produced. State it if
+   result caps may have truncated a sweep.
 
-1. Collect the calls: `search_tickets` for voice-sourced tickets in the window, or load the single ticket given. Read each transcript and the ticket the call produced. State it if result caps may have truncated a sweep.
-2. Grade each call against the rubric, each criterion pass/fail/not-applicable with a quoted transcript line as evidence:
-   a. **Identification** — did the AI establish who was calling and from which client, or correctly use known caller-ID context? Unidentified caller passed through without an identification attempt = fail.
-   b. **Issue captured** — does the ticket's issue match what the caller actually described? Missing symptoms the caller stated, or added symptoms they didn't, = fail.
-   c. **Commitments accurate** — everything the AI promised ("someone will call you back within the hour", "I've created a ticket") must be true and recorded on the ticket. A promise with no corresponding ticket artifact = fail; this is the top severity.
-   d. **Handoff clean** — if transferred or escalated: was the reason for transfer captured, did context travel with it (caller didn't have to re-explain), and did the AI set a correct expectation for what happens next? If handled end-to-end: did the call end with a clear statement of outcome?
-   e. **Scope discipline** — the AI stayed inside what it can actually do; no invented capabilities, prices, or policy answers.
-3. Per call, produce: verdict (clean / minor issues / needs review), failed criteria with quotes, and one specific tuning suggestion where a pattern is visible (missing intent, bad prompt phrasing, gap in identification flow).
-4. Sweep mode: roll up a summary — calls reviewed, pass rate per criterion, the 2–3 recurring failure patterns, and the specific calls a human should listen to. Recurring transfer-without-context findings feed Voice Intent Coverage.
-5. Offer to post per-ticket findings as plain-text notes via `add_ticket_note`; post only on confirmation.
+2. Grade each call against the rubric, each criterion pass/fail/not-applicable with a quoted
+   transcript line as evidence:
+   a. Identification — did the AI establish who was calling and from which client, or
+      correctly use known caller-ID context? Unidentified caller passed through without an
+      identification attempt = fail.
+   b. Issue captured — does the ticket's issue match what the caller actually described?
+      Missing symptoms the caller stated, or added symptoms they didn't, = fail.
+   c. Commitments accurate — everything the AI promised ("someone will call you back within
+      the hour", "I've created a ticket") must be true and recorded on the ticket. A
+      promise with no corresponding ticket artifact = fail; this is the top severity.
+   d. Handoff clean — if transferred: was the reason captured, did context travel with it
+      (caller didn't re-explain), did the AI set a correct expectation? If handled
+      end-to-end: did the call end with a clear statement of outcome?
+   e. Scope discipline — the AI stayed inside what it can actually do; no invented
+      capabilities, prices, or policy answers.
 
-## Guardrails
+3. Per call, produce: verdict (clean / minor issues / needs review), failed criteria with
+   quotes, and one specific tuning suggestion where a pattern is visible (missing intent,
+   bad prompt phrasing, gap in identification flow).
 
-- Grade only what the transcript shows. No penalty and no credit for tone you can't quote; transcription artifacts (garbled words) are noted, not counted against the AI.
-- A commitment inaccuracy (promised action that didn't happen) is always the headline finding — it is the one that burns client trust.
-- This skill grades and recommends; it does not change Voice AI configuration, reopen tickets, or contact clients. Tuning goes through the humans who own the voice config.
-- Sample honestly: if reviewing a subset, say which subset and how it was chosen — never present a sample as the whole.
-- No caller names in the rolled-up report beyond what's needed to locate the ticket; reference tickets by number.
+4. Sweep mode: roll up a summary — calls reviewed, pass rate per criterion, the 2-3
+   recurring failure patterns, and the specific calls a human should listen to.
+
+5. Offer to post per-ticket findings as plain-text notes via add_ticket_note; post only on
+   confirmation.
+
+Guardrails: grade only what the transcript shows — no penalty and no credit for tone you
+can't quote; transcription artifacts (garbled words) are noted, not counted against the AI.
+A commitment inaccuracy (promised action that didn't happen) is always the headline finding.
+This skill grades and recommends; it does not change Voice AI configuration, reopen tickets,
+or contact clients. Sample honestly: if reviewing a subset, say which subset and how it was
+chosen — never present a sample as the whole. No caller names in the rolled-up report beyond
+what's needed to locate the ticket; reference tickets by number.
+```
