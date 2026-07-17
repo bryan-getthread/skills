@@ -6,33 +6,42 @@ These are drawn from how partners actually use the agent — a full study of pro
 
 ## How a Skill works
 
-A Skill is a folder with a `SKILL.md`. The frontmatter carries the metadata the agent needs; the body is the workflow.
+A Skill is a folder with a `SKILL.md`. The frontmatter carries the metadata; the body is a copy-paste **Prompt** you run in Super Magic. Every skill follows one shape — the canonical [`TEMPLATE.md`](TEMPLATE.md):
 
 ```
 ---
 name: Ticket Triage
-description: When to reach for this skill, in one line.
+description: When to reach for this skill, in one line — the trigger the agent matches.
 category: Triage & Routing
 tools: [search_tickets, list_boards, list_ticket_statuses]
+connectors: []
 ---
 
 # Ticket Triage
-...steps, guardrails...
+
+**When to use:** A new or unassigned ticket needs classifying and routing.
+
+## Prompt
+​```
+...the runnable prompt, with guardrails baked in...
+​```
 ```
 
 - **name** shows in the Skills picker.
-- **description** is the trigger. Write it as *when to use this*, because that is what the agent matches against.
-- **tools** lists the tools the Skill expects. Names follow Thread's tool set (`search_tickets`, `add_ticket_note`, `update_ticket`, and so on) plus any integration tools like the NinjaOne or IT Glue families.
-- The body is the instruction set: a short setup, numbered steps, and guardrails.
-- Skills that run embedded in Flows carry an **Unattended (Flows) variant** section with machine-grade output discipline.
+- **description** is the trigger — write it as *when to use this*.
+- **tools** are the tools the prompt uses. Every one must exist in [`research/tool-catalog.md`](research/tool-catalog.md).
+- **connectors** lists any integration the skill needs (NinjaOne, Liongard, IT Glue, Hudu, TimeZest, Notion, Linear, Zapier). `[]` means native — runs on any tenant.
+- The **Prompt** is the whole artifact: paste it into Super Magic and it runs. Guardrails live inside the prompt, not in a separate list.
 
-The full authoring spec — format, quality bar, and what every connector can actually do — is in [research/AUTHORING.md](research/AUTHORING.md).
+The full authoring spec and capability ground truth are in [`research/AUTHORING.md`](research/AUTHORING.md) and [`research/tool-catalog.md`](research/tool-catalog.md).
 
 ## Using a Skill
 
-Copy the body of a `SKILL.md` into a new Skill in Thread, or paste it into the agent directly. Adjust the specifics that are yours: board names, status names, tone rules, and which integrations you run. The guardrails are the part to keep. They are what stops the agent from bulk-closing tickets or pasting a password into a ticket body.
+Open a `SKILL.md`, copy the **Prompt** block, and paste it into Super Magic (or save it as a Skill in Thread). Adjust the specifics that are yours — board names, status names, tone. If it lists a connector, it runs where that integration is on and degrades gracefully otherwise.
 
-Some skills reference **base skills** (like the email baseline standard or the unattended output discipline) — load those alongside, the same way partners already compose skills in production.
+## Adding a skill (crowdsource)
+
+This library grows from how partners actually use the agent. To add or improve one: copy [`TEMPLATE.md`](TEMPLATE.md), validate your tools against [`research/tool-catalog.md`](research/tool-catalog.md), test the prompt against a real tenant, run `python3 tools/gen_catalog.py`, and open a PR. Full rules in [`CONTRIBUTING.md`](CONTRIBUTING.md). The bar: it solves one real MSP workflow, its tools exist, and it carries its own guardrails.
 
 ## Catalog
 
