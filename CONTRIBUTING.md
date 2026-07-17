@@ -26,24 +26,40 @@ execute. Every skill is a copy-paste prompt an MSP service desk runs in Super Ma
 name: Short Title Case Name
 description: When to reach for this skill, in one line — the trigger the agent matches.
 category: One of the existing categories
-tools: [search_tickets, add_ticket_note]
+tools: [search_tickets, add_ticket_note]   # metadata only — never named in the prompt
 connectors: []          # e.g. [NinjaOne]; [Zapier: Microsoft Teams]; [] if native-only
+scope: both             # single | global | both
+flow: yes               # yes | no
 ---
 
 # Short Title Case Name
 
 **When to use:** One or two concrete situations.
 
+**Run it:** on one ticket · across all <relevant> tickets · or as a Flow (on <event>).
+
 ## Prompt
 
 ​```
-Direct instructions to the agent, with every guardrail inline. Paste-to-run.
+Plain natural-English instructions to the agent, with every guardrail inline. Paste-to-run.
 ​```
 ```
 
-Guardrails live **inside** the prompt, not in a separate section — a list the agent never
-reads won't be followed. Bake in: confidence gates before writes, "show me before you
-send/close", "when in doubt, do nothing", result-cap honesty, and "never invent data".
+**Write prompts in natural language.** Super Magic is native-English — say "change the
+status", "add an internal note", "draft a reply", not the tool names (`update_ticket`,
+`add_ticket_note`). Tools live in frontmatter as metadata for validation; they are never
+named in the prompt. **One prompt may take several actions** (classify → set priority →
+note). Guardrails live **inside** the prompt: confidence gates before writes, "show me
+before you send/close", "when in doubt, do nothing", result-cap honesty, "never invent data".
+
+**Scope & Flow.** `scope`: `single` (acts on one ticket), `global` (sweeps across many), or
+`both`. `flow`: `yes` if a Flow can trigger it automatically. Flows are **event-triggered**
+(ticket created / updated / replied / status-changed) and filter on board, status, priority,
+type/subtype/item, category, company & company-type, contact & contact-type, team, owner,
+member, source, agreement, SLA, severity, sentiment, touchpoint, day-of-week, time-of-day —
+but there is **no schedule/duration** trigger. A cadence/sweep skill is `flow: no` (run it
+manually or globally); an event-driven single-ticket skill is `flow: yes`. Write the Prompt
+so it works on one ticket by default and "each ticket in the set I point you at" when global.
 
 ## What gets a skill removed
 

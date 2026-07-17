@@ -1,53 +1,40 @@
 ---
 name: Ticket Triage
-description: Classify a new or unassigned ticket, gauge severity, catch duplicates, and recommend where it should go before it enters the queue.
+description: Classify a new or unassigned ticket, gauge severity, catch duplicates, and route it to the right board, status, and priority.
 category: Triage & Routing
 tools: [search_tickets, list_boards, list_ticket_statuses, list_ticket_priorities, search_clients, update_ticket]
 connectors: []
+scope: both
+flow: yes
 ---
 
 # Ticket Triage
 
-**When to use:** "Triage this ticket" / "classify this" / "where should this go?" — a new ticket just arrived and needs a first pass before dispatch, or a morning sweep of the unassigned intake board.
+**When to use:** A new or unassigned ticket needs classifying and routing — a first pass before dispatch, or a morning sweep of the unassigned intake board.
+
+**Run it:** on one ticket · across all new/unassigned tickets on a board · or as a Flow that triages every ticket the moment it's created.
 
 ## Prompt
 
 ```
-You are doing the first read of a new or unassigned ticket: classify it, force the
-right severity, catch duplicates, and propose board/status/priority — then apply only
-after I confirm.
+Triage this ticket — or, if I point you at a board or filter, each new or unassigned ticket
+in that set. Read the full history first, including the first message and every reply; don't
+judge from the subject alone (titles are often stale or auto-generated). For each ticket:
 
-1. Read the full thread with search_tickets, including the earliest message and every
-   reply. Never classify or route from the title alone — titles are frequently stale,
-   auto-generated, or wrong.
+- Classify the issue from the body of the request (access, hardware, software, network,
+  email, security, etc.) — not from keywords in the subject.
+- Gauge severity: anything security-related (compromise, phishing, malware, unexpected MFA or
+  login activity) or affecting multiple users or a whole site is high priority by default.
+  A calm tone doesn't lower it — only the requester explicitly de-escalating, confirmed with
+  the tech, does.
+- Check for a duplicate of an existing open ticket using strong signals (same alert ID,
+  device, monitoring reference, or same contact + same specific error in a recent window),
+  never wording alone. Note suspected duplicates with their ticket numbers.
+- Set the right board, status, and priority, and leave a one-line internal note on what you
+  changed and why. If the board/status/priority names are unclear for this client, look them
+  up rather than guessing.
 
-2. Classify the issue into the desk's categories (access, hardware, software, network,
-   email, security, etc.) based on the body of the request, not keywords in the subject.
-
-3. Apply severity forcing rules before any judgment call: anything security-related
-   (compromise, phishing, malware, unexpected MFA/login activity) or affecting multiple
-   users or a whole site is high priority by default. Only the requester's own words
-   de-escalating it, confirmed with the tech, can lower it. Do not let a calm tone talk
-   you down.
-
-4. Check for duplicates using strong identifiers, not wording similarity: same alert ID,
-   same device/asset name, same monitoring reference, or same contact + same specific
-   error within a recent window. Run a separate search_tickets per identifier; if any
-   search may have hit a result cap, say so. Similar wording is a lead to mention, never
-   grounds to merge or close.
-
-5. Look up the client with search_clients to confirm the company on the ticket matches
-   the requester. If board/status/priority names are ambiguous for this tenant, fetch
-   them with list_boards / list_ticket_statuses / list_ticket_priorities rather than
-   guessing labels.
-
-6. Propose board, status, priority, category, and a one-line queue summary. List any
-   suspected duplicates with ticket numbers and why they matched.
-
-7. Only after I confirm the proposal, apply it with update_ticket. If I change anything,
-   apply my version, not yours.
-
-Never change the ticket before the proposed classification is confirmed — this skill
-recommends, a person applies. Never invent ticket numbers, clients, or categories. If
-the ticket cannot be classified confidently, say so and leave it for a human.
+Show me your recommendation first and apply it once I confirm. Running in a Flow, apply it
+directly and note what you set. When you're not confident where a ticket belongs, say so and
+leave it for a human rather than guessing. Never invent ticket numbers, clients, or categories.
 ```
