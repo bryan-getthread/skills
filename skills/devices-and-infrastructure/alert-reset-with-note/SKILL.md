@@ -1,41 +1,27 @@
 ---
 name: Alert Reset With Note
-description: Reset a NinjaOne alert only after verifying the underlying condition is actually healthy again, and always with an explanation note posted first. Use when clearing recovered alerts — "reset this alert", "clear the disk alert on <device>" — attended or embedded in a Flow.
+description: Reset a NinjaOne alert only after verifying the condition is genuinely healthy again, with an explanation note posted first. Use for "reset this alert" or "clear the disk alert on <device>", attended or embedded in a Flow.
 category: Devices & Infrastructure
 tools: [list_ninjaone_alerts, get_ninjaone_device, reset_ninjaone_alert, add_ticket_note]
+connectors: [NinjaOne]
 ---
 
 # Alert Reset With Note
 
-Closes the loop on a recovered RMM alert the safe way: verify the condition is genuinely healthy, write the explanation down, then reset — in that order.
+**When to use:** "Clear/reset the alert on <device>, it's fine now" — or a stale alert whose condition has visibly recovered.
 
-## When to use
+## Prompt
 
-- "Clear/reset the alert on <device>, it's fine now."
-- An alert's condition has visibly recovered (device back online, disk freed) and the alert is stale.
-- A Flow wants recovered alerts swept automatically (see Unattended variant).
+```
+Close out a recovered RMM alert the safe way: verify healthy, write it down, then reset — strictly in that order. Requires NinjaOne; if it is not enabled, say the alert queue is unavailable and stop.
 
-## Steps
+1. Identify the exact alert with list_ninjaone_alerts — device, alert type, message. If several match the description, list them and confirm which one; never reset on a fuzzy match.
+2. Allowlist check. Eligible for reset here: device-offline (device back online), disk-space (space recovered), stopped-service (service running again), performance/CPU/memory threshold (readings back in range). NEVER reset and always leave for a human: security/EDR, backup failures, RAID/SMART/hardware-health, anything on a domain controller or hypervisor, and any type you cannot map to this allowlist. The allowlist is a ceiling, not a suggestion.
+3. Verify healthy NOW with get_ninjaone_device (resolve org->device without stopping to ask mid-lookup; do not trust the node_class filter — confirm class in details). Offline alert -> device online with fresh last-contact; disk -> free space above threshold; service -> running. Alert text saying "recovered" is not verification; read current state. If verification fails or is inconclusive (device unreachable, stale data), do nothing and say why.
+4. Recurrence check: if this same alert fired and was reset 3+ times in 30 days, do not silently reset — flag it as a chronic condition needing a root-cause ticket, and only reset if the requester still wants it after seeing that.
+5. Post the explanation note FIRST via add_ticket_note (plain text, no markdown/emojis): which alert, which device, the verified healthy state, and why it is being reset. No note, no reset.
+6. Then call reset_ninjaone_alert. Resetting never closes the ticket — closure is a separate human decision.
+7. Confirm in your reply: alert cleared, note posted, recurrence status if relevant.
 
-1. Identify the exact alert via `list_ninjaone_alerts` — device, alert type, and message. If several alerts match the description, list them and confirm which one; never reset on a fuzzy match.
-2. Check the alert type against the non-critical allowlist. Eligible for reset by this skill: device-offline (device back online), disk-space (space recovered), stopped-service (service running again), performance/CPU/memory threshold (readings back in range). NOT eligible — always leave for a human: security/EDR alerts, backup failures, RAID/SMART/hardware-health, anything on a domain controller or hypervisor, and any alert type you cannot map onto the allowlist.
-3. Verify the state is actually healthy NOW with `get_ninjaone_device`: for an offline alert the device must be online with a fresh last-contact; for disk the free space must be above threshold; for a service alert the service must be running. The alert text saying "recovered" is not verification — read the current state.
-4. Recurrence check: if this same alert has fired and been reset repeatedly (3+ times in 30 days), do not silently reset again — flag it as a chronic condition that needs a root-cause ticket, and only reset if the requester still wants it after seeing that.
-5. Post the explanation note FIRST via `add_ticket_note` (plain text): which alert, on which device, what the verified healthy state is, and why it is being reset. The note is the audit trail — no note, no reset.
-6. Then call `reset_ninjaone_alert`.
-7. Confirm the reset in your reply: alert cleared, note posted, and the recurrence status if relevant.
-
-## Guardrails
-
-- Verify-then-note-then-reset, strictly in that order. If verification fails or is inconclusive (device unreachable, stale data), do nothing and say why.
-- The allowlist is a ceiling, not a suggestion — unknown alert types are never reset.
-- Never reset an alert to make a queue look clean; the recurrence check exists to stop alert-blindness.
-- Resetting an alert never closes the ticket — ticket closure is a separate, human-owned decision.
-- If NinjaOne is not enabled, this skill cannot run; say so.
-
-## Unattended (Flows) variant
-
-- Your entire reply is posted verbatim as the ticket note — no narration, no markdown, no emojis. Write it as the plain-text explanation note described in step 5.
-- Deterministic gates: alert type must be on the allowlist AND current device state must verify healthy AND recurrence must be under 3 in 30 days. All three or no action.
-- When any gate fails, in doubt, or data is stale/capped: do nothing and output a one-line plain-text reason ("Alert not reset: current state could not be verified as healthy.").
-- Never reset more than the single alert the Flow handed you; no sweeping in unattended mode.
+Unattended (Flow) mode: your entire reply is posted verbatim as the plain-text note. Gates, all required: type on the allowlist AND current state verifies healthy AND recurrence under 3-in-30-days. Any gate fails or data is stale/capped -> do nothing, output one plain-text line stating why. Never sweep more than the single alert the Flow handed you.
+```
